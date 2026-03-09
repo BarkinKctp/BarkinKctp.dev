@@ -1,6 +1,3 @@
-import React from "react";
-
-
 
 
 export const links = [
@@ -17,12 +14,12 @@ export const links = [
         hash: "#projects",
     },
     {
-        name: "Skills",
-        hash: "#skills",
-    },
-    {
         name: "Experience",
         hash: "#experience",
+    },
+    {
+        name: "Skills",
+        hash: "#skills",
     },
     {
         name: "Contact",

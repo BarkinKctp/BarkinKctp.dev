@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
+import ActiveSessionContextProvider from "./context/active-section-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,25 +27,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="!scroll-smooth">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased
-         bg-gray-50 text-gray-900 relative h-5000 pt-35 sm:pt-44 overflow-x-hidden`}
+         bg-gray-50 text-gray-900 relative pt-35 sm:pt-44 overflow-x-hidden`}
       >
-        <div
-          className="bg-indigo-200 absolute top-[-6rem] 
-        -z-10 right-[-25rem] h-[40rem] w-[60rem] rounded-full 
-        blur-[10rem] sm:w-[75rem] md:right-[-33rem]
-        lg:right-[-28rem] xl:right-[-15rem] 2xl:right-[-5rem]"
-        ></div>
-        <div
-          className="bg-cyan-200 absolute top-[-1rem] 
-        -z-10 left-[-25rem] h-[40rem] w-[55rem] rounded-full 
-        blur-[10rem] sm:w-[65rem] md:left-[-33rem]   
-        lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem]"
-        ></div>
-        <Header />
-        {children}
+        <ActiveSessionContextProvider>
+          <Header />
+          {children}
+        </ActiveSessionContextProvider>
       </body>
     </html>
   );

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 420" fill="none">
+  <!-- Cloud outline -->
+  <path d="M400 175c0-5-0.5-10-1.5-15C393 108 348 68 294 68c-35 0-66 16-86 42C196 96 178 88 158 88c-50 0-90 40-90 90 0 2 0 4 0.3 6C30 196 2 232 2 275c0 52 42 94 94 94h290c46 0 84-38 84-84 0-40-28-74-66-82 0-2 0-4 0-6-1-12-3-16-4-22z" stroke="#4a4a4a" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- CI/CD infinity symbol below cloud -->
+  <!-- Left loop (CI) -->
+  <path d="M256 310 C220 270 160 270 160 310 C160 350 220 350 256 310" stroke="#4a4a4a" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <!-- Right loop (CD) -->
+  <path d="M256 310 C292 350 352 350 352 310 C352 270 292 270 256 310" stroke="#4a4a4a" stroke-width="12" stroke-linecap="round" fill="none"/>
+
+  <!-- CI text -->
+  <text x="195" y="318" text-anchor="middle" fill="#4a4a4a" font-size="28" font-weight="700" font-family="Arial, sans-serif">CI</text>
+  <!-- CD text -->
+  <text x="317" y="318" text-anchor="middle" fill="#4a4a4a" font-size="28" font-weight="700" font-family="Arial, sans-serif">CD</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" fill="none">
+  <defs>
+    <linearGradient id="cloudGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7DD3FC"/>
+      <stop offset="50%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="cloudShine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="white" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cloudOutline" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#BAE6FD"/>
+      <stop offset="100%" stop-color="#0369A1"/>
+    </linearGradient>
+  </defs>
+  <!-- Main cloud body -->
+  <path d="M490 280c30 0 55-22 55-55s-25-55-55-55c-3 0-6 0-9 1 5-12 8-25 8-38 0-55-45-100-100-100-40 0-75 24-90 58C269 66 240 48 205 48c-58 0-105 47-105 105 0 3 0 6 0.5 9C68 174 42 208 42 248c0 50 40 90 90 90h358z" fill="url(#cloudGrad)"/>
+  <!-- Cloud outline / highlight -->
+  <path d="M490 280c30 0 55-22 55-55s-25-55-55-55c-3 0-6 0-9 1 5-12 8-25 8-38 0-55-45-100-100-100-40 0-75 24-90 58C269 66 240 48 205 48c-58 0-105 47-105 105 0 3 0 6 0.5 9C68 174 42 208 42 248c0 50 40 90 90 90h358z" stroke="url(#cloudOutline)" stroke-width="5" fill="none"/>
+  <!-- Shine/gloss on top -->
+  <path d="M160 160c20-50 65-85 120-85 30 0 58 10 80 28 15-20 38-33 64-33 25 0 47 12 62 30" stroke="url(#cloudShine)" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <ellipse cx="220" cy="140" rx="70" ry="25" fill="white" opacity="0.2"/>
+</svg>
