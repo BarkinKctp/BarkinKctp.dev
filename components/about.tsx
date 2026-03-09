@@ -1,16 +1,19 @@
 "use client";
-
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import SectionHeading from "./section-heading";
+import { useSectionInView } from "@/lib/hooks";
 
 export default function About() {
+  const { ref } = useSectionInView("About", 0.5);
   return (
     <motion.section
       id="about"
-      className="mb-14 max-w-[50rem] text-center leading-6 "
+      ref={ref}
+      className="mb-[10rem] max-w-[50rem] text-center 
+      leading-6 sm:mb-[10rem] scroll-mt-40"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.175 }}
@@ -66,17 +69,19 @@ export default function About() {
         transition={{ delay: 0.2 }}
       >
         <Link
-          href="/hobbies"
-          className="group  inline-flex items-center gap-3
-          bg-gradient-to-r from-cyan-300 to-indigo-300
-          text-white/75 px-8 py-3 rounded-xl
-          font-medium shadow-lg border border-black/20
+          href="/pages/about-me"
+          className="group inline-flex items-center gap-3
+          bg-gradient-to-r from-emerald-400 to-sky-400
+          text-white px-8 py-3 rounded-xl
+          font-semibold shadow-lg border 
+          border-b-4 border-gray-700 hover:border-gray-900
           hover:scale-105 hover:shadow-xl
           transition hover:text-white"
+          style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}
         >
           <FaUser />
           More about me
-          <BsArrowRight className="transition group-hover:translate-x-1" />
+          <BsArrowRight className="opacity-90 group-hover:translate-x-1 transition" />
         </Link>
       </motion.div>
     </motion.section>

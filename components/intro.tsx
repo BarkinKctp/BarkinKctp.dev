@@ -5,12 +5,16 @@ import Link from "next/link";
 import { HiDownload } from "react-icons/hi";
 import { BsArrowRight, BsLinkedin } from "react-icons/bs";
 import { FaGithubSquare } from "react-icons/fa";
+import { useSectionInView } from "@/lib/hooks";
 
 export default function Intro() {
+  const { ref } = useSectionInView("Home", 0.5);
   return (
     <section
-      className="mb-[7rem] max-w-[50rem] 
-    text-center sm:mb-0 "
+      id="home"
+      ref={ref}
+      className="mb-[5rem] max-w-[50rem] 
+    text-center sm:mb-[5rem] scroll-mt-100 "
     >
       <div className="flex items-center justify-center ">
         <div className="relative">
@@ -27,7 +31,7 @@ export default function Intro() {
               height={192}
               quality={95}
               priority={true}
-              className="h-[8rem] w-[8rem] rounded-full 
+              className="h-[8rem] w-[8rem] rounded-full hover:border-cyan-400 transition
               object-cover border-[0.24rem] border-white shadow-xl "
             />
             <motion.span
@@ -53,15 +57,15 @@ export default function Intro() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeInOut", delay: 0.3 }}
       >
-        <span className="font-bold">Hello, I'm Barkin Kocatepe. </span>I am a{" "}
+        <span className="font-bold">Hello, I'm Barkin Kocatepe. </span>I'm a{" "}
         <span className="font-bold"> Software Engineering student </span>
         with <span className="font-bold"> 2.5 years of experience. </span>
-        My focus is on{" "}
+        My main interests are{" "}
         <span className="underline ">
           Cloud Computing, Distributed Systems,
         </span>{" "}
-        <span className="underline "> AI </span>and{" "}
-        <span className="underline ">DevOps</span>.
+        <span className="underline "> DevOps</span> and{" "}
+        <span className="underline ">Artificial Intelligence</span>.
       </motion.h1>
       <motion.div
         className="flex flex-col sm:flex-row items-center
@@ -73,9 +77,9 @@ export default function Intro() {
         <Link
           href="#contact"
           className="group bg-gray-900 text-white px-7
-        py-3 flex items-center gap-2
+        py-3 flex items-center gap-2 
         rounded-full outline-none focus:outline-none 
-        focus:scale-105 hover:scale-105 hover:bg-gray-950 
+        focus:scale-105 hover:scale-105 hover:bg-gray-950
         active:scale-110 transition"
         >
           Contact me here{" "}

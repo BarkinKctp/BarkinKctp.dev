@@ -1,59 +1,43 @@
+"use client";
+
 import React from "react";
 import SectionHeading from "./section-heading";
 import { projects } from "@/lib/data";
+import Project from "./project";
+import Link from "next/link";
+import { FaCode } from "react-icons/fa";
+import { useSectionInView } from "@/lib/hooks";
 
 export default function Projects() {
+  const { ref } = useSectionInView("Projects", 0.7);
+
+  const displayedProjects = projects.slice(0, 3);
   return (
-    <section>
-      <SectionHeading>My Projects</SectionHeading>
+    <section ref={ref} id="projects" className="scroll-mt-40 mb-28">
+      <SectionHeading>Projects</SectionHeading>
       <div>
-        {projects.map((project, index) => (
+        {displayedProjects.map((project, index) => (
           <React.Fragment key={index}>
             <Project {...project} />
           </React.Fragment>
         ))}
       </div>
-    </section>
-  );
-}
-
-type ProjectProps = (typeof projects)[number];
-
-function Project({ title, description, tags, imageUrl }: ProjectProps) {
-  return (
-    <section
-      className="group bg-gray-100 max-w-[42rem] relative 
-    border border-black/15 overflow-hidden sm:pr-8
-    relative sm:h-[20rem] mb-3 sm:mb-8 last:mb-0 "
-    >
-      <div
-        className="pt-4 pb-7 px-5 sm:pl-10 sm:pt-10
-      sm:pr-2 sm:max-w-1/2 flex flex-col h-full
-       group-even:ml-[18rem]"
-      >
-        <h3 className="text-2xl font-semibold">{title}</h3>
-        <p className="mt-2 leading-relaxed text-gray-700">{description}</p>
-        <ul className="flex flex-wrap mt-4 gap-2 sm:mt-auto">
-          {tags.map((tags, index) => (
-            <li
-              className="bg-black/70 px-3 py-1 text-[0.7rem] 
-          uppercase tracking-wider text-white rounded-full"
-              key={index}
-            >
-              {tags}
-            </li>
-          ))}
-        </ul>
+      <div className="flex justify-center mt-12">
+        <Link
+          href="/pages/projects"
+          className="group inline-flex items-center gap-3
+            bg-gradient-to-r from-sky-500 to-fuchsia-600
+            text-white px-8 py-3 rounded-xl
+            font-semibold shadow-lg border 
+            border-b-4 border-gray-700 hover:border-gray-900
+            hover:scale-105 hover:shadow-xl
+            transition hover:text-white"
+          style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}
+        >
+          <FaCode />
+          View All Projects
+        </Link>
       </div>
-      {imageUrl && (
-        <img
-          src={imageUrl}
-          alt={title}
-          className="absolute top-8 shadow-2xl
-        -right-40 w-[28.25rem] rounded-t-lg
-        group-even:right-[initial] group-even:-left-40 "
-        />
-      )}
     </section>
   );
 }
