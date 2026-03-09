@@ -53,19 +53,30 @@ export const experiences = [
 
 export const projects = [
     {
-        name: "Project 1",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        link: "",
-        tags: ["Next.js", "Tailwind CSS"],
-        imageUrl: "",
-    },
+  title: "CI/CD Pipeline Testing",
+  description:
+    "A project for experimenting with secure CI/CD workflows using GitHub Actions, Azure OIDC authentication, and automated cloud deployment.",
+  link: "https://github.com/BarkinKctp/CI-CD-Pipeline-Testing",
+  tags: [
+    "Python",
+    "GitHub Actions",
+    "CI/CD",
+    "Azure",
+    "ARM Templates",
+    "Docker",
+],
+  imageUrl: "/CI-CD-test-project.png"
+},
+    /*
     {
-        name: "Project 2",
+        
+        title: "Project 2",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         link: "",
         tags: ["React", "TypeScript"],
         imageUrl: "",
     },
+    /*/
 ] as const;
 
 export const skills = [

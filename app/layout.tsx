@@ -16,7 +16,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Barkin | Personal Portfolio",
   description:
-    "Barkin is a software engineer specializing in cloud computing, distributed systems, and devops with 2.5 years of experience.",
+    "Barkin is a software engineer specializing in cloud computing, \
+     distributed systems, and devops with 2.5 years of experience.",
 };
 
 export default function RootLayout({
@@ -28,17 +29,18 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased
-         bg-gray-50 text-gray-900 relative h-5000`}
+         bg-gray-50 text-gray-900 relative h-5000 pt-35 sm:pt-44 overflow-x-hidden`}
       >
         <div
-          className="bg-[#fbe2e3] absolute top-[-6rem] 
-        -z[-2.5rem] right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full 
-        blur-[10rem] sm:w-[68.75rem]"
+          className="bg-indigo-200 absolute top-[-6rem] 
+        -z-10 right-[-25rem] h-[40rem] w-[60rem] rounded-full 
+        blur-[10rem] sm:w-[75rem] md:right-[-33rem]
+        lg:right-[-28rem] xl:right-[-15rem] 2xl:right-[-5rem]"
         ></div>
         <div
-          className="bg-[#dbd7fb] absolute top-[-1rem] 
-        -z[-2.5rem] left-[-35rem] h-[31.25rem] w-[50rem] rounded-full 
-        blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] 
+          className="bg-cyan-200 absolute top-[-1rem] 
+        -z-10 left-[-25rem] h-[40rem] w-[55rem] rounded-full 
+        blur-[10rem] sm:w-[65rem] md:left-[-33rem]   
         lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem]"
         ></div>
         <Header />

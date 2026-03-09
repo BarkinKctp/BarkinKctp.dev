@@ -8,17 +8,17 @@ export default function Header() {
     <header className="z-999 relative">
       <motion.div
         className="fixed top-0 left-1/2 -translate-x-1/2 flex items-center justify-between
-        h-[5rem] w-full rounded-none border border-white border-opacity-[10rem]
-        bg-white bg-opacity-[20rem] shadow-lg shadow-black/[0.03]
-        backdrop-blur-sm pl-12 pr-4 sm:top-[1.5rem] sm:h-[3.3rem]
-        sm:w-[55rem] sm:rounded-full sm:pl-9 sm:pr-11"
+        h-[5rem] w-full rounded-none border border-white/40
+        bg-white/95 shadow-lg shadow-black/[0.03]
+        pl-12 pr-4 sm:top-[1.5rem] sm:h-[3.1rem]
+        sm:w-[68rem] sm:rounded-full sm:pl-16 sm:pr-16"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <motion.span
           className="flex text-[1.2rem] font-bold text-gray-700
-          hover:text-gray-950 transition sm:h-[3.3rem]
+          hover:text-cyan-600 transition sm:h-[3.3rem]
           py-[0.6,rem] px-[0.6rem] sm:text-[1.3rem] sm:py-[0.6rem] sm:px-[1.25rem]"
           initial={{ y: -25, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
