@@ -13,8 +13,8 @@ export default function Intro() {
     <section
       id="home"
       ref={ref}
-      className="mb-[5rem] max-w-[50rem] 
-    text-center sm:mb-[5rem] scroll-mt-100 "
+      className="mb-[4rem] max-w-[50rem] 
+    text-center sm:mb-[4rem] scroll-mt-100 "
     >
       <div className="flex items-center justify-center ">
         <div className="relative">
@@ -59,10 +59,16 @@ export default function Intro() {
       >
         <span className="font-bold">Hello, I'm Barkin Kocatepe. </span>I'm a{" "}
         <span className="font-bold"> Software Engineering student </span>
-        with <span className="font-bold"> 2.5 years of experience. </span>
-        My main interests are{" "}
+        with <span className="font-bold"> 2.5 years of experience </span>
+        working on{" "}
+        <span className="font-bold">
+          {" "}
+          cloud platforms and developer infrastructure.{" "}
+        </span>{" "}
+        My focus is{" "}
         <span className="underline ">
-          Cloud Computing, Distributed Systems,
+          {" "}
+          Cloud Computing, Distributed Systems,{" "}
         </span>{" "}
         <span className="underline "> DevOps</span> and{" "}
         <span className="underline ">Artificial Intelligence</span>.

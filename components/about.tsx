@@ -26,37 +26,33 @@ export default function About() {
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
       >
-        I am a <span className="font-bold">Software Engineering student</span>{" "}
-        in <span className="font-bold">Halic University</span> with a strong
-        interest in <span className="underline">Cloud Computing</span>,{" "}
-        <span className="underline">DevOps</span>,{" "}
-        <span className="underline">Distributed Systems</span>, and{" "}
-        <span className="underline">Artificial Intelligence</span>. I enjoy
-        building practical projects that combine software development with
-        automation and modern infrastructure.
+        I'm a <span className="font-medium">Software Engineering student</span>{" "}
+        with professional experience working with{" "}
+        <span className="font-medium">
+          cloud infrastructure and DevOps systems
+        </span>
+        . During my internship at <span className="font-medium">Microsoft</span>
+        , I worked with teams focused on{" "}
+        <span className="underline">Azure services</span> and{" "}
+        <span className="underline">DevOps tooling</span>, gaining hands-on
+        experience with modern cloud environments and development workflows.
+        <br />
+        My main interests are{" "}
+        <span className="font-medium">
+          Cloud Computing, DevOps, Distributed Systems, and Artificial
+          Intelligence
+        </span>
+        .
         <br />
         <br />
-        Recently, I have been focusing on{" "}
-        <span className="font-bold">CI/CD pipelines</span>,{" "}
-        <span className="font-bold">cloud deployments</span>, and{" "}
-        <span className="font-bold">DevOps</span> using technologies such as{" "}
-        <span className="font-bold">Azure</span>,{" "}
-        <span className="font-bold">Github Actions</span>,{" "}
-        <span className="font-bold">Docker</span>,{" "}
-        <span className="font-bold">Linux</span> and{" "}
-        <span className="font-bold">React</span>.
-        <br />
-        <br />
-        Outside of technology, I enjoy{" "}
-        <span className="font-bold">listening to music</span>,{" "}
-        <span className="font-bold">reading books</span>,{" "}
-        <span className="font-bold">watching movies</span>, and{" "}
-        <span className="font-bold">gaming</span>. I'm also passionate about{" "}
-        <span className="font-bold">learning new languages</span> and{" "}
-        <span className="font-bold">exploring new places around the world</span>
-        . I'm currently learning <span className="font-bold">French</span> and
-        playing the <span className="font-bold">piano</span>.{" "}
-        <span className="italic text-gray-700">
+        <span className="italic">When I'm not working on projects</span>, I
+        enjoy listening to music, reading books, watching movies, and gaming.
+        <br />I also enjoy{" "}
+        <span className="font-medium">learning new languages</span> and
+        exploring new places around the world.
+        <span className="italic text-gray-800 hover:text-cyan-600 transition">
+          <br />
+          <br />
           I'm always curious and eager to learn something new.
         </span>
       </motion.p>
@@ -71,7 +67,7 @@ export default function About() {
         <Link
           href="/pages/about-me"
           className="group inline-flex items-center gap-3
-          bg-gradient-to-r from-emerald-400 to-sky-400
+          bg-gradient-to-r from-emerald-400 to-sky-300
           text-white px-8 py-3 rounded-xl
           font-semibold shadow-lg border 
           border-b-4 border-gray-700 hover:border-gray-900

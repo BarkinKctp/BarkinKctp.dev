@@ -25,7 +25,7 @@ export default function PagesLayout({
         animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Image src="/cloud-blue.svg" alt="" width={120} height={83} />
+        <Image src="/bg-images/cloud-blue.svg" alt="" width={120} height={83} />
       </motion.div>
 
       <motion.div
@@ -33,7 +33,7 @@ export default function PagesLayout({
         animate={{ y: [0, 22, 0], rotate: [0, -4, 0] }}
         transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Image src="/cloud-cicd.svg" alt="" width={98} height={75} />
+        <Image src="/bg-images/cloud-cicd.svg" alt="" width={98} height={75} />
       </motion.div>
 
       <motion.div
@@ -41,7 +41,7 @@ export default function PagesLayout({
         animate={{ y: [0, -15, 0], x: [0, 10, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Image src="/cloud1.svg" alt="" width={113} height={75} />
+        <Image src="/bg-images/cloud1.svg" alt="" width={113} height={75} />
       </motion.div>
 
       <motion.div
@@ -49,7 +49,7 @@ export default function PagesLayout({
         animate={{ y: [0, 25, 0], rotate: [0, -5, 0] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Image src="/cloud2.svg" alt="" width={135} height={90} />
+        <Image src="/bg-images/cloud2.svg" alt="" width={135} height={90} />
       </motion.div>
 
       {children}

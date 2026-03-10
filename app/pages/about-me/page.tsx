@@ -6,33 +6,7 @@ import Image from "next/image";
 import { BsArrowLeft } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { FaMapMarkerAlt, FaBook, FaMusic, FaUser } from "react-icons/fa";
-
-const placesVisited = [
-  {
-    name: "Istanbul, Turkey",
-    image: "/photos/istanbul.jpg",
-    description: "Home city — where it all started.",
-  },
-  // Add more places here
-];
-
-const favoriteBooks = [
-  {
-    title: "Book Title",
-    author: "Author Name",
-    image: "/photos/book1.jpg",
-  },
-  // Add more books here
-];
-
-const favoriteMusic = [
-  {
-    title: "Song / Album Title",
-    artist: "Artist Name",
-    image: "/photos/album1.jpg",
-  },
-  // Add more music here
-];
+import { placesVisited, favoriteBooks, favoriteMusic } from "@/lib/about-me";
 
 export default function AboutMePage() {
   return (
@@ -52,15 +26,15 @@ export default function AboutMePage() {
       </motion.div>
 
       <motion.p
-        className="leading-8 text-gray-700 mb-12 text-center max-w-[40rem] -mt-4"
+        className="leading-8 text-gray-800 mb-12 text-center max-w-[40rem] -mt-4"
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        A little more about who I am beyond code —{" "}
-        <span className="font-bold">places I&apos;ve explored</span>,{" "}
-        <span className="font-bold">books I love</span>, and the{" "}
-        <span className="font-bold">music</span> that keeps me going.
+        A little more about me beyond code — the{" "}
+        <span className="font-bold">places I’ve explored</span>,{" "}
+        <span className="font-bold">books that stuck with me</span>, and the{" "}
+        <span className="font-bold">music</span> that I listen to.
       </motion.p>
 
       {/* About Me Bio */}
@@ -70,33 +44,47 @@ export default function AboutMePage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
       >
-        <div className="flex items-center gap-3 mb-4">
-          <FaUser className="text-emerald-500 text-xl" />
-          <h2 className="text-2xl font-bold text-gray-800">Who I Am</h2>
+        <div className="flex items-center gap-3 mb-4 group cursor-default">
+          <FaUser className="text-emerald-500 text-xl group-hover:scale-110 transition duration-300" />
+          <h2 className="text-2xl font-bold text-gray-800 group-hover:text-emerald-600 transition duration-300">
+            Who I Am
+          </h2>
         </div>
-        <p className="leading-8 text-gray-700 border-l-4 border-emerald-400 pl-4">
-          I am a <span className="font-bold">Software Engineering student</span>{" "}
-          at <span className="font-bold">Halic University</span> with a strong
-          interest in <span className="underline">Cloud Computing</span>,{" "}
+        <p className="leading-8 text-gray-700 border-l-4 border-emerald-400 hover:border-emerald-600 pl-4 transition-colors duration-300">
+          I'm currently a{" "}
+          <span className="font-bold">
+            Third Year Software Engineering student
+          </span>{" "}
+          at <span className="font-bold">Halic University</span>.
+          <br /> Most of my time goes into learning how systems are built and
+          how different technologies work together.
+          <br />I am especially interested in{" "}
+          <span className="underline">Cloud Computing</span>,{" "}
           <span className="underline">DevOps</span>,{" "}
           <span className="underline">Distributed Systems</span>, and{" "}
-          <span className="underline">Artificial Intelligence</span>. I enjoy
-          building practical projects that combine software development with
-          automation and modern infrastructure.
+          <span className="underline">Artificial Intelligence</span>.
+          <br />I enjoy working on projects where I can experiment, solve
+          problems, and gradually turn ideas into something real.
         </p>
-        <p className="leading-8 text-gray-700 mt-4 border-l-4 border-sky-400 pl-4">
+
+        <p
+          className="leading-8 text-gray-700 mt-4 border-l-4 border-sky-400
+         hover:border-sky-600 pl-4 transition-colors duration-300"
+        >
           Outside of technology, I enjoy{" "}
           <span className="font-bold">listening to music</span>,{" "}
           <span className="font-bold">reading books</span>,{" "}
           <span className="font-bold">watching movies</span>, and{" "}
-          <span className="font-bold">gaming</span>. I&apos;m also passionate
-          about <span className="font-bold">learning new languages</span> and{" "}
+          <span className="font-bold">gaming</span>.
+          <br />
+          I'm also passionate about{" "}
+          <span className="font-bold">learning new languages</span> and{" "}
           <span className="font-bold">
             exploring new places around the world
           </span>
-          . I&apos;m currently learning{" "}
-          <span className="font-bold">French</span> and playing the{" "}
-          <span className="font-bold">piano</span>.
+          . <br />
+          I'm currently learning <span className="font-bold">French</span> and
+          practicing the <span className="font-bold">piano</span>.
         </p>
       </motion.div>
 
@@ -108,13 +96,13 @@ export default function AboutMePage() {
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
       >
-        <div className="flex items-center gap-3 mb-6">
-          <FaMapMarkerAlt className="text-teal-500 text-xl" />
-          <h2 className="text-2xl font-bold text-gray-800">
+        <div className="flex items-center gap-3 mb-6 group cursor-default">
+          <FaMapMarkerAlt className="text-teal-500 text-xl group-hover:scale-110 transition duration-300" />
+          <h2 className="text-2xl font-bold text-gray-800 group-hover:text-teal-600 transition duration-300">
             Places I&apos;ve Visited
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
           {placesVisited.map((place, index) => (
             <motion.div
               key={index}
@@ -124,7 +112,7 @@ export default function AboutMePage() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative h-[10rem] bg-gray-100 overflow-hidden">
+              <div className="relative h-[10rem]  bg-gray-100 overflow-hidden">
                 <Image
                   src={place.image}
                   alt={place.name}
@@ -151,31 +139,35 @@ export default function AboutMePage() {
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
       >
-        <div className="flex items-center gap-3 mb-6">
-          <FaBook className="text-emerald-600 text-xl" />
-          <h2 className="text-2xl font-bold text-gray-800">Favorite Books</h2>
+        <div className="flex items-center gap-3 mb-6 group cursor-default">
+          <FaBook className="text-emerald-600 text-xl group-hover:scale-110 transition duration-300" />
+          <h2 className="text-2xl font-bold text-gray-800 group-hover:text-emerald-600 transition duration-300">
+            Books I&apos;ve Read
+          </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
           {favoriteBooks.map((book, index) => (
             <motion.div
               key={index}
-              className="group flex gap-4 p-4 rounded-lg border border-black/10 hover:shadow-lg transition"
+              className="group rounded-lg overflow-hidden border border-black/10 hover:shadow-lg transition"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative w-[5rem] h-[7rem] shrink-0 bg-gray-100 rounded overflow-hidden">
+              <div className="relative h-[8rem] bg-gray-100 overflow-hidden">
                 <Image
                   src={book.image}
                   alt={book.title}
                   fill
-                  className="object-cover"
+                  className="object-contain group-hover:scale-110 transition duration-300"
                 />
               </div>
-              <div>
-                <h3 className="font-semibold text-gray-800">{book.title}</h3>
-                <p className="text-sm text-gray-600 mt-1">{book.author}</p>
+              <div className="p-3">
+                <h3 className="font-semibold text-sm text-gray-800">
+                  {book.title}
+                </h3>
+                <p className="text-xs text-gray-600 mt-1">{book.author}</p>
               </div>
             </motion.div>
           ))}
@@ -190,31 +182,35 @@ export default function AboutMePage() {
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
       >
-        <div className="flex items-center gap-3 mb-6">
-          <FaMusic className="text-green-500 text-xl" />
-          <h2 className="text-2xl font-bold text-gray-800">Favorite Music</h2>
+        <div className="flex items-center gap-3 mb-6 group cursor-default">
+          <FaMusic className="text-green-500 text-xl group-hover:scale-110 transition duration-300" />
+          <h2 className="text-2xl font-bold text-gray-800 group-hover:text-green-600 transition duration-300">
+            Favorite Music
+          </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
           {favoriteMusic.map((track, index) => (
             <motion.div
               key={index}
-              className="group flex gap-4 p-4 rounded-lg border border-black/10 hover:shadow-lg transition"
+              className="group rounded-lg overflow-hidden border border-black/10 hover:shadow-lg transition"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative w-[5rem] h-[5rem] shrink-0 bg-gray-100 rounded overflow-hidden">
+              <div className="relative h-[8rem] bg-gray-100 overflow-hidden">
                 <Image
-                  src={track.image}
+                  src={track.cover}
                   alt={track.title}
                   fill
                   className="object-cover group-hover:scale-110 transition duration-300"
                 />
               </div>
-              <div>
-                <h3 className="font-semibold text-gray-800">{track.title}</h3>
-                <p className="text-sm text-gray-600 mt-1">{track.artist}</p>
+              <div className="p-3">
+                <h3 className="font-semibold text-sm text-gray-800">
+                  {track.title}
+                </h3>
+                <p className="text-xs text-gray-600 mt-1">{track.artist}</p>
               </div>
             </motion.div>
           ))}

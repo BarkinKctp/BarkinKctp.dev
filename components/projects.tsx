@@ -13,7 +13,7 @@ export default function Projects() {
 
   const displayedProjects = projects.slice(0, 3);
   return (
-    <section ref={ref} id="projects" className="scroll-mt-40 mb-28">
+    <section ref={ref} id="projects" className="scroll-mt-40 mb-40">
       <SectionHeading>Projects</SectionHeading>
       <div>
         {displayedProjects.map((project, index) => (
