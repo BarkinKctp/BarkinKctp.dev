@@ -11,8 +11,8 @@ export default function Header() {
     <header className="z-999 relative">
       <motion.div
         className="fixed top-0 left-1/2 -translate-x-1/2 flex items-center justify-between
-        h-[5rem] w-full rounded-none border border-white/40
-        bg-white/95 shadow-lg shadow-black/[0.03] 
+        h-[5rem] w-full rounded-none border border-white/40 
+        bg-white/95 shadow-lg shadow-black/[0.35] 
         pl-12 pr-12 sm:top-[1.5rem] sm:h-[3.1rem] 
         sm:w-[68rem] sm:rounded-full sm:pl-17 sm:pr-17"
         initial={{ y: -100, opacity: 0 }}

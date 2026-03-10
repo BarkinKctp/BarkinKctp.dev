@@ -31,8 +31,8 @@ export default function Intro() {
               height={192}
               quality={95}
               priority={true}
-              className="h-[8rem] w-[8rem] rounded-full hover:border-cyan-400 transition
-              object-cover border-[0.24rem] border-white shadow-xl "
+              className="h-[8rem] w-[8rem] rounded-full hover:border-cyan-500 hover:shadow-2xl
+              transition object-cover border-[0.24rem] border-white shadow-xl shadow-black/20 transition"
             />
             <motion.span
               className="absolute bottom-[-0.3rem] right-[-0.3rem] text-4xl"

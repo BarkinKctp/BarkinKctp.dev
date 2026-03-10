@@ -1,8 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { BsArrowRight } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
+import { HiCursorClick } from "react-icons/hi";
 import SectionHeading from "./section-heading";
 import { useSectionInView } from "@/lib/hooks";
 
@@ -67,8 +67,8 @@ export default function About() {
         <Link
           href="/pages/about-me"
           className="group inline-flex items-center gap-3
-          bg-gradient-to-r from-emerald-400 to-sky-300
-          text-white px-8 py-3 rounded-xl
+          bg-gradient-to-r from-green-400 to-emerald-400
+          text-white/92 px-8 py-3 rounded-xl
           font-semibold shadow-lg border 
           border-b-4 border-gray-700 hover:border-gray-900
           hover:scale-105 hover:shadow-xl
@@ -77,7 +77,7 @@ export default function About() {
         >
           <FaUser />
           More about me
-          <BsArrowRight className="opacity-90 group-hover:translate-x-1 transition" />
+          <HiCursorClick className="opacity-90 group-hover:scale-115 transition" />
         </Link>
       </motion.div>
     </motion.section>

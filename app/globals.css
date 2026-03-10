@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @custom-variant dark (&:is(.dark *));
+
+
+html {
+  --line-color: #e5e7eb;
+}
+

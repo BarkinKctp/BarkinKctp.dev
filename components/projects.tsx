@@ -5,7 +5,8 @@ import SectionHeading from "./section-heading";
 import { projects } from "@/lib/data";
 import Project from "./project";
 import Link from "next/link";
-import { FaCode } from "react-icons/fa";
+import { GrProjects } from "react-icons/gr";
+import { HiCursorClick } from "react-icons/hi";
 import { useSectionInView } from "@/lib/hooks";
 
 export default function Projects() {
@@ -26,16 +27,17 @@ export default function Projects() {
         <Link
           href="/pages/projects"
           className="group inline-flex items-center gap-3
-            bg-gradient-to-r from-sky-500 to-fuchsia-600
-            text-white px-8 py-3 rounded-xl
+            bg-gradient-to-r from-sky-500 to-blue-600
+            text-white/88 px-8 py-3 rounded-xl
             font-semibold shadow-lg border 
             border-b-4 border-gray-700 hover:border-gray-900
-            hover:scale-105 hover:shadow-xl
+            hover:scale-110 hover:shadow-xl
             transition hover:text-white"
           style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}
         >
-          <FaCode />
+          <GrProjects />
           View All Projects
+          <HiCursorClick className="opacity-90 group-hover:scale-115 transition" />
         </Link>
       </div>
     </section>

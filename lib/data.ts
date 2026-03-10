@@ -1,3 +1,7 @@
+import React from "react";
+import { CgWorkAlt } from "react-icons/cg";
+import { LuGraduationCap } from "react-icons/lu";
+import { FaMicrosoft } from "react-icons/fa";
 
 
 export const links = [
@@ -28,24 +32,24 @@ export const links = [
 ] as const;
 
 export const experiences = [
-    {
-        company: "Microsoft",
-        title: "Azure App Technical Specialist  Intern",
-        location: "Istanbul, Turkey",
-        description: "As an Azure App Technical Specialist Intern at Microsoft, I proviided \
-        techical support etc",
-        icon: "",
-        duration: "2024 - 2025.02",
-    },
-    {
-        company: "Microsoft",
-        title: "Software Engineer Intern",
-        location: "Istanbul, Turkey",
-        description: "As a Software Engineer Intern at Microsoft, I developed a tool to automate the \
-        process etc",
-        icon: "",
-        duration: "2025.02 - 2026.06",
-    },
+  {
+    company: "Microsoft",
+    title: "Azure App Technical Specialist Intern",
+    location: "Istanbul, Turkey",
+    description:
+      "Supported Azure Cloud and Azure AI solutions and collaborated with engineers on real-world deployments and developer events.",
+    icon: React.createElement(CgWorkAlt),
+    duration: "Dec 2023 - Feb 2025",
+  },
+  {
+    company: "Microsoft", 
+    title: "Software Engineer Intern",
+    location: "Istanbul, Turkey",
+    description:
+      "Worked on DevOps workflows using CI/CD, Docker, and PostgreSQL for distributed database tooling in the R&D team.",
+    icon: React.createElement(FaMicrosoft),
+    duration: "Feb 2025 - Jun 2026",
+  },
 ] as const;
 
 export const projects = [
