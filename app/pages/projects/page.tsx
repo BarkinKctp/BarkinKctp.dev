@@ -37,7 +37,7 @@ export default function ProjectsPage() {
       </motion.p>
 
       <motion.div
-        className="bg-white border border-3 border-black/30 rounded-lg p-8 sm:p-10 max-w-[65rem] w-full"
+        className="bg-gray-900 border-2 border-black rounded-lg p-8 sm:p-10 max-w-[75rem] w-full"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.175 }}
@@ -47,14 +47,14 @@ export default function ProjectsPage() {
             <motion.div
               key={index}
               className={`group p-4${
-                index % 2 === 0 ? " sm:border-r sm:border-black/15" : ""
+                index % 2 === 0 ? " sm:border-r sm:border-white/20" : ""
               }${
                 index < projects.length - 2
-                  ? " border-b border-black/15"
+                  ? " border-b border-white/20"
                   : projects.length % 2 !== 0 && index === projects.length - 1
                     ? ""
                     : index < projects.length - 2
-                      ? " border-b border-black/15"
+                      ? " border-b border-white/20"
                       : ""
               }`}
               initial={{ opacity: 0, y: 30 }}
@@ -77,11 +77,11 @@ export default function ProjectsPage() {
       >
         <Link
           href="/#projects"
-          className="group bg-gray-900 text-white px-8 py-3
-            flex items-center gap-3 rounded-full outline-none
-            focus:outline-none focus:scale-105 hover:scale-105
-            hover:bg-gray-950 active:scale-110 transition
-            font-semibold"
+          className="group bg-gray-900 text-white px-7
+            py-3 flex items-center gap-2
+            rounded-full outline-none focus:outline-none
+            focus:scale-105 hover:scale-105 hover:bg-gray-950
+            active:scale-110 transition"
         >
           <BsArrowLeft className="opacity-70 group-hover:-translate-x-1 transition" />
           Back to Home

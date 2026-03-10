@@ -30,37 +30,37 @@ export default function ProjectCard({
       }}
     >
       <section
-        className="bg-gray-100 border border-black/15 overflow-hidden 
-        rounded-lg hover:bg-gray-200 transition flex flex-col h-full"
+        className="group bg-slate-900 border-2 border-white/35 overflow-hidden 
+        rounded-lg hover:bg-slate-800 transition-colors duration-300 flex flex-col h-full min-h-[25rem]"
       >
-        <div className="relative w-full h-[10rem] overflow-hidden">
+        <div className="relative w-full h-[11rem] overflow-hidden rounded-t-lg border-b border-white/15 bg-gray-900">
           <Image
             src={imageUrl}
             fill
             alt={title}
-            className="object-cover object-center transition 
+            className="object-cover object-top transition-transform duration-300 will-change-transform
             group-hover:scale-[1.06]
-            group-hover:translate-x-3
-            group-hover:translate-y-3
-            group-hover:rotate-2
+            group-hover:translate-x-1
+            group-hover:translate-y-1
+            group-hover:rotate-1
 
-            group-even:group-hover:-translate-x-3
-            group-even:group-hover:translate-y-3
-            group-even:group-hover:-rotate-2"
+            group-even:group-hover:-translate-x-1
+            group-even:group-hover:translate-y-1
+            group-even:group-hover:-rotate-1"
           />
         </div>
         <div className="pt-4 pb-6 px-5 flex flex-col flex-1">
-          <h3 className="text-xl font-semibold text-gray-700 hover:text-cyan-600 transition">
+          <h3 className="text-lg font-semibold text-white hover:text-cyan-300 transition">
             {title}
           </h3>
-          <p className="mt-2 leading-relaxed text-gray-700 text-sm">
+          <p className="mt-2 leading-relaxed text-gray-200 text-[0.95rem]">
             {description}
           </p>
-          <ul className="flex flex-wrap mt-4 gap-2 pt-2">
+          <ul className="flex flex-wrap justify-center mt-auto gap-2 pt-3">
             {tags.map((tag, index) => (
               <li
-                className="bg-gray-700 hover:bg-cyan-600 px-3 py-1 text-[0.65rem] 
-                uppercase tracking-wider text-white rounded-full transition"
+                className="bg-slate-700 hover:bg-cyan-700 px-[0.63rem] py-[0.52rem] text-[0.7rem] 
+                uppercase tracking-wider text-white rounded-full transition "
                 key={index}
               >
                 {tag}

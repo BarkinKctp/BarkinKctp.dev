@@ -39,7 +39,7 @@ export default function AboutMePage() {
 
       {/* About Me Bio */}
       <motion.div
-        className="bg-white border border-black/15 rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
+        className="bg-white border-2 border-black rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
@@ -90,7 +90,7 @@ export default function AboutMePage() {
 
       {/* Places Visited */}
       <motion.div
-        className="bg-white border border-black/15 rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
+        className="bg-white border-2 border-black rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -106,7 +106,7 @@ export default function AboutMePage() {
           {placesVisited.map((place, index) => (
             <motion.div
               key={index}
-              className="group rounded-lg overflow-hidden border border-black/10 hover:shadow-lg transition"
+              className="group rounded-lg overflow-hidden border-2 border-black/80 hover:shadow-lg transition"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -117,7 +117,7 @@ export default function AboutMePage() {
                   src={place.image}
                   alt={place.name}
                   fill
-                  className="object-cover group-hover:scale-110 transition duration-300"
+                  className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-300"
                 />
               </div>
               <div className="p-4">
@@ -133,7 +133,7 @@ export default function AboutMePage() {
 
       {/* Favorite Books */}
       <motion.div
-        className="bg-white border border-black/15 rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
+        className="bg-white border-2 border-black rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -149,7 +149,7 @@ export default function AboutMePage() {
           {favoriteBooks.map((book, index) => (
             <motion.div
               key={index}
-              className="group rounded-lg overflow-hidden border border-black/10 hover:shadow-lg transition"
+              className="group rounded-lg overflow-hidden border-2 border-black/80 hover:shadow-lg transition"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -160,7 +160,7 @@ export default function AboutMePage() {
                   src={book.image}
                   alt={book.title}
                   fill
-                  className="object-contain group-hover:scale-110 transition duration-300"
+                  className="object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-300"
                 />
               </div>
               <div className="p-3">
@@ -176,7 +176,7 @@ export default function AboutMePage() {
 
       {/* Favorite Music */}
       <motion.div
-        className="bg-white border border-black/15 rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
+        className="bg-white border-2 border-black rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -192,7 +192,7 @@ export default function AboutMePage() {
           {favoriteMusic.map((track, index) => (
             <motion.div
               key={index}
-              className="group rounded-lg overflow-hidden border border-black/10 hover:shadow-lg transition"
+              className="group rounded-lg overflow-hidden border-2 border-black/80 hover:shadow-lg transition"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -203,7 +203,7 @@ export default function AboutMePage() {
                   src={track.cover}
                   alt={track.title}
                   fill
-                  className="object-cover group-hover:scale-110 transition duration-300"
+                  className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-300"
                 />
               </div>
               <div className="p-3">
@@ -227,11 +227,11 @@ export default function AboutMePage() {
       >
         <Link
           href="/#about"
-          className="group bg-gray-900 text-white px-8 py-3
-            flex items-center gap-3 rounded-full outline-none
-            focus:outline-none focus:scale-105 hover:scale-105
-            hover:bg-gray-950 active:scale-110 transition
-            font-semibold"
+          className="group bg-gray-900 text-white px-7
+            py-3 flex items-center gap-2
+            rounded-full outline-none focus:outline-none
+            focus:scale-105 hover:scale-105 hover:bg-gray-950
+            active:scale-110 transition"
         >
           <BsArrowLeft className="opacity-70 group-hover:-translate-x-1 transition" />
           Back to Home
