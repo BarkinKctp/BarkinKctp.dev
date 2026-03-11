@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-email/components": "^1.0.8",
+    "@react-email/render": "^2.0.4",
     "clsx": "^2.1.1",
     "framer-motion": "^12.35.1",
     "next": "16.1.6",

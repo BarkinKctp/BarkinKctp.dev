@@ -32,7 +32,12 @@ export default function Contact() {
 
       <p className="text-gray-700 dark:text-slate-300 -mt-6">
         Please contact me directly at{" "}
-        <a className="underline" href="mailto:barkinkocatepe12@gmail.com">
+        <a
+          className="underline"
+          href="mailto:barkinkocatepe12@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           barkinkocatepe12@gmail.com
         </a>{" "}
         or through this form.
