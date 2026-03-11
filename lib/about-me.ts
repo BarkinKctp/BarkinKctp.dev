@@ -6,7 +6,7 @@ export const placesVisited = [
   },
   {
     name: "Rome, Italy",
-    image: "/photos/photo/Rome-Colesseum.jpg",
+    image: "/photos/photo/rome-colesseum.jpg",
     description: "The Eternal City — history at every corner.",
   },/*
   {

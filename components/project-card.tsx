@@ -31,9 +31,9 @@ export default function ProjectCard({
     >
       <section
         className="group bg-slate-900 border-2 border-white/35 overflow-hidden 
-        rounded-lg hover:bg-slate-800 transition-colors duration-300 flex flex-col h-full min-h-[25rem]"
+        rounded-lg hover:bg-slate-800 transition-colors duration-300 flex flex-col h-full min-h-[20rem] sm:min-h-[25rem]"
       >
-        <div className="relative w-full h-[11rem] overflow-hidden rounded-t-lg border-b border-white/15 bg-gray-900">
+        <div className="relative w-full h-[8rem] sm:h-[11rem] overflow-hidden rounded-t-lg border-b border-white/15 bg-gray-900">
           <Image
             src={imageUrl}
             fill

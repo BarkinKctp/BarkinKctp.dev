@@ -102,7 +102,7 @@ export default function AboutMePage() {
             Places I&apos;ve Visited
           </h2>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {placesVisited.map((place, index) => (
             <motion.div
               key={index}
@@ -112,7 +112,7 @@ export default function AboutMePage() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative h-[10rem] bg-gray-100 dark:bg-slate-800 overflow-hidden">
+              <div className="relative h-[7rem] sm:h-[9rem] lg:h-[10rem] bg-gray-100 dark:bg-slate-800 overflow-hidden">
                 <Image
                   src={place.image}
                   alt={place.name}
@@ -147,7 +147,7 @@ export default function AboutMePage() {
             Books I&apos;ve Read
           </h2>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {favoriteBooks.map((book, index) => (
             <motion.div
               key={index}
@@ -157,7 +157,7 @@ export default function AboutMePage() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative h-[8rem] bg-gray-100 dark:bg-slate-800 overflow-hidden">
+              <div className="relative h-[6rem] sm:h-[7rem] lg:h-[8rem] bg-gray-100 dark:bg-slate-800 overflow-hidden">
                 <Image
                   src={book.image}
                   alt={book.title}
@@ -192,7 +192,7 @@ export default function AboutMePage() {
             Favorite Music
           </h2>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {favoriteMusic.map((track, index) => (
             <motion.div
               key={index}
@@ -202,7 +202,7 @@ export default function AboutMePage() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative h-[8rem] bg-gray-100 dark:bg-slate-800 overflow-hidden">
+              <div className="relative h-[6rem] sm:h-[7rem] lg:h-[8rem] bg-gray-100 dark:bg-slate-800 overflow-hidden">
                 <Image
                   src={track.cover}
                   alt={track.title}
