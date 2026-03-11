@@ -4,6 +4,9 @@ import "./globals.css";
 import Header from "@/components/header";
 import ActiveSessionContextProvider from "./context/active-section-context";
 import Footer from "@/components/footer";
+import { Toaster } from "react-hot-toast";
+import ThemeSwitch from "@/components/theme-switch";
+import ThemeContextProvider from "./context/theme-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,11 +36,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased
          bg-gray-50 text-gray-900 relative pt-35 sm:pt-44 overflow-x-hidden`}
       >
-        <ActiveSessionContextProvider>
-          <Header />
-          {children}
-          <Footer />
-        </ActiveSessionContextProvider>
+        <ThemeContextProvider>
+          <ActiveSessionContextProvider>
+            <Header />
+            {children}
+            <Footer />
+            <Toaster position="top-right" />
+            <ThemeSwitch />
+          </ActiveSessionContextProvider>
+        </ThemeContextProvider>
       </body>
     </html>
   );
