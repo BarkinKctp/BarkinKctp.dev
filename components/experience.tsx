@@ -10,9 +10,12 @@ import "react-vertical-timeline-component/style.min.css";
 import { FaCode } from "react-icons/fa";
 import { experiences } from "@/lib/data";
 import { useSectionInView } from "@/lib/hooks";
+import { useTheme } from "@/app/context/theme-context";
 
 export default function Experience() {
   const { ref } = useSectionInView("Experience");
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <section
@@ -27,14 +30,16 @@ export default function Experience() {
             <VerticalTimelineElement
               className="[&_.vertical-timeline-element-content]:transition-all! 
               [&_.vertical-timeline-element-content]:duration-300! [&_.vertical-timeline-element-content:hover]:-translate-y-1! 
-              [&_.vertical-timeline-element-content:hover]:bg-gray-200! [&_.vertical-timeline-element-content:hover]:border-black/20!
+              [&_.vertical-timeline-element-content:hover]:bg-gray-200! dark:[&_.vertical-timeline-element-content:hover]:bg-slate-800! [&_.vertical-timeline-element-content:hover]:border-black/60!
                [&_.vertical-timeline-element-content:hover]:shadow-[0_12px_24px_rgba(2,6,23,0.08)]! [&_.vertical-timeline-element-date]:transition-colors! [&_.vertical-timeline-element-date]:duration-300! [&_.vertical-timeline-element-date:hover]:text-cyan-600!"
               iconClassName="transition-all! duration-300! hover:scale-110! hover:border-cyan-400! hover:shadow-[0_0_0_6px_rgba(34,211,238,0.2)]!"
-              dateClassName="text-slate-900! hover:text-cyan-600!"
+              dateClassName="text-slate-900! dark:text-slate-300! hover:text-cyan-600!"
               contentStyle={{
-                background: "#f3f4f6",
+                background: isDark ? "#0f172a" : "#f3f4f6",
                 boxShadow: "none",
-                border: "1px solid rgba(0, 0, 0, 0.05)",
+                border: isDark
+                  ? "1px solid rgba(255, 255, 255, 0.12)"
+                  : "1px solid rgba(0, 0, 0, 0.6)",
                 textAlign: "left",
                 padding: "1.3rem 2rem",
               }}
@@ -44,20 +49,23 @@ export default function Experience() {
               date={item.duration}
               icon={item.icon}
               iconStyle={{
-                background: "white",
+                background: isDark ? "#0f172a" : "white",
+                color: isDark ? "#e2e8f0" : "#1f2937",
                 fontSize: "1.5rem",
-                border: "0.15rem solid white",
+                border: isDark
+                  ? "0.15rem solid rgba(255,255,255,0.2)"
+                  : "0.15rem solid white",
                 boxShadow: "0 10px 20px rgba(2, 6, 23, 0.08)",
               }}
             >
-              <h3 className="font-bold capitalize text-gray-700 transition-colors duration-300 hover:text-cyan-600">
+              <h3 className="font-bold capitalize text-gray-700 dark:text-slate-100 transition-colors duration-300 hover:text-cyan-600">
                 {item.title}
               </h3>
 
-              <p className="mt-1! font-normal! text-gray-700">
+              <p className="mt-1! font-normal! text-gray-700 dark:text-slate-300">
                 {item.description}
               </p>
-              <p className="mt-0! font-semibold italic text-gray-700 transition-colors duration-300 hover:text-cyan-600">
+              <p className="mt-0! font-semibold italic text-gray-700 dark:text-slate-300 transition-colors duration-300 hover:text-cyan-600">
                 {item.location}
               </p>
             </VerticalTimelineElement>
@@ -74,9 +82,12 @@ export default function Experience() {
             display: "none",
           }}
           iconStyle={{
-            background: "white",
+            background: isDark ? "#0f172a" : "white",
+            color: isDark ? "#e2e8f0" : "#1f2937",
             fontSize: "1.5rem",
-            border: "0.15rem solid white",
+            border: isDark
+              ? "0.15rem solid rgba(255,255,255,0.2)"
+              : "0.15rem solid white",
             boxShadow: "0 10px 20px rgba(2, 6, 23, 0.08)",
           }}
         />

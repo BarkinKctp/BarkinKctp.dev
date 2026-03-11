@@ -10,9 +10,9 @@ export default function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="group mt-2 bg-gray-900 text-white px-15 py-4 text-base flex items-center
+      className="group mt-2 bg-gray-900 dark:bg-cyan-800 text-white px-15 py-4 text-base flex items-center
         justify-center gap-2 rounded-full outline-none shadow-md
-        focus:scale-105 hover:scale-105 hover:bg-gray-950 hover:shadow-lg
+        focus:scale-105 hover:scale-105 hover:bg-gray-950 dark:hover:bg-cyan-700 hover:shadow-lg
         active:scale-110 transition disabled:scale-100 disabled:bg-opacity-65
         disabled:cursor-not-allowed self-center"
     >

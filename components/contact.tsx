@@ -30,7 +30,7 @@ export default function Contact() {
     >
       <SectionHeading>Contact Me</SectionHeading>
 
-      <p className="text-gray-700 -mt-6">
+      <p className="text-gray-700 dark:text-slate-300 -mt-6">
         Please contact me directly at{" "}
         <a className="underline" href="mailto:barkinkocatepe12@gmail.com">
           barkinkocatepe12@gmail.com
@@ -52,8 +52,8 @@ export default function Contact() {
         }}
       >
         <input
-          className="h-14 px-4 rounded-lg border border-black/70 bg-white shadow-sm
-          hover:shadow-md focus:shadow-md focus:border-gray-600 focus:outline-none
+          className="h-14 px-4 rounded-lg border border-black/60 dark:border-white/20 bg-white dark:bg-slate-900
+          text-gray-900 dark:text-slate-100 shadow-sm hover:shadow-md focus:shadow-md focus:border-gray-600 dark:focus:border-cyan-500 focus:outline-none
           transition-all"
           name="senderEmail"
           type="email"
@@ -62,8 +62,8 @@ export default function Contact() {
           placeholder="Your email"
         />
         <textarea
-          className="h-52 my-3 rounded-lg border border-black/70 bg-white shadow-sm p-4
-          hover:shadow-md focus:shadow-md focus:border-gray-600 focus:outline-none
+          className="h-52 my-3 rounded-lg border border-black/60 dark:border-white/20 bg-white dark:bg-slate-900
+          text-gray-900 dark:text-slate-100 shadow-sm p-4 hover:shadow-md focus:shadow-md focus:border-gray-600 dark:focus:border-cyan-500 focus:outline-none
           transition-all"
           name="message"
           placeholder="Your message"

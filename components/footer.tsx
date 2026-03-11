@@ -10,22 +10,22 @@ export default function Footer() {
   const [language, setLanguage] = useState<"en" | "tr">("en");
 
   return (
-    <footer className="bg-zinc-950 text-zinc-400 mt-15 sm:mt-22">
+    <footer className="bg-gray-700 text-zinc-300 dark:bg-zinc-950 dark:text-zinc-400 mt-15 sm:mt-22 border-t border-black/60 dark:border-white/20">
       <div className="max-w-6xl mx-auto px-6 py-8 sm:px-10 sm:py-9">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_0.6fr_1.4fr] lg:gap-2">
           {/* Brand */}
           <div className="space-y-2">
-            <p className="text-white font-semibold tracking-wide">
+            <p className="text-zinc-100 dark:text-white font-semibold tracking-wide">
               Barkın Kocatepe
             </p>
-            <p className="text-xs sm:text-sm text-zinc-500">
+            <p className="text-xs sm:text-sm text-zinc-300/90 dark:text-zinc-500">
               Cloud-focused software engineer building clean and scalable apps.
             </p>
           </div>
 
           {/* Navigate */}
           <div className="space-y-4">
-            <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-300">
+            <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-200 dark:text-zinc-300">
               NAVIGATE
             </p>
             <nav className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
@@ -43,7 +43,7 @@ export default function Footer() {
 
           {/* Pages */}
           <div className="space-y-4">
-            <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-300">
+            <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-200 dark:text-zinc-300">
               PAGES
             </p>
             <nav className="flex items-center gap-2 text-sm whitespace-nowrap">
@@ -61,7 +61,7 @@ export default function Footer() {
 
           {/* Connect */}
           <div className="space-y-4">
-            <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-300">
+            <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-200 dark:text-zinc-300">
               CONNECT
             </p>
             <div className="flex items-center gap-3">
@@ -97,9 +97,9 @@ export default function Footer() {
               </div>
 
               {/* Language Toggle */}
-              <div className="relative flex items-center bg-zinc-800/40 rounded-full p-0.5 text-xs gap-0 w-fit">
+              <div className="relative flex items-center bg-zinc-300/60 dark:bg-zinc-800/40 rounded-full p-0.5 text-xs gap-0 w-fit">
                 <div
-                  className="absolute left-0.5 top-0.5 bottom-0.5 w-11 bg-white rounded-full transition-all duration-300"
+                  className="absolute left-0.5 top-0.5 bottom-0.5 w-11 bg-white dark:bg-zinc-100 rounded-full transition-all duration-300"
                   style={{
                     transform:
                       language === "tr" ? "translateX(44px)" : "translateX(0)",
@@ -110,7 +110,7 @@ export default function Footer() {
                   className={`relative px-3.5 py-1 rounded-full font-medium transition-colors ${
                     language === "en"
                       ? "text-zinc-900"
-                      : "text-zinc-400 hover:text-white"
+                      : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
                   }`}
                 >
                   EN
@@ -120,7 +120,7 @@ export default function Footer() {
                   className={`relative px-3.5 py-1 rounded-full font-medium transition-colors ${
                     language === "tr"
                       ? "text-zinc-900"
-                      : "text-zinc-400 hover:text-white"
+                      : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
                   }`}
                 >
                   TR
@@ -130,7 +130,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-6 pt-4 flex flex-col gap-2 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="border-t border-black/60 dark:border-white/10 mt-6 pt-4 flex flex-col gap-2 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
           <span>&copy; 2026 Barkın Kocatepe. All rights reserved.</span>
           <span>
             Built with Next.js · TypeScript · Tailwind CSS · Framer Motion ·

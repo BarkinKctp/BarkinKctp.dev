@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export default function SectionDivider() {
   return (
     <motion.div
-      className="bg-gray-700 mb-[10rem] h-18 w-[0.42rem] hidden hover:bg-cyan-600 
+      className="bg-gray-700 dark:bg-slate-500 mb-[10rem] h-18 w-[0.42rem] hidden hover:bg-cyan-600
       hover:ring-4 hover:ring-cyan-400/10 transition rounded-full border-[0.02rem] sm:block "
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}

@@ -10,14 +10,14 @@ export default function AboutMeLayout({
     <div className="relative">
       {/* Green blob - right */}
       <div
-        className="bg-green-100 fixed top-[-6rem] 
+        className="bg-green-100 dark:bg-emerald-900/35 fixed top-[-6rem]
         -z-10 right-[-25rem] h-[45rem] w-[60rem] rounded-full 
         blur-[10rem] sm:w-[75rem] md:right-[-33rem]
         lg:right-[-28rem] xl:right-[-15rem] 2xl:right-[-5rem]"
       ></div>
       {/* Green blob - left */}
       <div
-        className="bg-emerald-50 fixed top-[-1rem] 
+        className="bg-emerald-50 dark:bg-teal-900/30 fixed top-[-1rem]
         -z-10 left-[-25rem] h-[45rem] w-[55rem] rounded-full 
         blur-[10rem] sm:w-[65rem] md:left-[-33rem]   
         lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem]"
@@ -25,7 +25,7 @@ export default function AboutMeLayout({
 
       {/* Soft lower tint for full-page coverage */}
       <div
-        className="bg-lime-100/25 fixed bottom-[-10rem] 
+        className="bg-lime-100/25 dark:bg-lime-900/20 fixed bottom-[-10rem]
         -z-10 left-[12%] h-[32rem] w-[32rem] rounded-full blur-[9rem]"
       ></div>
 

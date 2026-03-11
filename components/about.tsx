@@ -20,7 +20,7 @@ export default function About() {
     >
       <SectionHeading>About Me</SectionHeading>
       <motion.p
-        className="leading-8 text-gray-700"
+        className="leading-8 text-gray-700 dark:text-slate-300"
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -50,7 +50,7 @@ export default function About() {
         <br />I also enjoy{" "}
         <span className="font-medium">learning new languages</span> and
         exploring new places around the world.
-        <span className="italic text-gray-800 hover:text-cyan-600 transition">
+        <span className="italic text-gray-800 dark:text-slate-200 hover:text-cyan-600 transition">
           <br />
           <br />
           I'm always curious and eager to learn something new.
@@ -67,10 +67,10 @@ export default function About() {
         <Link
           href="/pages/about-me"
           className="group inline-flex items-center gap-3
-          bg-gradient-to-r from-green-400 to-emerald-400
+          bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-700 dark:to-cyan-700
           text-white/92 px-8 py-3 rounded-xl
           font-semibold shadow-lg border 
-          border-b-4 border-gray-700 hover:border-gray-900
+          border-b-4 border-gray-700 dark:border-slate-900 hover:border-gray-900
           hover:scale-105 hover:shadow-xl
           transition hover:text-white"
           style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}

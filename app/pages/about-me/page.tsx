@@ -26,7 +26,7 @@ export default function AboutMePage() {
       </motion.div>
 
       <motion.p
-        className="leading-8 text-gray-800 mb-12 text-center max-w-[40rem] -mt-4"
+        className="leading-8 text-gray-800 dark:text-slate-300 mb-12 text-center max-w-[40rem] -mt-4"
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
@@ -39,18 +39,18 @@ export default function AboutMePage() {
 
       {/* About Me Bio */}
       <motion.div
-        className="bg-white border-2 border-black rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
+        className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
       >
         <div className="flex items-center gap-3 mb-4 group cursor-default">
           <FaUser className="text-emerald-500 text-xl group-hover:scale-110 transition duration-300" />
-          <h2 className="text-2xl font-bold text-gray-800 group-hover:text-emerald-600 transition duration-300">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-slate-100 group-hover:text-emerald-600 transition duration-300">
             Who I Am
           </h2>
         </div>
-        <p className="leading-8 text-gray-700 border-l-4 border-emerald-400 hover:border-emerald-600 pl-4 transition-colors duration-300">
+        <p className="leading-8 text-gray-700 dark:text-slate-300 border-l-4 border-emerald-400 hover:border-emerald-600 pl-4 transition-colors duration-300">
           I'm currently a{" "}
           <span className="font-bold">
             Third Year Software Engineering student
@@ -68,7 +68,7 @@ export default function AboutMePage() {
         </p>
 
         <p
-          className="leading-8 text-gray-700 mt-4 border-l-4 border-sky-400
+          className="leading-8 text-gray-700 dark:text-slate-300 mt-4 border-l-4 border-sky-400
          hover:border-sky-600 pl-4 transition-colors duration-300"
         >
           Outside of technology, I enjoy{" "}
@@ -90,7 +90,7 @@ export default function AboutMePage() {
 
       {/* Places Visited */}
       <motion.div
-        className="bg-white border-2 border-black rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
+        className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -98,7 +98,7 @@ export default function AboutMePage() {
       >
         <div className="flex items-center gap-3 mb-6 group cursor-default">
           <FaMapMarkerAlt className="text-teal-500 text-xl group-hover:scale-110 transition duration-300" />
-          <h2 className="text-2xl font-bold text-gray-800 group-hover:text-teal-600 transition duration-300">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-slate-100 group-hover:text-teal-600 transition duration-300">
             Places I&apos;ve Visited
           </h2>
         </div>
@@ -106,13 +106,13 @@ export default function AboutMePage() {
           {placesVisited.map((place, index) => (
             <motion.div
               key={index}
-              className="group rounded-lg overflow-hidden border-2 border-black/80 hover:shadow-lg transition"
+              className="group rounded-lg overflow-hidden border-2 border-black/60 dark:border-white/20 hover:shadow-lg transition"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative h-[10rem]  bg-gray-100 overflow-hidden">
+              <div className="relative h-[10rem] bg-gray-100 dark:bg-slate-800 overflow-hidden">
                 <Image
                   src={place.image}
                   alt={place.name}
@@ -121,8 +121,10 @@ export default function AboutMePage() {
                 />
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-gray-800">{place.name}</h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <h3 className="font-semibold text-gray-800 dark:text-slate-100">
+                  {place.name}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">
                   {place.description}
                 </p>
               </div>
@@ -133,7 +135,7 @@ export default function AboutMePage() {
 
       {/* Favorite Books */}
       <motion.div
-        className="bg-white border-2 border-black rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
+        className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -141,7 +143,7 @@ export default function AboutMePage() {
       >
         <div className="flex items-center gap-3 mb-6 group cursor-default">
           <FaBook className="text-emerald-600 text-xl group-hover:scale-110 transition duration-300" />
-          <h2 className="text-2xl font-bold text-gray-800 group-hover:text-emerald-600 transition duration-300">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-slate-100 group-hover:text-emerald-600 transition duration-300">
             Books I&apos;ve Read
           </h2>
         </div>
@@ -149,13 +151,13 @@ export default function AboutMePage() {
           {favoriteBooks.map((book, index) => (
             <motion.div
               key={index}
-              className="group rounded-lg overflow-hidden border-2 border-black/80 hover:shadow-lg transition"
+              className="group rounded-lg overflow-hidden border-2 border-black/60 dark:border-white/20 hover:shadow-lg transition"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative h-[8rem] bg-gray-100 overflow-hidden">
+              <div className="relative h-[8rem] bg-gray-100 dark:bg-slate-800 overflow-hidden">
                 <Image
                   src={book.image}
                   alt={book.title}
@@ -164,10 +166,12 @@ export default function AboutMePage() {
                 />
               </div>
               <div className="p-3">
-                <h3 className="font-semibold text-sm text-gray-800">
+                <h3 className="font-semibold text-sm text-gray-800 dark:text-slate-100">
                   {book.title}
                 </h3>
-                <p className="text-xs text-gray-600 mt-1">{book.author}</p>
+                <p className="text-xs text-gray-600 dark:text-slate-400 mt-1">
+                  {book.author}
+                </p>
               </div>
             </motion.div>
           ))}
@@ -176,7 +180,7 @@ export default function AboutMePage() {
 
       {/* Favorite Music */}
       <motion.div
-        className="bg-white border-2 border-black rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
+        className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-8 sm:p-10 max-w-[65rem] w-full mb-10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -184,7 +188,7 @@ export default function AboutMePage() {
       >
         <div className="flex items-center gap-3 mb-6 group cursor-default">
           <FaMusic className="text-green-500 text-xl group-hover:scale-110 transition duration-300" />
-          <h2 className="text-2xl font-bold text-gray-800 group-hover:text-green-600 transition duration-300">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-slate-100 group-hover:text-green-600 transition duration-300">
             Favorite Music
           </h2>
         </div>
@@ -192,13 +196,13 @@ export default function AboutMePage() {
           {favoriteMusic.map((track, index) => (
             <motion.div
               key={index}
-              className="group rounded-lg overflow-hidden border-2 border-black/80 hover:shadow-lg transition"
+              className="group rounded-lg overflow-hidden border-2 border-black/60 dark:border-white/20 hover:shadow-lg transition"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="relative h-[8rem] bg-gray-100 overflow-hidden">
+              <div className="relative h-[8rem] bg-gray-100 dark:bg-slate-800 overflow-hidden">
                 <Image
                   src={track.cover}
                   alt={track.title}
@@ -207,10 +211,12 @@ export default function AboutMePage() {
                 />
               </div>
               <div className="p-3">
-                <h3 className="font-semibold text-sm text-gray-800">
+                <h3 className="font-semibold text-sm text-gray-800 dark:text-slate-100">
                   {track.title}
                 </h3>
-                <p className="text-xs text-gray-600 mt-1">{track.artist}</p>
+                <p className="text-xs text-gray-600 dark:text-slate-400 mt-1">
+                  {track.artist}
+                </p>
               </div>
             </motion.div>
           ))}
@@ -227,10 +233,10 @@ export default function AboutMePage() {
       >
         <Link
           href="/#about"
-          className="group bg-gray-900 text-white px-7
+          className="group bg-gray-900 dark:bg-cyan-600 text-white px-7
             py-3 flex items-center gap-2
             rounded-full outline-none focus:outline-none
-            focus:scale-105 hover:scale-105 hover:bg-gray-950
+            focus:scale-105 hover:scale-105 hover:bg-gray-950 dark:hover:bg-cyan-500
             active:scale-110 transition"
         >
           <BsArrowLeft className="opacity-70 group-hover:-translate-x-1 transition" />

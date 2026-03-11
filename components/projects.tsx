@@ -27,10 +27,10 @@ export default function Projects() {
         <Link
           href="/pages/projects"
           className="group inline-flex items-center gap-3
-            bg-gradient-to-r from-sky-500 to-blue-600
+            bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-cyan-700 dark:to-blue-800
             text-white/88 px-8 py-3 rounded-xl
             font-semibold shadow-lg border 
-            border-b-4 border-gray-700 hover:border-gray-900
+            border-b-4 border-gray-700 dark:border-slate-900 hover:border-gray-900
             hover:scale-110 hover:shadow-xl
             transition hover:text-white"
           style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}

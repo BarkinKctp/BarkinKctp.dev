@@ -24,7 +24,7 @@ export default function ProjectsPage() {
         <SectionHeading>My Projects</SectionHeading>
       </motion.div>
       <motion.p
-        className="leading-8 text-gray-700 mb-12 text-center max-w-[40rem] -mt-4"
+        className="leading-8 text-gray-700 dark:text-slate-300 mb-12 text-center max-w-[40rem] -mt-4"
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -37,7 +37,7 @@ export default function ProjectsPage() {
       </motion.p>
 
       <motion.div
-        className="bg-gray-900 border-2 border-black rounded-lg p-8 sm:p-10 max-w-[75rem] w-full"
+        className="bg-gray-900 dark:bg-slate-950 border-2 border-black/60 dark:border-white/10 rounded-lg p-8 sm:p-10 max-w-[75rem] w-full"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.175 }}
@@ -77,10 +77,10 @@ export default function ProjectsPage() {
       >
         <Link
           href="/#projects"
-          className="group bg-gray-900 text-white px-7
+          className="group bg-gray-900 dark:bg-cyan-600 text-white px-7
             py-3 flex items-center gap-2
             rounded-full outline-none focus:outline-none
-            focus:scale-105 hover:scale-105 hover:bg-gray-950
+            focus:scale-105 hover:scale-105 hover:bg-gray-950 dark:hover:bg-cyan-500
             active:scale-110 transition"
         >
           <BsArrowLeft className="opacity-70 group-hover:-translate-x-1 transition" />

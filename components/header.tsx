@@ -11,8 +11,8 @@ export default function Header() {
     <header className="z-999 relative">
       <motion.div
         className="fixed top-0 left-1/2 -translate-x-1/2 flex items-center justify-between
-        h-[5rem] w-full rounded-none border border-white/40 
-        bg-white/95 shadow-lg shadow-black/[0.35] 
+        h-[5rem] w-full rounded-none border border-black/60 dark:border-white/10
+        bg-white/95 dark:bg-slate-900/90 shadow-lg shadow-black/[0.35]
         pl-12 pr-12 sm:top-[1.5rem] sm:h-[3.1rem] 
         sm:w-[68rem] sm:rounded-full sm:pl-17 sm:pr-17"
         initial={{ y: -100, opacity: 0 }}
@@ -20,7 +20,7 @@ export default function Header() {
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <motion.span
-          className="flex text-[1.2rem] font-bold text-gray-700
+          className="flex text-[1.2rem] font-bold text-gray-700 dark:text-slate-100
           hover:text-cyan-600 transition sm:h-[3.3rem]
           py-[0.6,rem] px-[0.6rem] sm:text-[1.3rem] sm:py-[0.6rem] sm:px-[1.25rem]"
           initial={{ y: -25, opacity: 0 }}
@@ -34,7 +34,7 @@ export default function Header() {
           <ul
             className="flex flex-wrap items-center 
             justify-center gap-y-1 text-[1.05rem]
-            font-medium text-gray-700 sm:flex-nowrap sm:gap-1"
+            font-medium text-gray-700 dark:text-slate-300 sm:flex-nowrap sm:gap-1"
           >
             {links.map((link) => (
               <motion.li
@@ -49,7 +49,8 @@ export default function Header() {
                     "flex w-full items-center justify-center px-[0.75rem] py-[0.75rem] \
                      hover:text-cyan-600 transition",
                     {
-                      "text-gray-950": activeSection === link.name,
+                      "text-gray-950 dark:text-white":
+                        activeSection === link.name,
                     },
                   )}
                   href={`/${link.hash}`}
@@ -63,7 +64,7 @@ export default function Header() {
                       layoutId="underline"
                       transition={{
                         duration: 0.24,
-                        delay: 0.305,
+                        delay: 0.35,
                         ease: "easeInOut",
                       }}
                     ></motion.span>

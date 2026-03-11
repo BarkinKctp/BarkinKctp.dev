@@ -32,13 +32,13 @@ export default function Skills() {
       <SectionHeading>My skills</SectionHeading>
       <ul
         className="flex flex-wrap justify-center 
-      gap-2 text-lg text-gray-800"
+      gap-2 text-lg text-gray-800 dark:text-slate-200"
       >
         {skills.map((skill, index) => (
           <motion.li
-            className="bg-white border border-black rounded-xl px-5 py-3
-             text-gray-700 hover:text-cyan-600
-            hover:bg-gray-100 hover:scale-105 hover:ring-4 hover:ring-cyan-400/30 duration-300 cursor-default transition "
+            className="bg-white dark:bg-slate-900 border border-black/60 dark:border-white/20 rounded-xl px-5 py-3
+             text-gray-700 dark:text-slate-200 hover:text-cyan-600
+            hover:bg-gray-100 dark:hover:bg-slate-800 hover:scale-105 hover:ring-4 hover:ring-cyan-400/30 duration-300 cursor-default transition"
             key={index}
             variants={fadeInAnimationVariants}
             initial="initial"
