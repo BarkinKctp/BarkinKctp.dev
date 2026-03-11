@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Barkin Kocatepe - Portfolio
+
+Hey there! Welcome to my portfolio. This project is where I share my work, experience, and a bit of my journey in cloud and software engineering.
+
+Feel free to use this repo as inspiration (or a boilerplate) for your own portfolio.
+
+## Overview
+
+- `/` - Home page with intro, skills, projects, experience, and contact sections.
+- `/pages/about-me` - A dedicated page about me.
+- `/pages/projects` - A dedicated page for selected projects.
+- `#home`, `#about`, `#projects`, `#experience`, `#skills`, `#contact` - In-page section navigation from the header.
+
+## Tech Stack
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Resend (contact form emails)
 
 ## Getting Started
 
-First, run the development server:
+Run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/` - App Router pages, layouts, and contexts
+- `components/` - Reusable UI sections and shared components
+- `lib/` - Static data, hooks, and utility files
+- `actions/` - Server actions (email sending)
+- `email/` - Contact email templates
+- `public/` - Static assets (images and media)
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contact
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+If you have questions or want to connect:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Email: barkinkocatepe12@gmail.com
+- LinkedIn: https://www.linkedin.com/in/barkin-kocatepe-6a43922a2/
+- GitHub: https://github.com/BarkinKctp

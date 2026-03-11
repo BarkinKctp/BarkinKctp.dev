@@ -66,7 +66,7 @@ export const projects = [
     "ARM Templates",
     "Docker",
 ],
-  imageUrl: "/CI-CD-test-project.png"
+  imageUrl: "/projects/CI-CD-test-project.png"
 },
     /*
     {
