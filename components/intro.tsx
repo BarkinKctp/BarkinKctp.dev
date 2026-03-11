@@ -6,9 +6,12 @@ import { HiDownload } from "react-icons/hi";
 import { BsArrowRight, BsLinkedin } from "react-icons/bs";
 import { FaGithubSquare } from "react-icons/fa";
 import { useSectionInView } from "@/lib/hooks";
+import { Github, LinkedIn } from "@/lib/links";
+import { useActiveSection } from "@/app/context/active-section-context";
 
 export default function Intro() {
   const { ref } = useSectionInView("Home", 0.5);
+  const { setActiveSection } = useActiveSection();
   return (
     <section
       id="home"
@@ -29,7 +32,6 @@ export default function Intro() {
               alt="Barkin Portrait"
               width={192}
               height={192}
-              quality={95}
               priority={true}
               className="h-[8rem] w-[8rem] rounded-full hover:border-cyan-500 hover:shadow-2xl
               transition object-cover border-[0.24rem] border-white shadow-xl shadow-black/20 transition"
@@ -87,6 +89,7 @@ export default function Intro() {
         rounded-full outline-none focus:outline-none 
         focus:scale-105 hover:scale-105 hover:bg-gray-950
         active:scale-110 transition"
+          onClick={() => setActiveSection("Contact")}
         >
           Contact me here{" "}
           <BsArrowRight className="opacity-70 group-hover:translate-x-1 transition" />
@@ -106,7 +109,7 @@ export default function Intro() {
         flex items-center gap-[0.5rem] text-[1.3rem] rounded-full 
         border border-black/30 hover:bg-gray-200 hover:text-blue-700
         hover:scale-110 focus:scale-110 active:scale-115 transition"
-          href="https://www.linkedin.com/in/barkin-kocatepe-6a43922a2/"
+          href={LinkedIn}
           target="_blank"
         >
           <BsLinkedin className="opacity-100 " />{" "}
@@ -116,7 +119,7 @@ export default function Intro() {
         flex items-center gap-[0.5rem] text-[1.3rem] hover:text-gray-950
         rounded-full border border-black/30 hover:bg-gray-200
         hover:scale-110 focus:scale-110 active:scale-115 transition"
-          href="https://github.com/BarkinKctp"
+          href={Github}
           target="_blank"
         >
           <FaGithubSquare className="opacity-100 " />{" "}

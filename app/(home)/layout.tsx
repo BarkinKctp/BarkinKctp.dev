@@ -4,7 +4,7 @@ export default function HomeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="relative min-h-[5000px]">
+    <div className="relative">
       <div
         className="bg-indigo-200 absolute top-[-6rem] 
         -z-10 right-[-25rem] h-[45rem] w-[60rem] rounded-full 

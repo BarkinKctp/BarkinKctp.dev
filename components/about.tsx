@@ -12,7 +12,7 @@ export default function About() {
     <motion.section
       id="about"
       ref={ref}
-      className="mb-[10rem] max-w-[50rem] text-center 
+      className="mb-[7rem] max-w-[50rem] text-center 
       leading-6 sm:mb-[10rem] scroll-mt-40"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}

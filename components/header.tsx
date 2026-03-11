@@ -62,8 +62,8 @@ export default function Header() {
                   bottom-0.25 left-0 w-full h-[2.5px] rounded-full"
                       layoutId="underline"
                       transition={{
-                        duration: 0.3,
-                        delay: 0.2,
+                        duration: 0.24,
+                        delay: 0.305,
                         ease: "easeInOut",
                       }}
                     ></motion.span>

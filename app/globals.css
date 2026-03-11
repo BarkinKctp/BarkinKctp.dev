@@ -5,6 +5,8 @@ html {
   --line-color: #e5e7eb;
 }
 
+
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

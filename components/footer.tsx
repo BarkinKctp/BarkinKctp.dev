@@ -1,18 +1,18 @@
+"use client";
+
+import { useState } from "react";
 import { links } from "@/lib/data";
 import { BsLinkedin, BsGithub } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
-import { LINKEDIN, GITHUB } from "@/lib/links";
-
-const pages = [
-  { label: "About Me", href: "/pages/about-me" },
-  { label: "Projects", href: "/pages/projects" },
-];
+import { LinkedIn, Github, pages } from "@/lib/links";
 
 export default function Footer() {
+  const [language, setLanguage] = useState<"en" | "tr">("en");
+
   return (
-    <footer className="bg-zinc-950 text-zinc-400 mt-20">
+    <footer className="bg-zinc-950 text-zinc-400 mt-15 sm:mt-22">
       <div className="max-w-6xl mx-auto px-6 py-8 sm:px-10 sm:py-9">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_0.6fr_1.4fr] lg:gap-2">
           {/* Brand */}
           <div className="space-y-2">
             <p className="text-white font-semibold tracking-wide">
@@ -46,7 +46,7 @@ export default function Footer() {
             <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-300">
               PAGES
             </p>
-            <nav className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
+            <nav className="flex items-center gap-2 text-sm whitespace-nowrap">
               {pages.map((p) => (
                 <a
                   key={p.href}
@@ -64,34 +64,68 @@ export default function Footer() {
             <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-300">
               CONNECT
             </p>
-            <div className="flex items-center gap-4 text-base">
-              <a
-                href={LINKEDIN}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors duration-150"
-                aria-label="LinkedIn"
-              >
-                <BsLinkedin />
-              </a>
-              <a
-                href={GITHUB}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors duration-150"
-                aria-label="GitHub"
-              >
-                <BsGithub />
-              </a>
-              <a
-                href="mailto:barkinkocatepe12@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors duration-150"
-                aria-label="Email"
-              >
-                <MdEmail />
-              </a>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-5 text-sm">
+                <a
+                  href={LinkedIn}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors duration-150"
+                  aria-label="LinkedIn"
+                >
+                  <span>LinkedIn</span>
+                  <BsLinkedin />
+                </a>
+                <a
+                  href={Github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors duration-150"
+                  aria-label="GitHub"
+                >
+                  <span>GitHub</span>
+                  <BsGithub />
+                </a>
+                <a
+                  href="mailto:barkinkocatepe12@gmail.com"
+                  className="flex items-center gap-1.5 hover:text-white transition-colors duration-150"
+                  aria-label="Email"
+                >
+                  <span>Mail</span>
+                  <MdEmail />
+                </a>
+              </div>
+
+              {/* Language Toggle */}
+              <div className="relative flex items-center bg-zinc-800/40 rounded-full p-0.5 text-xs gap-0 w-fit">
+                <div
+                  className="absolute left-0.5 top-0.5 bottom-0.5 w-11 bg-white rounded-full transition-all duration-300"
+                  style={{
+                    transform:
+                      language === "tr" ? "translateX(44px)" : "translateX(0)",
+                  }}
+                />
+                <button
+                  onClick={() => setLanguage("en")}
+                  className={`relative px-3.5 py-1 rounded-full font-medium transition-colors ${
+                    language === "en"
+                      ? "text-zinc-900"
+                      : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  EN
+                </button>
+                <button
+                  onClick={() => setLanguage("tr")}
+                  className={`relative px-3.5 py-1 rounded-full font-medium transition-colors ${
+                    language === "tr"
+                      ? "text-zinc-900"
+                      : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  TR
+                </button>
+              </div>
             </div>
           </div>
         </div>

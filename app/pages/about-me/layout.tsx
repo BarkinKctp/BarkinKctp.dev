@@ -31,7 +31,7 @@ export default function AboutMeLayout({
 
       {/* Background emojis */}
       <motion.div
-        className="fixed top-[16rem] left-[6%] -z-[5] opacity-[0.14] pointer-events-none text-[4rem]"
+        className="fixed top-[14rem] left-[10%] -z-[5] opacity-[0.14] pointer-events-none text-[4rem]"
         animate={{ y: [0, -12, 0], rotate: [0, 2, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       >

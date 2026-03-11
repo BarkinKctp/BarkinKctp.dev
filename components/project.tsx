@@ -22,7 +22,7 @@ export default function Project({
   const opacityProg = useTransform(scrollYProgress, [0, 1], [0.75, 1]);
   return (
     <motion.div
-      className="group mb-[10rem] sm:mb-[10rem] last:mb-0 "
+      className="group mb-[7rem] sm:mb-[10rem] last:mb-0 "
       ref={ref}
       style={{
         scale: scaleProg,
