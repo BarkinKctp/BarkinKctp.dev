@@ -26,8 +26,8 @@ export default function Skills() {
     <section
       id="skills"
       ref={ref}
-      className="mb-[8rem] max-w-[53rem] 
-      scroll-mt-40 text-center sm:mb-32"
+      className="mb-[9rem] max-w-[53rem] 
+      scroll-mt-40 text-center sm:mb-36"
     >
       <SectionHeading>My skills</SectionHeading>
       <ul
@@ -37,7 +37,7 @@ export default function Skills() {
         {skills.map((skill, index) => (
           <motion.li
             className="bg-white border border-black rounded-xl px-5 py-3
-             text-gray-700 hover:text-cyan-600 dark:bg-white/10 dark:text-white/80 
+             text-gray-700 hover:text-cyan-600
             hover:bg-gray-100 hover:scale-105 hover:ring-4 hover:ring-cyan-400/30 duration-300 cursor-default transition "
             key={index}
             variants={fadeInAnimationVariants}
