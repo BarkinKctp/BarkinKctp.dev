@@ -28,7 +28,7 @@ export default function Intro() {
             whileHover={{ scale: 1.08 }}
           >
             <Image
-              src="/barkin-portrait.jpeg"
+              src="/bg-images/barkin-portrait.jpeg"
               alt="Barkin Portrait"
               width={192}
               height={192}
