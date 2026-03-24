@@ -8,8 +8,6 @@ My personal portfolio. Built to show my work and document what I've been learnin
 - `/pages/about-me` — More about me
 - `/pages/projects` — Selected projects
 
-)
-
 ## Running locally
 ```bash
 npm install
