@@ -62,11 +62,26 @@ export const projects = [
     "Python",
     "GitHub Actions",
     "CI/CD",
+    "Jenkins",
     "Azure",
     "ARM Templates",
     "Docker",
 ],
   imageUrl: "/projects/CI-CD-test-project.png"
+},
+    {
+  title: "Terraform AWS IaC",
+  description:
+    "Infrastructure as Code project deploying a full AWS stack — EC2 instances, Application Load Balancer, RDS PostgreSQL, and S3 — with modular Terraform and GitHub Actions CI/CD via AWS OIDC.",
+  link: "https://github.com/BarkinKctp/Terraform-AWS-IAC",
+  tags: [
+    "Terraform",
+    "AWS",
+    "HCL",
+    "GitHub Actions",
+    "IaC",
+],
+  imageUrl: "/projects/Terraform-AWS-IAC.png"
 },
     /*
     {
@@ -87,16 +102,16 @@ export const skills = [
   "Docker",
   "Kubernetes",
   "Terraform",
+  "HCL",
+  "Ansible",
+  "Jenkins",
   "Python",
   "C#",
   ".NET",
   "Bash",
   "React",
-  "TypeScript",
-  "Next.js",
-  "Node.js",
-  "Tailwind CSS",
   "PostgreSQL",
+  "MongoDB",
   "Git",
   "Linux",
   "GitHub Actions",
