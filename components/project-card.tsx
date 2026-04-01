@@ -38,7 +38,7 @@ export default function ProjectCard({
             src={imageUrl}
             fill
             alt={title}
-            className="object-cover object-top transition-transform duration-300 will-change-transform
+            className="object-cover object-center transition-transform duration-300 will-change-transform
             group-hover:scale-[1.06]
             group-hover:translate-x-1
             group-hover:translate-y-1
