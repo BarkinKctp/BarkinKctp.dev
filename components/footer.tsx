@@ -12,7 +12,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-700 text-zinc-300 dark:bg-zinc-950 dark:text-zinc-400 mt-15 sm:mt-22 border-t border-black/60 dark:border-white/20">
       <div className="max-w-6xl mx-auto px-6 py-8 sm:px-10 sm:py-9">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_0.6fr_1.4fr] lg:gap-2">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_0.6fr_1.4fr] lg:gap-2 overflow-hidden">
           {/* Brand */}
           <div className="space-y-2">
             <p className="text-zinc-100 dark:text-white font-semibold tracking-wide">
@@ -46,7 +46,7 @@ export default function Footer() {
             <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-200 dark:text-zinc-300">
               PAGES
             </p>
-            <nav className="flex items-center gap-2 text-sm whitespace-nowrap">
+            <nav className="flex flex-wrap items-center gap-2 text-sm">
               {pages.map((p) => (
                 <a
                   key={p.href}
@@ -64,7 +64,7 @@ export default function Footer() {
             <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-200 dark:text-zinc-300">
               CONNECT
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <div className="flex items-center gap-5 text-sm">
                 <a
                   href={LinkedIn}
