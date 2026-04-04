@@ -64,7 +64,7 @@ export default function Footer() {
             <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-200 dark:text-zinc-300">
               CONNECT
             </p>
-            <div className="flex items-center gap-3 sm:flex-row sm:items-center">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <div className="flex items-center gap-5 text-sm">
                 <a
                   href={LinkedIn}
