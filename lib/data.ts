@@ -81,6 +81,19 @@ export const projects = [
 ],
   imageUrl: "/projects/Terraform-AWS-IAC.png"
 },
+   {
+  title: "Kubernetes Lab",
+  description:
+    "Kubernetes learning and experimentation lab exploring container orchestration, Helm package management, and cloud-native deployments.",
+  link: "https://github.com/BarkinKctp/Kubernetes-Lab",
+  tags: [
+    "Kubernetes",
+    "Helm",
+    "Docker",
+    "Container Orchestration",
+],
+  imageUrl: "/projects/Kubernetes-Lab.png"
+},
     /*
     {
         
