@@ -78,7 +78,7 @@ export default function Skills() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.3 }}
+        transition={{ delay: 1.55 }}
       >
         <a
           href="https://www.linkedin.com/in/barkin-kocatepe-6a43922a2/details/certifications/"
