@@ -22,8 +22,8 @@ export default function Header() {
         className="fixed top-0 left-1/2 -translate-x-1/2 flex items-center justify-between
         h-[5rem] w-full rounded-none border border-black/60 dark:border-white/10
         bg-white/95 dark:bg-slate-900/90 shadow-lg shadow-black/[0.35]
-        pl-12 pr-12 sm:top-[1.5rem] sm:h-[3.1rem] 
-        sm:w-[68rem] sm:rounded-full sm:pl-17 sm:pr-17"
+        pl-14 pr-12 sm:top-[1.5rem] sm:h-[3.1rem] 
+        sm:w-[68rem] sm:rounded-full sm:pl-20 sm:pr-10"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -97,6 +97,21 @@ export default function Header() {
                 </Link>
               </motion.li>
             ))}
+            <motion.li
+              className="h-3/4 flex relative items-center justify-center ml-1"
+              initial={{ y: -25, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.3, ease: "easeInOut", delay: 0.25 }}
+            >
+              <Link
+                href="/pages/blog"
+                className="flex w-full items-center justify-center px-[0.65rem] py-[0.65rem] 
+                text-gray-900 dark:text-slate-100 rounded-full 
+                hover:text-cyan-600 transition font-medium text-[1.025rem]"
+              >
+                My Blog
+              </Link>
+            </motion.li>
           </ul>
         </nav>
       </motion.div>

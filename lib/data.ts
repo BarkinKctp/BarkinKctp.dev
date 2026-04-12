@@ -5,30 +5,30 @@ import { FaMicrosoft } from "react-icons/fa";
 
 
 export const links = [
-    {
-        name: "Home",
-        hash: "#home",
-    },
-    {
-        name: "About",
-        hash: "#about",
-    },
-    {
-        name: "Projects",
-        hash: "#projects",
-    },
-    {
-        name: "Experience",
-        hash: "#experience",
-    },
-    {
-        name: "Skills",
-        hash: "#skills",
-    },
-    {
-        name: "Contact",
-        hash: "#contact",
-    },
+  {
+    name: "Home",
+    hash: "#home",
+  },
+  {
+    name: "About",
+    hash: "#about",
+  },
+  {
+    name: "Projects",
+    hash: "#projects",
+  },
+  {
+    name: "Experience",
+    hash: "#experience",
+  },
+  {
+    name: "Skills",
+    hash: "#skills",
+  },
+  {
+    name: "Contact",
+    hash: "#contact",
+  },
 ] as const;
 
 export const experiences = [
@@ -42,7 +42,7 @@ export const experiences = [
     duration: "Dec 2023 - Feb 2025",
   },
   {
-    company: "Microsoft", 
+    company: "Microsoft",
     title: "Software Engineer Intern",
     location: "Istanbul, Turkey",
     description:
@@ -53,57 +53,58 @@ export const experiences = [
 ] as const;
 
 export const projects = [
-    {
-  title: "CI/CD Pipeline Testing",
-  description:
-    "A project for experimenting with secure CI/CD workflows using GitHub Actions, Azure OIDC authentication, and automated cloud deployment.",
-  link: "https://github.com/BarkinKctp/CI-CD-Pipeline-Testing",
-  tags: [
-    "Python",
-    "GitHub Actions",
-    "Jenkins",
-    "Azure",
-    "ARM Templates",
-    "Docker",
-],
-  imageUrl: "/projects/CI-CD-test-project.png"
-},
-    {
-  title: "Terraform AWS IaC",
-  description:
-    "IaC project deploying a modular AWS stack (EC2, ALB, RDS, S3) using Terraform with GitHub Actions CI/CD via OIDC.",
-  link: "https://github.com/BarkinKctp/Terraform-AWS-IAC",
-  tags: [
-    "Terraform",
-    "AWS",
-    "GitHub Actions",
-    "IaC",
-],
-  imageUrl: "/projects/Terraform-AWS-IAC.png"
-},
-   {
-  title: "Kubernetes Lab",
-  description:
-    "Kubernetes learning and experimentation lab exploring container orchestration, Helm package management, and cloud-native deployments.",
-  link: "https://github.com/BarkinKctp/Kubernetes-Lab",
-  tags: [
-    "Kubernetes",
-    "Helm",
-    "Docker",
-    "Container Orchestration",
-],
-  imageUrl: "/projects/Kubernetes-Lab.png"
-},
-    /*
-    {
-        
-        title: "Project 2",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        link: "",
-        tags: ["React", "TypeScript"],
-        imageUrl: "",
-    },
-    /*/
+  {
+    title: "CI/CD Pipeline Testing",
+    description:
+      "A project for experimenting with secure CI/CD workflows using GitHub Actions, Azure OIDC authentication, and automated cloud deployment.",
+    link: "https://github.com/BarkinKctp/CI-CD-Pipeline-Testing",
+    tags: [
+      "Python",
+      "GitHub Actions",
+      "Jenkins",
+      "Azure",
+      "ARM Templates",
+      "Docker",
+    ],
+    imageUrl: "/projects/CI-CD-test-project.png"
+  },
+  {
+    title: "Terraform AWS IaC",
+    description:
+      "IaC project deploying and managing a AWS stack (EC2, ALB, RDS, S3) using Terraform with GitHub Actions CI/CD via AWS OIDC.",
+    link: "https://github.com/BarkinKctp/Terraform-AWS-IAC",
+    tags: [
+      "Terraform",
+      "AWS",
+      "GitHub Actions",
+      "IaC",
+    ],
+    imageUrl: "/projects/Terraform-AWS-IAC.png"
+  },
+  {
+    title: "Kubernetes Lab",
+    description:
+      "Kubernetes experimentation lab exploring container orchestration, Helm package management and automated deployments with ArgoCD.",
+    link: "https://github.com/BarkinKctp/Kubernetes-Lab",
+    tags: [
+      "Kubernetes",
+      "Helm",
+      "Docker",
+      "Container Orchestration",
+      "ArgoCD",
+    ],
+    imageUrl: "/projects/Kubernetes-Lab.png"
+  },
+  /*
+  {
+      
+      title: "Project 2",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      link: "",
+      tags: ["React", "TypeScript"],
+      imageUrl: "",
+  },
+  /*/
 ] as const;
 
 export const skills = [

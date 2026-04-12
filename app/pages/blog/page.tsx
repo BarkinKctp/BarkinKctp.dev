@@ -1,14 +1,11 @@
 "use client";
 
-import { projects } from "@/lib/data";
-import ProjectCard from "@/components/project-card";
 import SectionHeading from "@/components/section-heading";
-import GitHubStats from "@/components/github-stats";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 import { motion } from "framer-motion";
 
-export default function ProjectsPage() {
+export default function BlogPage() {
   return (
     <motion.main
       className="flex flex-col items-center
@@ -22,8 +19,9 @@ export default function ProjectsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <SectionHeading>My Projects</SectionHeading>
+        <SectionHeading>My Blog</SectionHeading>
       </motion.div>
+
       <motion.p
         className="leading-8 text-gray-700 dark:text-slate-300 mb-12 text-center max-w-[40rem] -mt-4"
         initial={{ opacity: 0, y: 25 }}
@@ -31,45 +29,21 @@ export default function ProjectsPage() {
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
       >
-        Here is a collection of all the{" "}
-        <span className="font-bold">projects</span> I have worked on. Each one
-        reflects my passion for <span className="underline">building</span> and{" "}
-        <span className="underline">learning new technologies</span>.
+        Coming soon! I'll be sharing my thoughts on <span className="font-bold">DevOps</span>, <span className="font-bold">cloud architecture</span>, and 
+        <span className="underline"> technology advancements</span>.
       </motion.p>
 
       <motion.div
-        className="bg-gray-900 dark:bg-slate-950 border-2 border-black/60 dark:border-white/10 rounded-lg p-8 sm:p-10 max-w-[75rem] w-full"
+        className="bg-gray-900 dark:bg-slate-950 border-2 border-black/60 dark:border-white/10 rounded-lg p-8 sm:p-10 max-w-[75rem] w-full min-h-[20rem] flex items-center justify-center"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.175 }}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              className={`group p-4${
-                index % 2 === 0 ? " sm:border-r sm:border-white/20" : ""
-              }${
-                index < projects.length - 2
-                  ? " border-b border-white/20"
-                  : projects.length % 2 !== 0 && index === projects.length - 1
-                    ? ""
-                    : index < projects.length - 2
-                      ? " border-b border-white/20"
-                      : ""
-              }`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <ProjectCard {...project} />
-            </motion.div>
-          ))}
+        <div className="text-center space-y-4">
+          <p className="text-gray-400 text-lg">Blog posts coming soon...</p>
+          <p className="text-gray-500 text-sm">Check back later for technical articles and insights</p>
         </div>
       </motion.div>
-
-      <GitHubStats />
 
       <motion.div
         className="flex justify-center mt-12"

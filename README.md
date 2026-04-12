@@ -1,20 +1,12 @@
 # Barkin Kocatepe — Portfolio
 
-My personal portfolio. Built to show my work and document what I've been learning in cloud and software engineering.
+My personal portfolio. Built to show my work and a little more about me. Showcases what I've been learning throughout my career and my projects. Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion.
 
 ## Pages
 
 - `/` — Home, with sections for skills, projects, experience, and contact
 - `/pages/about-me` — More about me
 - `/pages/projects` — Selected projects
-
-## Running locally
-```bash
-npm install
-npm run dev
-```
-
-Open http://localhost:3000.
 
 ## Structure
 
@@ -27,6 +19,6 @@ Open http://localhost:3000.
 
 ## Contact
 
-- barkinkocatepe12@gmail.com
+- <barkinkocatepe12@gmail.com>
 - [LinkedIn](https://www.linkedin.com/in/barkin-kocatepe-6a43922a2/)
 - [GitHub](https://github.com/BarkinKctp)

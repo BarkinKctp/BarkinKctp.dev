@@ -10,9 +10,9 @@ import { HiCursorClick } from "react-icons/hi";
 import { useSectionInView } from "@/lib/hooks";
 
 export default function Projects() {
-  const { ref } = useSectionInView("Projects", 0.7);
+  const { ref } = useSectionInView("Projects", 0.5);
 
-  const displayedProjects = projects.slice(0, 3);
+  const displayedProjects = projects.slice(0, 2);
   return (
     <section ref={ref} id="projects" className="scroll-mt-40 mb-40">
       <SectionHeading>Projects</SectionHeading>

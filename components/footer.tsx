@@ -19,20 +19,20 @@ export default function Footer() {
               Barkın Kocatepe
             </p>
             <p className="text-xs sm:text-sm text-zinc-300/90 dark:text-zinc-500">
-              Cloud-focused software engineer building clean and scalable apps.
+              DevOps engineer working with cloud infrastructure and automation.
             </p>
           </div>
 
           {/* Navigate */}
-          <div className="space-y-4">
+          <div className="space-y-5">
             <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-200 dark:text-zinc-300">
               NAVIGATE
             </p>
-            <nav className="flex items-center gap-2 text-sm whitespace-nowrap">
+            <nav className="flex flex-wrap items-center gap-3 text-sm whitespace-nowrap">
               {links.map((l) => (
                 <a
                   key={l.hash}
-                  href={l.hash}
+                  href={`/${l.hash}`}
                   className="hover:text-white transition-colors duration-150"
                 >
                   {l.name}
@@ -42,11 +42,11 @@ export default function Footer() {
           </div>
 
           {/* Pages */}
-          <div className="space-y-4">
+          <div className="space-y-5">
             <p className="text-[12px] font-semibold tracking-[0.14em] text-zinc-200 dark:text-zinc-300">
               PAGES
             </p>
-            <nav className="flex flex-wrap items-center gap-2 text-sm">
+            <nav className="flex flex-wrap items-center gap-4 text-sm">
               {pages.map((p) => (
                 <a
                   key={p.href}

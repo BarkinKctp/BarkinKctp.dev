@@ -12,6 +12,7 @@ export default function ProjectCard({
   description,
   tags,
   imageUrl,
+  link,
 }: ProjectCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -33,7 +34,12 @@ export default function ProjectCard({
         className="group bg-slate-900 border-2 border-white/35 overflow-hidden 
         rounded-lg hover:bg-slate-800 transition-colors duration-300 flex flex-col h-full min-h-[20rem] sm:min-h-[25rem]"
       >
-        <div className="relative w-full h-[8rem] sm:h-[11rem] overflow-hidden rounded-t-lg border-b border-white/15 bg-gray-900">
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative w-full h-[8rem] sm:h-[11rem] overflow-hidden rounded-t-lg border-b border-white/15 bg-gray-900 block cursor-pointer"
+        >
           <Image
             src={imageUrl}
             fill
@@ -48,7 +54,7 @@ export default function ProjectCard({
             group-even:group-hover:translate-y-1
             group-even:group-hover:-rotate-1"
           />
-        </div>
+        </a>
         <div className="pt-4 pb-6 px-5 flex flex-col flex-1">
           <h3 className="text-lg font-semibold text-white hover:text-cyan-300 transition">
             {title}
