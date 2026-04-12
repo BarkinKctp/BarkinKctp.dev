@@ -11,6 +11,7 @@ import { FaCode } from "react-icons/fa";
 import { experiences } from "@/lib/data";
 import { useSectionInView } from "@/lib/hooks";
 import { useTheme } from "@/app/context/theme-context";
+import Link from "next/link";
 
 export default function Experience() {
   const { ref } = useSectionInView("Experience");
@@ -71,26 +72,28 @@ export default function Experience() {
             </VerticalTimelineElement>
           </React.Fragment>
         ))}
-        <VerticalTimelineElement
-          icon={<FaCode />}
-          iconClassName="transition-all! duration-300! hover:scale-110! hover:border-cyan-400! hover:shadow-[0_0_0_6px_rgba(34,211,238,0.2)]!"
-          date=""
-          contentStyle={{
-            display: "none",
-          }}
-          contentArrowStyle={{
-            display: "none",
-          }}
-          iconStyle={{
-            background: isDark ? "#0f172a" : "white",
-            color: isDark ? "#e2e8f0" : "#1f2937",
-            fontSize: "1.5rem",
-            border: isDark
-              ? "0.15rem solid rgba(255,255,255,0.2)"
-              : "0.15rem solid white",
-            boxShadow: "0 10px 20px rgba(2, 6, 23, 0.08)",
-          }}
-        />
+        <Link href="https://www.linkedin.com/in/barkin-kocatepe-6a43922a2/details/experience/" target="_blank" rel="noopener noreferrer">
+          <VerticalTimelineElement
+            icon={<FaCode />}
+            iconClassName="transition-all! duration-300! hover:scale-110! hover:border-cyan-400! hover:shadow-[0_0_0_6px_rgba(34,211,238,0.2)]!"
+            date=""
+            contentStyle={{
+              display: "none",
+            }}
+            contentArrowStyle={{
+              display: "none",
+            }}
+            iconStyle={{
+              background: isDark ? "#0f172a" : "white",
+              color: isDark ? "#e2e8f0" : "#1f2937",
+              fontSize: "1.5rem",
+              border: isDark
+                ? "0.15rem solid rgba(255,255,255,0.2)"
+                : "0.15rem solid white",
+              boxShadow: "0 10px 20px rgba(2, 6, 23, 0.08)",
+            }}
+          />
+        </Link>
       </VerticalTimeline>
     </section>
   );

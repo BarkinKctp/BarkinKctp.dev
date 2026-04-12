@@ -29,6 +29,10 @@ export const links = [
     name: "Contact",
     hash: "#contact",
   },
+  {
+    name: "My Blog",
+    hash: "pages/blog",
+  },
 ] as const;
 
 export const experiences = [

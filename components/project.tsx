@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { projects } from "@/lib/data";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 type ProjectProps = (typeof projects)[number];
 
@@ -12,7 +13,9 @@ export default function Project({
   description,
   tags,
   imageUrl,
+  link,
 }: ProjectProps) {
+  const [isDesktop, setIsDesktop] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -20,49 +23,45 @@ export default function Project({
   });
   const scaleProg = useTransform(scrollYProgress, [0, 1], [0.6, 1]);
   const opacityProg = useTransform(scrollYProgress, [0, 1], [0.75, 1]);
-  return (
-    <motion.div
-      className="group mb-[7rem] sm:mb-[10rem] last:mb-0 "
-      ref={ref}
-      style={{
-        scale: scaleProg,
-        opacity: opacityProg,
-      }}
-    >
-      <section
-        className=" bg-gray-100 dark:bg-slate-900 max-w-[42rem] relative
-    border border-black/60 dark:border-white/60 overflow-hidden sm:pr-8 rounded-lg
-    sm:h-[20rem] sm:group-even:pl-8 hover:bg-gray-200 dark:hover:bg-slate-800 transition"
+
+  useEffect(() => {
+    setIsDesktop(window.innerWidth >= 640);
+    const handleResize = () => setIsDesktop(window.innerWidth >= 640);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const sectionContent = (
+    <>
+      <div
+        className="pt-4 pb-7 px-5 sm:pl-10 sm:pt-10
+        sm:pr-2 sm:max-w-1/2 flex flex-col h-full
+         sm:group-even:ml-[18rem] "
       >
-        <div
-          className="pt-4 pb-7 px-5 sm:pl-10 sm:pt-10
-      sm:pr-2 sm:max-w-1/2 flex flex-col h-full
-       sm:group-even:ml-[18rem] "
-        >
-          <h3 className="text-2xl font-semibold text-gray-700 dark:text-slate-100 hover:text-cyan-600">
-            {title}
-          </h3>
-          <p className="mt-2 leading-relaxed text-gray-700 dark:text-slate-300">
-            {description}
-          </p>
-          <ul className="flex flex-wrap mt-4 gap-2 sm:mt-auto">
-            {tags.map((tags, index) => (
-              <li
-                className="bg-gray-700 dark:bg-slate-700 hover:bg-cyan-600 px-3 py-1 text-[0.7rem]
-          uppercase tracking-wider text-white rounded-full transition"
-                key={index}
-              >
-                {tags}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <Image
-          src={imageUrl}
-          width={450}
-          height={300}
-          alt="Projects that I worked on"
-          className="sm:absolute top-13 sm:-right-40 
+        <h3 className="text-2xl font-semibold text-gray-700 dark:text-slate-100 hover:text-cyan-600">
+          {title}
+        </h3>
+        <p className="mt-2 leading-relaxed text-gray-700 dark:text-slate-300">
+          {description}
+        </p>
+        <ul className="flex flex-wrap mt-4 gap-2 sm:mt-auto">
+          {tags.map((tags, index) => (
+            <li
+              className="bg-gray-700 dark:bg-slate-700 hover:bg-cyan-600 px-3 py-1 text-[0.7rem]
+            uppercase tracking-wider text-white rounded-full transition"
+              key={index}
+            >
+              {tags}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <Image
+        src={imageUrl}
+        width={450}
+        height={300}
+        alt="Projects that I worked on"
+        className="sm:absolute top-13 sm:-right-40 
           w-full sm:w-[28.25rem] rounded-t-lg shadow-2xl transition 
         group-hover:scale-[1.04] object-cover object-center
         sm:group-hover:-translate-x-3
@@ -73,8 +72,38 @@ export default function Project({
         sm:group-even:group-hover:translate-y-3
         sm:group-even:group-hover:rotate-2
         sm:group-even:right-[initial] sm:group-even:-left-40"
-        />
-      </section>
+      />
+    </>
+  );
+
+  return (
+    <motion.div
+      className="group mb-[7rem] sm:mb-[10rem] last:mb-0 "
+      ref={ref}
+      style={{
+        scale: scaleProg,
+        opacity: opacityProg,
+      }}
+    >
+      {isDesktop ? (
+        <Link href={link} target="_blank" rel="noopener noreferrer">
+          <section
+            className=" bg-gray-100 dark:bg-slate-900 max-w-[42rem] relative
+    border border-black/60 dark:border-white/60 overflow-hidden sm:pr-8 rounded-lg
+    sm:h-[20rem] sm:group-even:pl-8 hover:bg-gray-200 dark:hover:bg-slate-800 transition cursor-pointer"
+          >
+            {sectionContent}
+          </section>
+        </Link>
+      ) : (
+        <section
+          className=" bg-gray-100 dark:bg-slate-900 max-w-[42rem] relative
+    border border-black/60 dark:border-white/60 overflow-hidden sm:pr-8 rounded-lg
+    sm:h-[20rem] sm:group-even:pl-8 hover:bg-gray-200 dark:hover:bg-slate-800 transition"
+        >
+          {sectionContent}
+        </section>
+      )}
     </motion.div>
   );
 }

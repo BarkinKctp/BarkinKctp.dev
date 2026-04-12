@@ -16,7 +16,7 @@ interface LanguageStats {
   [key: string]: number;
 }
 
-export default function GitHubStats() {
+export default function GitHubStats({ limit = 15 }: { limit?: number }) {
   const [repos, setRepos] = useState<Repo[]>([]);
   const [languages, setLanguages] = useState<LanguageStats>({});
   const [loading, setLoading] = useState(true);
@@ -57,23 +57,26 @@ export default function GitHubStats() {
 
         const languageCount: LanguageStats = {};
         
-        for (const repo of reposData) {
-          if (!excludeRepos.includes(repo.name.toLowerCase())) {
-            try {
-              const langResponse = await fetch(repo.languages_url, {
-                headers: { Accept: "application/vnd.github.v3+json" },
+        // Update This When I Add More Repos !!
+        const filteredRepos = reposData
+          .filter((repo: any) => !excludeRepos.includes(repo.name.toLowerCase()))
+          .slice(0, 5);
+
+        for (const repo of filteredRepos) {
+          try {
+            const langResponse = await fetch(repo.languages_url, {
+              headers: { Accept: "application/vnd.github.v3+json" },
+            });
+            if (langResponse.ok) {
+              const langs = await langResponse.json();
+              Object.keys(langs).forEach((lang) => {
+                const lowerLang = lang.toLowerCase();
+                if (!excludeLanguages.includes(lowerLang)) {
+                  languageCount[lang] = (languageCount[lang] || 0) + 1;
+                }
               });
-              if (langResponse.ok) {
-                const langs = await langResponse.json();
-                Object.keys(langs).forEach((lang) => {
-                  const lowerLang = lang.toLowerCase();
-                  if (!excludeLanguages.includes(lowerLang)) {
-                    languageCount[lang] = (languageCount[lang] || 0) + 1;
-                  }
-                });
-              }
-            } catch (e) {
             }
+          } catch (e) {
           }
         }
 
@@ -114,7 +117,7 @@ export default function GitHubStats() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        <div className="text-center text-red-400 py-8">Failed to load repos</div>
+        <div className="text-center text-red-400 py-8">Failed To Load Github Data</div>
       </motion.div>
     );
 

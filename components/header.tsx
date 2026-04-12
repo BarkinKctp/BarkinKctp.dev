@@ -103,14 +103,6 @@ export default function Header() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.3, ease: "easeInOut", delay: 0.25 }}
             >
-              <Link
-                href="/pages/blog"
-                className="flex w-full items-center justify-center px-[0.65rem] py-[0.65rem] 
-                text-gray-900 dark:text-slate-100 rounded-full 
-                hover:text-cyan-600 transition font-medium text-[1.025rem]"
-              >
-                My Blog
-              </Link>
             </motion.li>
           </ul>
         </nav>

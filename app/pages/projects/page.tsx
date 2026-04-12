@@ -69,7 +69,7 @@ export default function ProjectsPage() {
         </div>
       </motion.div>
 
-      <GitHubStats />
+      <GitHubStats limit={20} />
 
       <motion.div
         className="flex justify-center mt-12"
