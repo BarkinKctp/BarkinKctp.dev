@@ -98,7 +98,7 @@ export default function Intro() {
           className="group bg-white dark:bg-slate-900 px-7 py-3 flex items-center gap-[0.5rem]
         rounded-full outline-none border border-black/60 dark:border-white/15 dark:text-slate-100 hover:bg-gray-200 dark:hover:bg-slate-800
         hover:scale-107 focus:scale-107 active:scale-112 transition"
-          href="/Barkin_Kocatepe-resume.pdf"
+          href="/Barkin_Kocatepe-Resume.pdf"
           download
         >
           Download CV{" "}
