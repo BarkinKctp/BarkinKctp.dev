@@ -5,6 +5,7 @@
 
 html {
   --line-color: #d0d1d4;
+  overflow-x: clip;
 }
 
 html.dark,
@@ -18,7 +19,7 @@ html[data-theme="dark"] {
   width: 8px;
 }
 
-::-webkit-scrollbar-track { 
+::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
 
@@ -63,4 +64,3 @@ html.dark,
 html[data-theme="dark"] {
   scrollbar-color: #1e293b #0f172a;
 }
-

@@ -68,12 +68,12 @@ export default function Intro() {
           cloud platforms and developer infrastructure.{" "}
         </span>{" "}
         My focus is{" "}
-        <span className="underline ">
+        <span className="font-bold">
           {" "}
           Cloud Computing, Distributed Systems,{" "}
         </span>{" "}
-        <span className="underline "> DevOps</span> and{" "}
-        <span className="underline ">Artificial Intelligence</span>.
+        <span className="font-bold"> DevOps</span> and{" "}
+        <span className="font-bold">Artificial Intelligence</span>.
       </motion.h1>
       <motion.div
         className="flex flex-col sm:flex-row items-center

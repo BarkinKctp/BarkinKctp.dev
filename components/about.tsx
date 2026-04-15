@@ -33,16 +33,9 @@ export default function About() {
         </span>
         . During my internship at <span className="font-medium">Microsoft</span>
         , I worked with teams focused on{" "}
-        <span className="underline">Azure services</span> and{" "}
-        <span className="underline">DevOps tooling</span>, gaining hands-on
+        <span className="font-bold">Azure services</span> and{" "}
+        <span className="font-bold">DevOps tooling</span>, gaining hands-on
         experience with modern cloud environments and development workflows.
-        <br />
-        My main interests are{" "}
-        <span className="font-medium">
-          Cloud Computing, DevOps, Distributed Systems, and Artificial
-          Intelligence
-        </span>
-        .
         <br />
         <br />
         <span className="italic">When I'm not working on projects</span>, I

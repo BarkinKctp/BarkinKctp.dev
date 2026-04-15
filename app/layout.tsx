@@ -35,7 +35,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased
         bg-gray-50 text-gray-900 dark:bg-slate-950 dark:text-slate-100
-        transition-colors duration-300 relative pt-35 sm:pt-44 overflow-x-hidden`}
+        transition-colors duration-300 relative pt-35 sm:pt-44 [overflow-x:clip]`}
       >
         <ThemeContextProvider>
           <ActiveSessionContextProvider>
