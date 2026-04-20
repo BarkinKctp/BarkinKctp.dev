@@ -58,9 +58,9 @@ export const experiences = [
 
 export const projects = [
   {
-    title: "CI/CD Pipeline Testing",
+    title: "Azure-AppService-Pipelines",
     description:
-      "A project for experimenting with secure CI/CD workflows using GitHub Actions, Azure OIDC authentication, and automated cloud deployment.",
+      "End-to-end CI/CD pipeline project using GitHub Actions, Github App, Jenkins, Azure OIDC, Docker, and Bash automation for secure cloud deployments to Azure App Service.",
     link: "https://github.com/BarkinKctp/CI-CD-Pipeline-Testing",
     tags: [
       "Python",
