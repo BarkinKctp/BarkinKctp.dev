@@ -60,7 +60,7 @@ export const projects = [
   {
     title: "Azure-AppService-Pipelines",
     description:
-      "End-to-end CI/CD pipeline project using GitHub Actions, Github App, Jenkins, Azure OIDC, Docker, and Bash automation for secure cloud deployments to Azure App Service.",
+      "CI/CD pipeline project using GitHub Actions, GitHub App, Jenkins, Azure OIDC, and Docker for secure deployments to Azure App Service.",
     link: "https://github.com/BarkinKctp/CI-CD-Pipeline-Testing",
     tags: [
       "Python",
