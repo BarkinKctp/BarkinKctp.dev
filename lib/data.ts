@@ -99,6 +99,20 @@ export const projects = [
     ],
     imageUrl: "/projects/Kubernetes-Lab.png"
   },
+  {
+  title: "Ansible Infra Automation",
+  description:
+    "Infrastructure automation with Ansible, covering configuration management, playbook-driven provisioning, and repeatable environment setup across multiple hosts.",
+  link: "https://github.com/BarkinKctp/Ansible-Infra-Automation",
+  tags: [
+    "Ansible",
+    "Infrastructure as Code",
+    "Configuration Management",
+    "DevOps",
+    "Automation",
+  ],
+  imageUrl: "/projects/Ansible-Infra-Automation.png"
+  },
   /*
   {
       
