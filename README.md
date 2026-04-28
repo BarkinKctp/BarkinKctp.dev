@@ -1,4 +1,4 @@
-# Barkin Kocatepe — Portfolio
+# Barkin Kocatepe — Portfolioo
 
 My personal portfolio. Built to show my work and a little more about me. Showcases what I've been learning throughout my career and my projects. Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion.
 
