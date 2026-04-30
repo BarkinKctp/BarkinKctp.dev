@@ -2,14 +2,14 @@
 
 import React from "react";
 import SectionHeading from "./section-heading";
-import { projects } from "@/lib/data";
+import type { Project as ProjectType } from "@/lib/projects";
 import Project from "./project";
 import Link from "next/link";
 import { GrProjects } from "react-icons/gr";
 import { HiCursorClick } from "react-icons/hi";
 import { useSectionInView } from "@/lib/hooks";
 
-export default function Projects() {
+export default function Projects({ projects }: { projects: ProjectType[] }) {
   const { ref } = useSectionInView("Projects", 0.5);
 
   const displayedProjects = projects.slice(0, 2);

@@ -1,12 +1,10 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { projects } from "@/lib/data";
+import type { Project as ProjectType } from "@/lib/projects";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-
-type ProjectProps = (typeof projects)[number];
 
 export default function Project({
   title,
@@ -14,7 +12,7 @@ export default function Project({
   tags,
   imageUrl,
   link,
-}: ProjectProps) {
+}: ProjectType) {
   const [isDesktop, setIsDesktop] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({

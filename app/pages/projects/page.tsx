@@ -1,14 +1,21 @@
 "use client";
 
-import { projects } from "@/lib/data";
+import { useEffect, useState } from "react";
+import type { Project } from "@/lib/projects";
 import ProjectCard from "@/components/project-card";
 import SectionHeading from "@/components/section-heading";
 import GitHubStats from "@/components/github-stats";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 import { motion } from "framer-motion";
+import { getProjects } from "@/actions/projects";
 
 export default function ProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    getProjects().then(setProjects);
+  }, []);
   return (
     <motion.main
       className="flex flex-col items-center

@@ -117,6 +117,8 @@ export default function AboutMePage() {
                   src={place.image}
                   alt={place.name}
                   fill
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                   className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-300"
                 />
               </div>
@@ -162,6 +164,8 @@ export default function AboutMePage() {
                   src={book.image}
                   alt={book.title}
                   fill
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                   className="object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-300"
                 />
               </div>
@@ -207,6 +211,8 @@ export default function AboutMePage() {
                   src={track.cover}
                   alt={track.title}
                   fill
+                  placeholder="blur"
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                   className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-300"
                 />
               </div>

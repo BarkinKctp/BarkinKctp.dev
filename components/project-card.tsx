@@ -1,11 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { projects } from "@/lib/data";
+import type { Project } from "@/lib/projects";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-
-type ProjectCardProps = (typeof projects)[number];
 
 export default function ProjectCard({
   title,
@@ -13,7 +11,7 @@ export default function ProjectCard({
   tags,
   imageUrl,
   link,
-}: ProjectCardProps) {
+}: Project) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -44,6 +42,8 @@ export default function ProjectCard({
             src={imageUrl}
             fill
             alt={title}
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
             className="object-cover object-center transition-transform duration-300 will-change-transform
             group-hover:scale-[1.06]
             group-hover:translate-x-1

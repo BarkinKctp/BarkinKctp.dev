@@ -5,8 +5,11 @@ import Projects from "@/components/projects";
 import SectionDivider from "@/components/section-divider";
 import Skills from "@/components/skills";
 import Contact from "@/components/contact";
+import { getProjectsFromDb } from "@/lib/projects";
 
-export default function Home() {
+export default async function Home() {
+  const projects = await getProjectsFromDb();
+
   return (
     <main
       className="flex flex-col items-center
@@ -16,7 +19,7 @@ export default function Home() {
       <SectionDivider />
       <About />
       <SectionDivider />
-      <Projects />
+      <Projects projects={projects} />
       <SectionDivider />
       <Experience />
       <SectionDivider />
