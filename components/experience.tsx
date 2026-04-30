@@ -8,12 +8,21 @@ import {
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import { FaCode } from "react-icons/fa";
-import { experiences } from "@/lib/data";
+import { CgWorkAlt } from "react-icons/cg";
 import { useSectionInView } from "@/lib/hooks";
 import { useTheme } from "@/app/context/theme-context";
 import Link from "next/link";
 
-export default function Experience() {
+interface ExperienceItem {
+  id: string;
+  company: string;
+  title: string;
+  location: string;
+  description: string;
+  duration: string;
+}
+
+export default function Experience({ experiences }: { experiences: ExperienceItem[] }) {
   const { ref } = useSectionInView("Experience");
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -48,7 +57,7 @@ export default function Experience() {
                 borderRight: "0.4rem solid #9ca3af",
               }}
               date={item.duration}
-              icon={item.icon}
+              icon={<CgWorkAlt />}
               iconStyle={{
                 background: isDark ? "#0f172a" : "white",
                 color: isDark ? "#e2e8f0" : "#1f2937",

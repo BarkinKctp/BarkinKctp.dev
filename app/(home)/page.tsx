@@ -6,9 +6,15 @@ import SectionDivider from "@/components/section-divider";
 import Skills from "@/components/skills";
 import Contact from "@/components/contact";
 import { getProjectsFromDb } from "@/lib/projects";
+import { getExperiencesFromDb } from "@/lib/experiences";
+import { getSkillsFromDb } from "@/lib/skills";
 
 export default async function Home() {
-  const projects = await getProjectsFromDb();
+  const [projects, experiences, skills] = await Promise.all([
+    getProjectsFromDb(),
+    getExperiencesFromDb(),
+    getSkillsFromDb(),
+  ]);
 
   return (
     <main
@@ -21,9 +27,9 @@ export default async function Home() {
       <SectionDivider />
       <Projects projects={projects} />
       <SectionDivider />
-      <Experience />
+      <Experience experiences={experiences} />
       <SectionDivider />
-      <Skills />
+      <Skills skills={skills} />
       <SectionDivider />
       <Contact />
     </main>

@@ -12,9 +12,13 @@ import { getProjects } from "@/actions/projects";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProjects().then(setProjects);
+    getProjects().then((data) => {
+      setProjects(data);
+      setLoading(false);
+    });
   }, []);
   return (
     <motion.main
@@ -51,28 +55,48 @@ export default function ProjectsPage() {
         transition={{ delay: 0.175 }}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              className={`group p-4${
-                index % 2 === 0 ? " sm:border-r sm:border-white/20" : ""
-              }${
-                index < projects.length - 2
-                  ? " border-b border-white/20"
-                  : projects.length % 2 !== 0 && index === projects.length - 1
-                    ? ""
-                    : index < projects.length - 2
-                      ? " border-b border-white/20"
-                      : ""
-              }`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <ProjectCard {...project} />
-            </motion.div>
-          ))}
+          {loading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className={`p-4 animate-pulse${
+                  i % 2 === 0 ? " sm:border-r sm:border-white/20" : ""
+                }${i < 2 ? " border-b border-white/20" : ""}`}
+              >
+                <div className="h-40 bg-white/10 rounded-lg mb-4" />
+                <div className="h-5 bg-white/10 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-white/10 rounded w-full mb-1" />
+                <div className="h-4 bg-white/10 rounded w-2/3" />
+              </div>
+            ))
+          ) : projects.length === 0 ? (
+            <p className="text-white/60 text-center col-span-2 py-12">
+              No projects found.
+            </p>
+          ) : (
+            projects.map((project, index) => (
+              <motion.div
+                key={index}
+                className={`group p-4${
+                  index % 2 === 0 ? " sm:border-r sm:border-white/20" : ""
+                }${
+                  index < projects.length - 2
+                    ? " border-b border-white/20"
+                    : projects.length % 2 !== 0 && index === projects.length - 1
+                      ? ""
+                      : index < projects.length - 2
+                        ? " border-b border-white/20"
+                        : ""
+                }`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <ProjectCard {...project} />
+              </motion.div>
+            ))
+          )}
         </div>
       </motion.div>
 

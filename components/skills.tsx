@@ -1,13 +1,18 @@
 "use client";
 
 import SectionHeading from "./section-heading";
-import { skills } from "@/lib/data";
 import { useSectionInView } from "@/lib/hooks";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FiAward } from "react-icons/fi";
 import { HiCursorClick } from "react-icons/hi";
+
+interface SkillItem {
+  id: string;
+  name: string;
+  order: number;
+}
 
 const fadeInAnimationVariants = {
   initial: {
@@ -23,7 +28,7 @@ const fadeInAnimationVariants = {
   }),
 };
 
-export default function Skills() {
+export default function Skills({ skills }: { skills: SkillItem[] }) {
   const { ref } = useSectionInView("Skills");
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -60,16 +65,16 @@ export default function Skills() {
               }}
               custom={index}
             >
-              {skill}
+              {skill.name}
             </motion.li>
           );
 
           return isDesktop ? (
-            <Link key={index} href="https://www.linkedin.com/in/barkin-kocatepe-6a43922a2/details/skills/" target="_blank" rel="noopener noreferrer">
+            <Link key={skill.id} href="https://www.linkedin.com/in/barkin-kocatepe-6a43922a2/details/skills/" target="_blank" rel="noopener noreferrer">
               {skillItem}
             </Link>
           ) : (
-            <div key={index}>{skillItem}</div>
+            <div key={skill.id}>{skillItem}</div>
           );
         })}
       </ul>
