@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { createHmac, timingSafeEqual } from "crypto";
+import { createHash, createHmac, timingSafeEqual } from "crypto";
 
 const SESSION_COOKIE = "admin_session";
 const ACTIVITY_COOKIE = "admin_last_activity";
@@ -145,9 +145,7 @@ export function verifyPassword(password: string): boolean {
   const adminPassword = process.env.ADMIN_PASSWORD;
   if (!adminPassword) return false;
 
-  const inputBuf = Buffer.from(password);
-  const expectedBuf = Buffer.from(adminPassword);
-
-  if (inputBuf.length !== expectedBuf.length) return false;
-  return timingSafeEqual(inputBuf, expectedBuf);
+  const inputHash = createHash("sha256").update(password).digest();
+  const expectedHash = createHash("sha256").update(adminPassword).digest();
+  return timingSafeEqual(inputHash, expectedHash);
 }

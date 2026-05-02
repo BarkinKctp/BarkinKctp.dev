@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "crypto";
 import { put, del } from "@vercel/blob";
 import { verifySession } from "@/lib/auth";
 
@@ -27,7 +28,9 @@ export async function uploadImage(
     return { error: "File too large. Maximum 4MB." };
   }
 
-  const blob = await put(`projects/${Date.now()}-${file.name}`, file, {
+  const ext = file.name.split(".").pop()?.toLowerCase() || "bin";
+  const safeName = `projects/${Date.now()}-${randomUUID()}.${ext}`;
+  const blob = await put(safeName, file, {
     access: "public",
   });
 
@@ -37,6 +40,16 @@ export async function uploadImage(
 export async function deleteImage(url: string): Promise<void> {
   const authenticated = await verifySession();
   if (!authenticated) return;
+
+  // Only allow deleting URLs from our Vercel Blob store
+  try {
+    const parsed = new URL(url);
+    if (!parsed.hostname.endsWith(".public.blob.vercel-storage.com")) {
+      return;
+    }
+  } catch {
+    return;
+  }
 
   try {
     await del(url);

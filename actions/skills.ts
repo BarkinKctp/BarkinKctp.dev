@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/mongodb";
 import { verifySession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { validateString, isValidObjectId } from "@/lib/utils";
 
 export interface Skill {
   id: string;
@@ -36,16 +37,20 @@ export async function addSkill(
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const name = formData.get("name") as string;
+  const name = formData.get("name");
 
-  if (!name) return { error: "Skill name is required" };
+  if (!validateString(name, 100)) return { error: "Skill name is required (max 100 chars)" };
 
-  const collection = await getCollection();
-  // Get max order to append at end
-  const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
-  const order = last.length > 0 ? last[0].order + 1 : 0;
+  try {
+    const collection = await getCollection();
+    // Get max order to append at end
+    const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
+    const order = last.length > 0 ? last[0].order + 1 : 0;
 
-  await collection.insertOne({ name, order });
+    await collection.insertOne({ name, order });
+  } catch {
+    return { error: "Failed to add skill. Please try again." };
+  }
 
   revalidatePath("/");
   revalidatePath("/admin");
@@ -59,18 +64,23 @@ export async function updateSkill(
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const id = formData.get("id") as string;
-  const name = formData.get("name") as string;
+  const id = formData.get("id");
+  const name = formData.get("name");
 
-  if (!id || !name) return { error: "All fields are required" };
+  if (!isValidObjectId(id)) return { error: "Invalid skill ID" };
+  if (!validateString(name, 100)) return { error: "All fields are required" };
 
-  const collection = await getCollection();
-  const result = await collection.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { name } }
-  );
+  try {
+    const collection = await getCollection();
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { name } }
+    );
 
-  if (result.matchedCount === 0) return { error: "Skill not found" };
+    if (result.matchedCount === 0) return { error: "Skill not found" };
+  } catch {
+    return { error: "Failed to update skill. Please try again." };
+  }
 
   revalidatePath("/");
   revalidatePath("/admin");
@@ -83,10 +93,16 @@ export async function deleteSkill(
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const collection = await getCollection();
-  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  if (!isValidObjectId(id)) return { error: "Invalid skill ID" };
 
-  if (result.deletedCount === 0) return { error: "Skill not found" };
+  try {
+    const collection = await getCollection();
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) return { error: "Skill not found" };
+  } catch {
+    return { error: "Failed to delete skill. Please try again." };
+  }
 
   revalidatePath("/");
   revalidatePath("/admin");

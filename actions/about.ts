@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/mongodb";
 import { verifySession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { validateString, isValidObjectId } from "@/lib/utils";
 
 export interface Place {
   id: string;
@@ -58,17 +59,27 @@ export async function addPlace(
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const name = formData.get("name") as string;
-  const image = formData.get("image") as string;
-  const description = formData.get("description") as string;
+  const name = formData.get("name");
+  const image = formData.get("image");
+  const description = formData.get("description");
 
-  if (!name || !image || !description) return { error: "All fields are required" };
+  if (
+    !validateString(name, 200) ||
+    !validateString(image, 1000) ||
+    !validateString(description, 2000)
+  ) {
+    return { error: "All fields are required and must not exceed length limits" };
+  }
 
-  const collection = await getCollection("places");
-  const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
-  const order = last.length > 0 ? last[0].order + 1 : 0;
+  try {
+    const collection = await getCollection("places");
+    const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
+    const order = last.length > 0 ? last[0].order + 1 : 0;
 
-  await collection.insertOne({ name, image, description, order });
+    await collection.insertOne({ name, image, description, order });
+  } catch {
+    return { error: "Failed to add place. Please try again." };
+  }
   revalidatePath("/pages/about-me");
   revalidatePath("/admin");
   return { success: true };
@@ -81,19 +92,31 @@ export async function updatePlace(
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const id = formData.get("id") as string;
-  const name = formData.get("name") as string;
-  const image = formData.get("image") as string;
-  const description = formData.get("description") as string;
+  const id = formData.get("id");
+  const name = formData.get("name");
+  const image = formData.get("image");
+  const description = formData.get("description");
 
-  if (!id || !name || !image || !description) return { error: "All fields are required" };
+  if (!isValidObjectId(id)) return { error: "Invalid place ID" };
 
-  const collection = await getCollection("places");
-  const result = await collection.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { name, image, description } }
-  );
-  if (result.matchedCount === 0) return { error: "Place not found" };
+  if (
+    !validateString(name, 200) ||
+    !validateString(image, 1000) ||
+    !validateString(description, 2000)
+  ) {
+    return { error: "All fields are required and must not exceed length limits" };
+  }
+
+  try {
+    const collection = await getCollection("places");
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { name, image, description } }
+    );
+    if (result.matchedCount === 0) return { error: "Place not found" };
+  } catch {
+    return { error: "Failed to update place. Please try again." };
+  }
 
   revalidatePath("/pages/about-me");
   revalidatePath("/admin");
@@ -104,9 +127,15 @@ export async function deletePlace(id: string): Promise<{ error?: string; success
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const collection = await getCollection("places");
-  const result = await collection.deleteOne({ _id: new ObjectId(id) });
-  if (result.deletedCount === 0) return { error: "Place not found" };
+  if (!isValidObjectId(id)) return { error: "Invalid place ID" };
+
+  try {
+    const collection = await getCollection("places");
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    if (result.deletedCount === 0) return { error: "Place not found" };
+  } catch {
+    return { error: "Failed to delete place. Please try again." };
+  }
 
   revalidatePath("/pages/about-me");
   revalidatePath("/admin");
@@ -134,17 +163,27 @@ export async function addBook(
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const title = formData.get("title") as string;
-  const author = formData.get("author") as string;
-  const image = formData.get("image") as string;
+  const title = formData.get("title");
+  const author = formData.get("author");
+  const image = formData.get("image");
 
-  if (!title || !author || !image) return { error: "All fields are required" };
+  if (
+    !validateString(title, 200) ||
+    !validateString(author, 200) ||
+    !validateString(image, 1000)
+  ) {
+    return { error: "All fields are required and must not exceed length limits" };
+  }
 
-  const collection = await getCollection("books");
-  const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
-  const order = last.length > 0 ? last[0].order + 1 : 0;
+  try {
+    const collection = await getCollection("books");
+    const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
+    const order = last.length > 0 ? last[0].order + 1 : 0;
 
-  await collection.insertOne({ title, author, image, order });
+    await collection.insertOne({ title, author, image, order });
+  } catch {
+    return { error: "Failed to add book. Please try again." };
+  }
   revalidatePath("/pages/about-me");
   revalidatePath("/admin");
   return { success: true };
@@ -157,19 +196,31 @@ export async function updateBook(
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const id = formData.get("id") as string;
-  const title = formData.get("title") as string;
-  const author = formData.get("author") as string;
-  const image = formData.get("image") as string;
+  const id = formData.get("id");
+  const title = formData.get("title");
+  const author = formData.get("author");
+  const image = formData.get("image");
 
-  if (!id || !title || !author || !image) return { error: "All fields are required" };
+  if (!isValidObjectId(id)) return { error: "Invalid book ID" };
 
-  const collection = await getCollection("books");
-  const result = await collection.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { title, author, image } }
-  );
-  if (result.matchedCount === 0) return { error: "Book not found" };
+  if (
+    !validateString(title, 200) ||
+    !validateString(author, 200) ||
+    !validateString(image, 1000)
+  ) {
+    return { error: "All fields are required and must not exceed length limits" };
+  }
+
+  try {
+    const collection = await getCollection("books");
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { title, author, image } }
+    );
+    if (result.matchedCount === 0) return { error: "Book not found" };
+  } catch {
+    return { error: "Failed to update book. Please try again." };
+  }
 
   revalidatePath("/pages/about-me");
   revalidatePath("/admin");
@@ -180,9 +231,15 @@ export async function deleteBook(id: string): Promise<{ error?: string; success?
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const collection = await getCollection("books");
-  const result = await collection.deleteOne({ _id: new ObjectId(id) });
-  if (result.deletedCount === 0) return { error: "Book not found" };
+  if (!isValidObjectId(id)) return { error: "Invalid book ID" };
+
+  try {
+    const collection = await getCollection("books");
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    if (result.deletedCount === 0) return { error: "Book not found" };
+  } catch {
+    return { error: "Failed to delete book. Please try again." };
+  }
 
   revalidatePath("/pages/about-me");
   revalidatePath("/admin");
@@ -211,18 +268,29 @@ export async function addMusic(
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const title = formData.get("title") as string;
-  const artist = formData.get("artist") as string;
-  const cover = formData.get("cover") as string;
-  const spotifyUrl = formData.get("spotifyUrl") as string;
+  const title = formData.get("title");
+  const artist = formData.get("artist");
+  const cover = formData.get("cover");
+  const spotifyUrl = formData.get("spotifyUrl");
 
-  if (!title || !artist || !cover || !spotifyUrl) return { error: "All fields are required" };
+  if (
+    !validateString(title, 200) ||
+    !validateString(artist, 200) ||
+    !validateString(cover, 1000) ||
+    !validateString(spotifyUrl, 500)
+  ) {
+    return { error: "All fields are required and must not exceed length limits" };
+  }
 
-  const collection = await getCollection("music");
-  const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
-  const order = last.length > 0 ? last[0].order + 1 : 0;
+  try {
+    const collection = await getCollection("music");
+    const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
+    const order = last.length > 0 ? last[0].order + 1 : 0;
 
-  await collection.insertOne({ title, artist, cover, spotifyUrl, order });
+    await collection.insertOne({ title, artist, cover, spotifyUrl, order });
+  } catch {
+    return { error: "Failed to add track. Please try again." };
+  }
   revalidatePath("/pages/about-me");
   revalidatePath("/admin");
   return { success: true };
@@ -235,20 +303,33 @@ export async function updateMusic(
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const id = formData.get("id") as string;
-  const title = formData.get("title") as string;
-  const artist = formData.get("artist") as string;
-  const cover = formData.get("cover") as string;
-  const spotifyUrl = formData.get("spotifyUrl") as string;
+  const id = formData.get("id");
+  const title = formData.get("title");
+  const artist = formData.get("artist");
+  const cover = formData.get("cover");
+  const spotifyUrl = formData.get("spotifyUrl");
 
-  if (!id || !title || !artist || !cover || !spotifyUrl) return { error: "All fields are required" };
+  if (!isValidObjectId(id)) return { error: "Invalid track ID" };
 
-  const collection = await getCollection("music");
-  const result = await collection.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { title, artist, cover, spotifyUrl } }
-  );
-  if (result.matchedCount === 0) return { error: "Track not found" };
+  if (
+    !validateString(title, 200) ||
+    !validateString(artist, 200) ||
+    !validateString(cover, 1000) ||
+    !validateString(spotifyUrl, 500)
+  ) {
+    return { error: "All fields are required and must not exceed length limits" };
+  }
+
+  try {
+    const collection = await getCollection("music");
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { title, artist, cover, spotifyUrl } }
+    );
+    if (result.matchedCount === 0) return { error: "Track not found" };
+  } catch {
+    return { error: "Failed to update track. Please try again." };
+  }
 
   revalidatePath("/pages/about-me");
   revalidatePath("/admin");
@@ -259,9 +340,15 @@ export async function deleteMusic(id: string): Promise<{ error?: string; success
   const authenticated = await verifySession();
   if (!authenticated) return { error: "Unauthorized" };
 
-  const collection = await getCollection("music");
-  const result = await collection.deleteOne({ _id: new ObjectId(id) });
-  if (result.deletedCount === 0) return { error: "Track not found" };
+  if (!isValidObjectId(id)) return { error: "Invalid track ID" };
+
+  try {
+    const collection = await getCollection("music");
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    if (result.deletedCount === 0) return { error: "Track not found" };
+  } catch {
+    return { error: "Failed to delete track. Please try again." };
+  }
 
   revalidatePath("/pages/about-me");
   revalidatePath("/admin");

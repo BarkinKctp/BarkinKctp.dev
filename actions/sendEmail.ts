@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Resend } from "resend";
-import { validateString, getErrorMessage } from "@/lib/utils";
+import { validateString } from "@/lib/utils";
 import { rateLimit } from "@/lib/rate-limit";
 import ContactFormEmail from "@/email/contact-form-email";
 import { headers } from "next/headers";
@@ -51,8 +51,9 @@ export const sendEmail = async (formData: FormData) => {
       }),
     });
   } catch (error: unknown) {
+    console.error("Email send failed:", error);
     return {
-      error: getErrorMessage(error),
+      error: "Failed to send message. Please try again.",
     };
   }
 

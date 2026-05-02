@@ -110,10 +110,10 @@ export default function AdminDashboardClient({
       const result = await reorderItems(collection, orderedIds);
       if (result.success) {
         toast.success("Order updated");
-        router.refresh();
       } else {
         toast.error(result.error ?? "Failed to reorder");
       }
+      router.refresh();
     },
     [router],
   );
@@ -176,6 +176,9 @@ export default function AdminDashboardClient({
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
+            aria-label={`${tab.label} tab, ${tab.count} items`}
+            aria-selected={activeTab === tab.key}
+            role="tab"
             className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition whitespace-nowrap ${
               activeTab === tab.key
                 ? "bg-white dark:bg-slate-900 border border-b-0 border-black/20 dark:border-white/15 text-cyan-600"
@@ -280,6 +283,7 @@ function DragHandle(props: Record<string, unknown>) {
   return (
     <button
       type="button"
+      aria-label="Drag to reorder"
       {...props}
       className="cursor-grab active:cursor-grabbing touch-none text-gray-400 hover:text-gray-600 dark:hover:text-slate-300 shrink-0"
     >
@@ -358,6 +362,12 @@ function ProjectsTab({
             items={projects.map((p) => p.id)}
             strategy={verticalListSortingStrategy}
           >
+            {projects.length === 0 && (
+              <p className="text-center text-gray-500 dark:text-slate-400 py-8">
+                No projects yet. Click &ldquo;+ Add Project&rdquo; to get
+                started.
+              </p>
+            )}
             {projects.map((project) => (
               <SortableItem key={project.id} id={project.id}>
                 {({ handleProps }) => (
@@ -369,6 +379,7 @@ function ProjectsTab({
                           src={project.imageUrl}
                           alt={project.title}
                           fill
+                          sizes="80px"
                           className="object-cover"
                         />
                       </div>
@@ -445,7 +456,9 @@ function ProjectForm({
   const [description, setDescription] = useState(project?.description ?? "");
   const [tagsText, setTagsText] = useState(project?.tags.join(", ") ?? "");
 
-  if (state?.success) onSuccess();
+  useEffect(() => {
+    if (state?.success) onSuccess();
+  }, [state, onSuccess]);
 
   const handleUpload = async (file: File) => {
     setUploading(true);
@@ -545,6 +558,7 @@ function ProjectForm({
                     src={imageUrl}
                     alt="Preview"
                     fill
+                    sizes="64px"
                     className="object-cover"
                   />
                 </div>
@@ -610,6 +624,7 @@ function ProjectForm({
                   src={imageUrl}
                   fill
                   alt="Preview"
+                  sizes="(max-width: 640px) 100vw, 400px"
                   className="object-cover"
                 />
               ) : (
@@ -717,6 +732,12 @@ function ExperiencesTab({
             items={experiences.map((e) => e.id)}
             strategy={verticalListSortingStrategy}
           >
+            {experiences.length === 0 && (
+              <p className="text-center text-gray-500 dark:text-slate-400 py-8">
+                No experiences yet. Click &ldquo;+ Add Experience&rdquo; to get
+                started.
+              </p>
+            )}
             {experiences.map((exp) => (
               <SortableItem key={exp.id} id={exp.id}>
                 {({ handleProps }) => (
@@ -780,7 +801,9 @@ function ExperienceForm({
   const action = isEditing ? updateExperience : addExperience;
   const [state, formAction, pending] = useActionState(action, null);
 
-  if (state?.success) onSuccess();
+  useEffect(() => {
+    if (state?.success) onSuccess();
+  }, [state, onSuccess]);
 
   return (
     <div className="border-2 border-cyan-500/30 rounded-lg p-5 bg-gray-50 dark:bg-slate-800/50 mb-4">
@@ -920,12 +943,18 @@ function SkillsTab({
           onDragEnd={handleDragEnd}
         >
           <SortableContext items={skills.map((s) => s.id)}>
+            {skills.length === 0 && (
+              <p className="text-center text-gray-500 dark:text-slate-400 py-8 w-full">
+                No skills yet. Click &ldquo;+ Add Skill&rdquo; to get started.
+              </p>
+            )}
             {skills.map((skill) => (
               <SortableItem key={skill.id} id={skill.id}>
                 {({ handleProps }) => (
-                  <div className="group relative flex items-center gap-1 bg-slate-100 dark:bg-slate-800 border border-black/10 dark:border-white/10 rounded-full px-2 py-2">
+                  <div className="group relative flex items-center gap-1 bg-slate-100 dark:bg-slate-800 border border-black/10 dark:border-white/10 rounded-full px-2 py-2 focus-within:ring-2 focus-within:ring-cyan-500/40">
                     <button
                       type="button"
+                      aria-label={`Drag to reorder ${skill.name}`}
                       {...handleProps}
                       className="cursor-grab active:cursor-grabbing touch-none text-gray-400 hover:text-gray-600 dark:hover:text-slate-300"
                     >
@@ -934,7 +963,7 @@ function SkillsTab({
                     <span className="text-sm text-gray-800 dark:text-slate-200">
                       {skill.name}
                     </span>
-                    <div className="hidden group-hover:flex items-center gap-1 ml-2">
+                    <div className="hidden group-hover:flex group-focus-within:flex items-center gap-1 ml-2">
                       <button
                         onClick={() => {
                           setEditingSkill(skill);
@@ -977,7 +1006,9 @@ function SkillForm({
   const action = isEditing ? updateSkill : addSkill;
   const [state, formAction, pending] = useActionState(action, null);
 
-  if (state?.success) onSuccess();
+  useEffect(() => {
+    if (state?.success) onSuccess();
+  }, [state, onSuccess]);
 
   return (
     <div className="border-2 border-cyan-500/30 rounded-lg p-5 bg-gray-50 dark:bg-slate-800/50 mb-4">
@@ -1040,6 +1071,9 @@ function AboutMeTab({
           <button
             key={t}
             onClick={() => setSubTab(t)}
+            aria-label={`${t === "places" ? "Places" : t === "books" ? "Books" : "Music"} sub-tab`}
+            aria-selected={subTab === t}
+            role="tab"
             className={`px-3 py-1.5 text-sm rounded-full transition hover:scale-105 ${subTab === t ? "bg-cyan-600 text-white" : "bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-300 dark:hover:bg-slate-600"}`}
           >
             {t === "places"
@@ -1134,6 +1168,11 @@ function PlacesSection({
             items={places.map((p) => p.id)}
             strategy={verticalListSortingStrategy}
           >
+            {places.length === 0 && (
+              <p className="text-center text-gray-500 dark:text-slate-400 py-8">
+                No places yet. Click &ldquo;+ Add&rdquo; to get started.
+              </p>
+            )}
             {places.map((place) => (
               <SortableItem key={place.id} id={place.id}>
                 {({ handleProps }) => (
@@ -1145,6 +1184,7 @@ function PlacesSection({
                           src={place.image}
                           alt={place.name}
                           fill
+                          sizes="64px"
                           className="object-cover"
                         />
                       </div>
@@ -1173,7 +1213,6 @@ function PlacesSection({
                           toast.success("Place deleted");
                           router.refresh();
                         }}
-                        small
                       />
                     </div>
                   </div>
@@ -1203,7 +1242,9 @@ function PlaceForm({
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  if (state?.success) onSuccess();
+  useEffect(() => {
+    if (state?.success) onSuccess();
+  }, [state, onSuccess]);
 
   const handleUpload = async (file: File) => {
     setUploading(true);
@@ -1354,6 +1395,11 @@ function BooksSection({
             items={books.map((b) => b.id)}
             strategy={verticalListSortingStrategy}
           >
+            {books.length === 0 && (
+              <p className="text-center text-gray-500 dark:text-slate-400 py-8">
+                No books yet. Click &ldquo;+ Add&rdquo; to get started.
+              </p>
+            )}
             {books.map((book) => (
               <SortableItem key={book.id} id={book.id}>
                 {({ handleProps }) => (
@@ -1365,6 +1411,7 @@ function BooksSection({
                           src={book.image}
                           alt={book.title}
                           fill
+                          sizes="40px"
                           className="object-contain"
                         />
                       </div>
@@ -1393,7 +1440,6 @@ function BooksSection({
                           toast.success("Book deleted");
                           router.refresh();
                         }}
-                        small
                       />
                     </div>
                   </div>
@@ -1420,7 +1466,9 @@ function BookForm({
   const action = isEditing ? updateBook : addBook;
   const [state, formAction, pending] = useActionState(action, null);
 
-  if (state?.success) onSuccess();
+  useEffect(() => {
+    if (state?.success) onSuccess();
+  }, [state, onSuccess]);
 
   return (
     <div className="border-2 border-cyan-500/30 rounded-lg p-4 bg-gray-50 dark:bg-slate-800/50 mb-4">
@@ -1542,6 +1590,11 @@ function MusicSection({
             items={music.map((m) => m.id)}
             strategy={verticalListSortingStrategy}
           >
+            {music.length === 0 && (
+              <p className="text-center text-gray-500 dark:text-slate-400 py-8">
+                No tracks yet. Click &ldquo;+ Add&rdquo; to get started.
+              </p>
+            )}
             {music.map((track) => (
               <SortableItem key={track.id} id={track.id}>
                 {({ handleProps }) => (
@@ -1553,6 +1606,7 @@ function MusicSection({
                           src={track.cover}
                           alt={track.title}
                           fill
+                          sizes="48px"
                           className="object-cover"
                         />
                       </div>
@@ -1581,7 +1635,6 @@ function MusicSection({
                           toast.success("Track deleted");
                           router.refresh();
                         }}
-                        small
                       />
                     </div>
                   </div>
@@ -1608,7 +1661,9 @@ function MusicForm({
   const action = isEditing ? updateMusic : addMusic;
   const [state, formAction, pending] = useActionState(action, null);
 
-  if (state?.success) onSuccess();
+  useEffect(() => {
+    if (state?.success) onSuccess();
+  }, [state, onSuccess]);
 
   return (
     <div className="border-2 border-cyan-500/30 rounded-lg p-4 bg-gray-50 dark:bg-slate-800/50 mb-4">

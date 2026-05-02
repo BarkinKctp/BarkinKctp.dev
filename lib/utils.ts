@@ -7,6 +7,11 @@ export const validateString = (
   );
 };
 
+const OBJECT_ID_RE = /^[0-9a-fA-F]{24}$/;
+export const isValidObjectId = (id: unknown): id is string => {
+  return typeof id === "string" && OBJECT_ID_RE.test(id);
+};
+
 export const getErrorMessage = (error: unknown): string => {
   let message: string;
 

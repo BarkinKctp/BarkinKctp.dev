@@ -4,6 +4,7 @@ import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/mongodb";
 import { verifySession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { validateString, isValidObjectId } from "@/lib/utils";
 
 export interface Project {
   id: string;
@@ -44,22 +45,32 @@ export async function addProject(
     return { error: "Unauthorized" };
   }
 
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
-  const link = formData.get("link") as string;
-  const tagsRaw = formData.get("tags") as string;
-  const imageUrl = formData.get("imageUrl") as string;
+  const title = formData.get("title");
+  const description = formData.get("description");
+  const link = formData.get("link");
+  const tagsRaw = formData.get("tags");
+  const imageUrl = formData.get("imageUrl");
 
-  if (!title || !description || !link || !tagsRaw || !imageUrl) {
-    return { error: "All fields are required" };
+  if (
+    !validateString(title, 200) ||
+    !validateString(description, 2000) ||
+    !validateString(link, 500) ||
+    !validateString(tagsRaw, 500) ||
+    !validateString(imageUrl, 1000)
+  ) {
+    return { error: "All fields are required and must not exceed length limits" };
   }
 
   const tags = tagsRaw.split(",").map((t) => t.trim()).filter(Boolean);
 
-  const collection = await getCollection();
-  const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
-  const order = last.length > 0 && typeof last[0].order === "number" ? last[0].order + 1 : 0;
-  await collection.insertOne({ title, description, link, tags, imageUrl, order });
+  try {
+    const collection = await getCollection();
+    const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
+    const order = last.length > 0 && typeof last[0].order === "number" ? last[0].order + 1 : 0;
+    await collection.insertOne({ title, description, link, tags, imageUrl, order });
+  } catch {
+    return { error: "Failed to add project. Please try again." };
+  }
 
   revalidatePath("/");
   revalidatePath("/pages/projects");
@@ -77,27 +88,41 @@ export async function updateProject(
     return { error: "Unauthorized" };
   }
 
-  const id = formData.get("id") as string;
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
-  const link = formData.get("link") as string;
-  const tagsRaw = formData.get("tags") as string;
-  const imageUrl = formData.get("imageUrl") as string;
+  const id = formData.get("id");
+  const title = formData.get("title");
+  const description = formData.get("description");
+  const link = formData.get("link");
+  const tagsRaw = formData.get("tags");
+  const imageUrl = formData.get("imageUrl");
 
-  if (!id || !title || !description || !link || !tagsRaw || !imageUrl) {
-    return { error: "All fields are required" };
+  if (!isValidObjectId(id)) {
+    return { error: "Invalid project ID" };
+  }
+
+  if (
+    !validateString(title, 200) ||
+    !validateString(description, 2000) ||
+    !validateString(link, 500) ||
+    !validateString(tagsRaw, 500) ||
+    !validateString(imageUrl, 1000)
+  ) {
+    return { error: "All fields are required and must not exceed length limits" };
   }
 
   const tags = tagsRaw.split(",").map((t) => t.trim()).filter(Boolean);
 
-  const collection = await getCollection();
-  const result = await collection.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { title, description, link, tags, imageUrl } }
-  );
+  try {
+    const collection = await getCollection();
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { title, description, link, tags, imageUrl } }
+    );
 
-  if (result.matchedCount === 0) {
-    return { error: "Project not found" };
+    if (result.matchedCount === 0) {
+      return { error: "Project not found" };
+    }
+  } catch {
+    return { error: "Failed to update project. Please try again." };
   }
 
   revalidatePath("/");
@@ -115,11 +140,19 @@ export async function deleteProject(
     return { error: "Unauthorized" };
   }
 
-  const collection = await getCollection();
-  const result = await collection.deleteOne({ _id: new ObjectId(id) });
+  if (!isValidObjectId(id)) {
+    return { error: "Invalid project ID" };
+  }
 
-  if (result.deletedCount === 0) {
-    return { error: "Project not found" };
+  try {
+    const collection = await getCollection();
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return { error: "Project not found" };
+    }
+  } catch {
+    return { error: "Failed to delete project. Please try again." };
   }
 
   revalidatePath("/");
