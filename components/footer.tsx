@@ -5,9 +5,13 @@ import { links } from "@/lib/data";
 import { BsLinkedin, BsGithub } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import { LinkedIn, Github, pages } from "@/lib/links";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const [language, setLanguage] = useState<"en" | "tr">("en");
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <footer className="bg-gray-700 text-zinc-300 dark:bg-zinc-950 dark:text-zinc-400 mt-15 sm:mt-22 border-t border-black/60 dark:border-white/20">

@@ -24,7 +24,7 @@ async function getCollection() {
 
 export async function getProjects(): Promise<Project[]> {
   const collection = await getCollection();
-  const docs = await collection.find({}).toArray();
+  const docs = await collection.find({}).sort({ order: 1, _id: 1 }).toArray();
   return docs.map((doc) => ({
     id: doc._id.toString(),
     title: doc.title,
@@ -57,7 +57,9 @@ export async function addProject(
   const tags = tagsRaw.split(",").map((t) => t.trim()).filter(Boolean);
 
   const collection = await getCollection();
-  await collection.insertOne({ title, description, link, tags, imageUrl });
+  const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
+  const order = last.length > 0 && typeof last[0].order === "number" ? last[0].order + 1 : 0;
+  await collection.insertOne({ title, description, link, tags, imageUrl, order });
 
   revalidatePath("/");
   revalidatePath("/pages/projects");

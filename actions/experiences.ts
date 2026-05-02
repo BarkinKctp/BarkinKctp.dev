@@ -24,7 +24,7 @@ async function getCollection() {
 
 export async function getExperiences(): Promise<Experience[]> {
   const collection = await getCollection();
-  const docs = await collection.find({}).sort({ _id: 1 }).toArray();
+  const docs = await collection.find({}).sort({ order: 1, _id: 1 }).toArray();
   return docs.map((doc) => ({
     id: doc._id.toString(),
     company: doc.company,
@@ -53,7 +53,9 @@ export async function addExperience(
   }
 
   const collection = await getCollection();
-  await collection.insertOne({ company, title, location, description, duration });
+  const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
+  const order = last.length > 0 && typeof last[0].order === "number" ? last[0].order + 1 : 0;
+  await collection.insertOne({ company, title, location, description, duration, order });
 
   revalidatePath("/");
   revalidatePath("/admin");

@@ -6,10 +6,14 @@ import Link from "next/link";
 import clsx from "clsx";
 import { useActiveSection } from "@/app/context/active-section-context";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const { activeSection, setActiveSection } = useActiveSection();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) return null;
 
   const handleLinkClick = (section: (typeof links)[number]["name"]) => {
     setActiveSection(section);
@@ -102,8 +106,7 @@ export default function Header() {
               initial={{ y: -25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.3, ease: "easeInOut", delay: 0.25 }}
-            >
-            </motion.li>
+            ></motion.li>
           </ul>
         </nav>
       </motion.div>

@@ -6,6 +6,8 @@ import { getSkills } from "@/actions/skills";
 import { getPlaces, getBooks, getMusic } from "@/actions/about";
 import AdminDashboardClient from "./dashboard-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPage() {
   const authenticated = await verifySession();
   if (!authenticated) {

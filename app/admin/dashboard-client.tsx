@@ -1,8 +1,14 @@
-﻿"use client";
+"use client";
 
-import { useActionState, useState, useRef } from "react";
+import {
+  useActionState,
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+} from "react";
 import Image from "next/image";
-import { logoutAction } from "@/actions/auth";
+import { logoutAction, destroySessionAction } from "@/actions/auth";
 import {
   addProject,
   updateProject,
@@ -36,7 +42,28 @@ import {
   type Music,
 } from "@/actions/about";
 import { uploadImage } from "@/actions/upload";
+import { reorderItems } from "@/actions/reorder";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { MdDragIndicator } from "react-icons/md";
+import { BsArrowLeft } from "react-icons/bs";
+import { motion } from "framer-motion";
 
 type Tab = "projects" | "experiences" | "skills" | "about";
 
@@ -58,6 +85,39 @@ export default function AdminDashboardClient({
   const [activeTab, setActiveTab] = useState<Tab>("projects");
   const router = useRouter();
 
+  // Auto-logout after 5 minutes of idle
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    const IDLE_MS = 5 * 60 * 1000;
+    const resetTimer = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(async () => {
+        await destroySessionAction();
+        router.push("/admin/login?expired=1");
+      }, IDLE_MS);
+    };
+    const events = ["mousemove", "keydown", "click", "scroll", "touchstart"];
+    events.forEach((e) => window.addEventListener(e, resetTimer));
+    resetTimer();
+    return () => {
+      clearTimeout(timeout);
+      events.forEach((e) => window.removeEventListener(e, resetTimer));
+    };
+  }, [router]);
+
+  const handleReorder = useCallback(
+    async (collection: string, orderedIds: string[]) => {
+      const result = await reorderItems(collection, orderedIds);
+      if (result.success) {
+        toast.success("Order updated");
+        router.refresh();
+      } else {
+        toast.error(result.error ?? "Failed to reorder");
+      }
+    },
+    [router],
+  );
+
   const tabs: { key: Tab; label: string; count: number }[] = [
     { key: "projects", label: "Projects", count: projects.length },
     { key: "experiences", label: "Experiences", count: experiences.length },
@@ -70,29 +130,53 @@ export default function AdminDashboardClient({
   ];
 
   return (
-    <div className="min-h-screen px-4 py-10 max-w-[70rem] mx-auto">
+    <motion.div
+      className="min-h-screen px-4 py-10 max-w-[70rem] mx-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
+      <Toaster position="top-right" />
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">
+      <motion.div
+        className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100 hover:text-black dark:hover:text-white transition-colors cursor-default">
           Admin Dashboard
         </h1>
-        <form action={logoutAction}>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition text-sm"
-          >
-            Logout
-          </button>
-        </form>
-      </div>
+        <div className="flex items-center gap-3">
+          <form action={logoutAction}>
+            <motion.button
+              type="submit"
+              className="group px-8 py-2.5 bg-red-600 text-white rounded-full flex items-center gap-2
+              hover:bg-red-500 transition text-sm border border-red-700/50"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <BsArrowLeft className="opacity-70 group-hover:opacity-100 group-hover:-translate-x-1 transition-all" />
+              <span className="opacity-90 group-hover:opacity-100 transition-opacity">
+                Logout
+              </span>
+            </motion.button>
+          </form>
+        </div>
+      </motion.div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 border-b border-black/10 dark:border-white/10">
+      <motion.div
+        className="flex gap-2 mb-6 border-b border-black/10 dark:border-white/10 overflow-x-auto"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.4 }}
+      >
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition ${
+            className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition whitespace-nowrap ${
               activeTab === tab.key
                 ? "bg-white dark:bg-slate-900 border border-b-0 border-black/20 dark:border-white/15 text-cyan-600"
                 : "text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200"
@@ -101,25 +185,106 @@ export default function AdminDashboardClient({
             {tab.label} ({tab.count})
           </button>
         ))}
-      </div>
+      </motion.div>
 
       {/* Tab Content */}
-      {activeTab === "projects" && (
-        <ProjectsTab projects={projects} router={router} />
-      )}
-      {activeTab === "experiences" && (
-        <ExperiencesTab experiences={experiences} router={router} />
-      )}
-      {activeTab === "skills" && <SkillsTab skills={skills} router={router} />}
-      {activeTab === "about" && (
-        <AboutMeTab
-          places={places}
-          books={books}
-          music={music}
-          router={router}
-        />
-      )}
+      <motion.div
+        key={activeTab}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        {activeTab === "projects" && (
+          <ProjectsTab
+            projects={projects}
+            router={router}
+            onReorder={handleReorder}
+          />
+        )}
+        {activeTab === "experiences" && (
+          <ExperiencesTab
+            experiences={experiences}
+            router={router}
+            onReorder={handleReorder}
+          />
+        )}
+        {activeTab === "skills" && (
+          <SkillsTab
+            skills={skills}
+            router={router}
+            onReorder={handleReorder}
+          />
+        )}
+        {activeTab === "about" && (
+          <AboutMeTab
+            places={places}
+            books={books}
+            music={music}
+            router={router}
+            onReorder={handleReorder}
+          />
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ======================== SHARED TYPES & HELPERS ======================== */
+
+type ReorderHandler = (
+  collection: string,
+  orderedIds: string[],
+) => Promise<void>;
+
+function useDndSensors() {
+  return useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 200, tolerance: 5 },
+    }),
+  );
+}
+
+function SortableItem({
+  id,
+  children,
+}: {
+  id: string;
+  children: (props: {
+    handleProps: Record<string, unknown>;
+  }) => React.ReactNode;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 10 : undefined,
+    position: "relative" as const,
+  };
+  return (
+    <div ref={setNodeRef} style={style}>
+      {children({ handleProps: { ...attributes, ...listeners } })}
     </div>
+  );
+}
+
+function DragHandle(props: Record<string, unknown>) {
+  return (
+    <button
+      type="button"
+      {...props}
+      className="cursor-grab active:cursor-grabbing touch-none text-gray-400 hover:text-gray-600 dark:hover:text-slate-300 shrink-0"
+    >
+      <MdDragIndicator size={20} />
+    </button>
   );
 }
 
@@ -128,12 +293,27 @@ export default function AdminDashboardClient({
 function ProjectsTab({
   projects,
   router,
+  onReorder,
 }: {
   projects: Project[];
   router: ReturnType<typeof useRouter>;
+  onReorder: ReorderHandler;
 }) {
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const sensors = useDndSensors();
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = projects.findIndex((p) => p.id === active.id);
+    const newIndex = projects.findIndex((p) => p.id === over.id);
+    const newOrder = arrayMove(projects, oldIndex, newIndex);
+    onReorder(
+      "projects",
+      newOrder.map((p) => p.id),
+    );
+  };
 
   return (
     <div className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-6 sm:p-8">
@@ -146,7 +326,7 @@ function ProjectsTab({
             setShowAddForm(true);
             setEditingProject(null);
           }}
-          className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 transition text-sm font-medium"
+          className="px-4 py-2 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 hover:scale-105 active:scale-110 transition text-sm font-medium"
         >
           + Add Project
         </button>
@@ -162,64 +342,81 @@ function ProjectsTab({
           onSuccess={() => {
             setShowAddForm(false);
             setEditingProject(null);
+            toast.success(editingProject ? "Project updated" : "Project added");
             router.refresh();
           }}
         />
       )}
 
       <div className="space-y-4 mt-6">
-        {projects.map((project) => (
-          <div
-            key={project.id}
-            className="border border-black/20 dark:border-white/10 rounded-lg p-4 flex gap-4"
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={projects.map((p) => p.id)}
+            strategy={verticalListSortingStrategy}
           >
-            {project.imageUrl && (
-              <div className="relative w-20 h-14 shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-slate-800">
-                <Image
-                  src={project.imageUrl}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-            <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-gray-900 dark:text-slate-100 truncate">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-slate-400 mt-1 line-clamp-1">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {project.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="text-xs bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded-full text-gray-700 dark:text-slate-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="flex gap-2 shrink-0">
-                <button
-                  onClick={() => {
-                    setEditingProject(project);
-                    setShowAddForm(false);
-                  }}
-                  className="px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition text-sm"
-                >
-                  Edit
-                </button>
-                <DeleteButton
-                  onDelete={() => deleteProject(project.id)}
-                  onSuccess={() => router.refresh()}
-                />
-              </div>
-            </div>
-          </div>
-        ))}
+            {projects.map((project) => (
+              <SortableItem key={project.id} id={project.id}>
+                {({ handleProps }) => (
+                  <div className="border border-black/20 dark:border-white/10 rounded-lg p-4 flex gap-4">
+                    <DragHandle {...handleProps} />
+                    {project.imageUrl && (
+                      <div className="relative w-20 h-14 shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-slate-800">
+                        <Image
+                          src={project.imageUrl}
+                          alt={project.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 dark:text-slate-100 truncate">
+                          {project.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-slate-400 mt-1 line-clamp-1">
+                          {project.description}
+                        </p>
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          {project.tags.map((tag, i) => (
+                            <span
+                              key={i}
+                              className="text-xs bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded-full text-gray-700 dark:text-slate-300"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex gap-2 shrink-0">
+                        <button
+                          onClick={() => {
+                            setEditingProject(project);
+                            setShowAddForm(false);
+                          }}
+                          className="px-3 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-500 hover:scale-105 transition text-sm"
+                        >
+                          Edit
+                        </button>
+                        <DeleteButton
+                          onDelete={() => deleteProject(project.id)}
+                          onSuccess={() => {
+                            toast.success("Project deleted");
+                            router.refresh();
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
     </div>
   );
@@ -368,7 +565,7 @@ function ProjectForm({
                     : "Click or drag & drop an image here"}
                 </p>
                 <p className="text-xs text-gray-400 dark:text-slate-600 mt-1">
-                  PNG, JPEG, WebP, GIF — max 4MB
+                  PNG, JPEG, WebP, GIF � max 4MB
                 </p>
               </div>
             )}
@@ -383,7 +580,7 @@ function ProjectForm({
             <button
               type="submit"
               disabled={pending || uploading || !imageUrl}
-              className="px-4 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-500 disabled:opacity-50 transition text-sm font-medium"
+              className="px-4 py-2 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 disabled:opacity-50 transition text-sm font-medium"
             >
               {pending
                 ? "Saving..."
@@ -394,7 +591,7 @@ function ProjectForm({
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-md hover:bg-gray-400 dark:hover:bg-slate-600 transition text-sm"
+              className="px-4 py-2 bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-full hover:bg-gray-400 dark:hover:bg-slate-600 transition text-sm"
             >
               Cancel
             </button>
@@ -453,12 +650,27 @@ function ProjectForm({
 function ExperiencesTab({
   experiences,
   router,
+  onReorder,
 }: {
   experiences: Experience[];
   router: ReturnType<typeof useRouter>;
+  onReorder: ReorderHandler;
 }) {
   const [editingExp, setEditingExp] = useState<Experience | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const sensors = useDndSensors();
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = experiences.findIndex((e) => e.id === active.id);
+    const newIndex = experiences.findIndex((e) => e.id === over.id);
+    const newOrder = arrayMove(experiences, oldIndex, newIndex);
+    onReorder(
+      "experiences",
+      newOrder.map((e) => e.id),
+    );
+  };
 
   return (
     <div className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-6 sm:p-8">
@@ -471,7 +683,7 @@ function ExperiencesTab({
             setShowAddForm(true);
             setEditingExp(null);
           }}
-          className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 transition text-sm font-medium"
+          className="px-4 py-2 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 hover:scale-105 active:scale-110 transition text-sm font-medium"
         >
           + Add Experience
         </button>
@@ -486,6 +698,9 @@ function ExperiencesTab({
           }}
           onSuccess={() => {
             setShowAddForm(false);
+            toast.success(
+              editingExp ? "Experience updated" : "Experience added",
+            );
             setEditingExp(null);
             router.refresh();
           }}
@@ -493,44 +708,60 @@ function ExperiencesTab({
       )}
 
       <div className="space-y-4 mt-6">
-        {experiences.map((exp) => (
-          <div
-            key={exp.id}
-            className="border border-black/20 dark:border-white/10 rounded-lg p-4"
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={experiences.map((e) => e.id)}
+            strategy={verticalListSortingStrategy}
           >
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-gray-900 dark:text-slate-100">
-                  {exp.title}
-                </h3>
-                <p className="text-sm text-cyan-600 dark:text-cyan-400 font-medium">
-                  {exp.company}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">
-                  {exp.location} &middot; {exp.duration}
-                </p>
-                <p className="text-sm text-gray-600 dark:text-slate-400 mt-1 line-clamp-2">
-                  {exp.description}
-                </p>
-              </div>
-              <div className="flex gap-2 shrink-0">
-                <button
-                  onClick={() => {
-                    setEditingExp(exp);
-                    setShowAddForm(false);
-                  }}
-                  className="px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition text-sm"
-                >
-                  Edit
-                </button>
-                <DeleteButton
-                  onDelete={() => deleteExperience(exp.id)}
-                  onSuccess={() => router.refresh()}
-                />
-              </div>
-            </div>
-          </div>
-        ))}
+            {experiences.map((exp) => (
+              <SortableItem key={exp.id} id={exp.id}>
+                {({ handleProps }) => (
+                  <div className="border border-black/20 dark:border-white/10 rounded-lg p-4 flex gap-3">
+                    <DragHandle {...handleProps} />
+                    <div className="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 dark:text-slate-100">
+                          {exp.title}
+                        </h3>
+                        <p className="text-sm text-cyan-600 dark:text-cyan-400 font-medium">
+                          {exp.company}
+                        </p>
+                        <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">
+                          {exp.location} &middot; {exp.duration}
+                        </p>
+                        <p className="text-sm text-gray-600 dark:text-slate-400 mt-1 line-clamp-2">
+                          {exp.description}
+                        </p>
+                      </div>
+                      <div className="flex gap-2 shrink-0">
+                        <button
+                          onClick={() => {
+                            setEditingExp(exp);
+                            setShowAddForm(false);
+                          }}
+                          className="px-3 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-500 hover:scale-105 transition text-sm"
+                        >
+                          Edit
+                        </button>
+                        <DeleteButton
+                          onDelete={() => deleteExperience(exp.id)}
+                          onSuccess={() => {
+                            toast.success("Experience deleted");
+                            router.refresh();
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
     </div>
   );
@@ -605,14 +836,14 @@ function ExperienceForm({
           <button
             type="submit"
             disabled={pending}
-            className="px-4 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-500 disabled:opacity-50 transition text-sm font-medium"
+            className="px-4 py-2 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 disabled:opacity-50 transition text-sm font-medium"
           >
             {pending ? "Saving..." : isEditing ? "Update" : "Add Experience"}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-md hover:bg-gray-400 dark:hover:bg-slate-600 transition text-sm"
+            className="px-4 py-2 bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-full hover:bg-gray-400 dark:hover:bg-slate-600 transition text-sm"
           >
             Cancel
           </button>
@@ -627,12 +858,27 @@ function ExperienceForm({
 function SkillsTab({
   skills,
   router,
+  onReorder,
 }: {
   skills: Skill[];
   router: ReturnType<typeof useRouter>;
+  onReorder: ReorderHandler;
 }) {
   const [editingSkill, setEditingSkill] = useState<Skill | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const sensors = useDndSensors();
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = skills.findIndex((s) => s.id === active.id);
+    const newIndex = skills.findIndex((s) => s.id === over.id);
+    const newOrder = arrayMove(skills, oldIndex, newIndex);
+    onReorder(
+      "skills",
+      newOrder.map((s) => s.id),
+    );
+  };
 
   return (
     <div className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-6 sm:p-8">
@@ -645,7 +891,7 @@ function SkillsTab({
             setShowAddForm(true);
             setEditingSkill(null);
           }}
-          className="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 transition text-sm font-medium"
+          className="px-4 py-2 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 hover:scale-105 active:scale-110 transition text-sm font-medium"
         >
           + Add Skill
         </button>
@@ -660,6 +906,7 @@ function SkillsTab({
           }}
           onSuccess={() => {
             setShowAddForm(false);
+            toast.success(editingSkill ? "Skill updated" : "Skill added");
             setEditingSkill(null);
             router.refresh();
           }}
@@ -667,32 +914,51 @@ function SkillsTab({
       )}
 
       <div className="flex flex-wrap gap-2 mt-6">
-        {skills.map((skill) => (
-          <div
-            key={skill.id}
-            className="group relative flex items-center gap-1 bg-slate-100 dark:bg-slate-800 border border-black/10 dark:border-white/10 rounded-full px-4 py-2"
-          >
-            <span className="text-sm text-gray-800 dark:text-slate-200">
-              {skill.name}
-            </span>
-            <div className="hidden group-hover:flex items-center gap-1 ml-2">
-              <button
-                onClick={() => {
-                  setEditingSkill(skill);
-                  setShowAddForm(false);
-                }}
-                className="text-blue-600 hover:text-blue-500 text-xs font-medium"
-              >
-                Edit
-              </button>
-              <DeleteButton
-                onDelete={() => deleteSkill(skill.id)}
-                onSuccess={() => router.refresh()}
-                small
-              />
-            </div>
-          </div>
-        ))}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={skills.map((s) => s.id)}>
+            {skills.map((skill) => (
+              <SortableItem key={skill.id} id={skill.id}>
+                {({ handleProps }) => (
+                  <div className="group relative flex items-center gap-1 bg-slate-100 dark:bg-slate-800 border border-black/10 dark:border-white/10 rounded-full px-2 py-2">
+                    <button
+                      type="button"
+                      {...handleProps}
+                      className="cursor-grab active:cursor-grabbing touch-none text-gray-400 hover:text-gray-600 dark:hover:text-slate-300"
+                    >
+                      <MdDragIndicator size={16} />
+                    </button>
+                    <span className="text-sm text-gray-800 dark:text-slate-200">
+                      {skill.name}
+                    </span>
+                    <div className="hidden group-hover:flex items-center gap-1 ml-2">
+                      <button
+                        onClick={() => {
+                          setEditingSkill(skill);
+                          setShowAddForm(false);
+                        }}
+                        className="text-blue-600 hover:text-blue-500 text-xs font-medium"
+                      >
+                        Edit
+                      </button>
+                      <DeleteButton
+                        onDelete={() => deleteSkill(skill.id)}
+                        onSuccess={() => {
+                          toast.success("Skill deleted");
+                          router.refresh();
+                        }}
+                        small
+                      />
+                    </div>
+                  </div>
+                )}
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
     </div>
   );
@@ -734,14 +1000,14 @@ function SkillForm({
         <button
           type="submit"
           disabled={pending}
-          className="h-10 px-4 bg-cyan-600 text-white rounded-md hover:bg-cyan-500 disabled:opacity-50 transition text-sm font-medium"
+          className="h-10 px-4 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 disabled:opacity-50 transition text-sm font-medium"
         >
           {pending ? "..." : isEditing ? "Update" : "Add"}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="h-10 px-4 bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-md hover:bg-gray-400 dark:hover:bg-slate-600 transition text-sm"
+          className="h-10 px-4 bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-full hover:bg-gray-400 dark:hover:bg-slate-600 transition text-sm"
         >
           Cancel
         </button>
@@ -757,11 +1023,13 @@ function AboutMeTab({
   books,
   music,
   router,
+  onReorder,
 }: {
   places: Place[];
   books: Book[];
   music: Music[];
   router: ReturnType<typeof useRouter>;
+  onReorder: ReorderHandler;
 }) {
   const [subTab, setSubTab] = useState<"places" | "books" | "music">("places");
 
@@ -772,7 +1040,7 @@ function AboutMeTab({
           <button
             key={t}
             onClick={() => setSubTab(t)}
-            className={`px-3 py-1.5 text-sm rounded-md transition ${subTab === t ? "bg-cyan-600 text-white" : "bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-300 dark:hover:bg-slate-600"}`}
+            className={`px-3 py-1.5 text-sm rounded-full transition hover:scale-105 ${subTab === t ? "bg-cyan-600 text-white" : "bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-300 dark:hover:bg-slate-600"}`}
           >
             {t === "places"
               ? `Places (${places.length})`
@@ -783,9 +1051,15 @@ function AboutMeTab({
         ))}
       </div>
 
-      {subTab === "places" && <PlacesSection places={places} router={router} />}
-      {subTab === "books" && <BooksSection books={books} router={router} />}
-      {subTab === "music" && <MusicSection music={music} router={router} />}
+      {subTab === "places" && (
+        <PlacesSection places={places} router={router} onReorder={onReorder} />
+      )}
+      {subTab === "books" && (
+        <BooksSection books={books} router={router} onReorder={onReorder} />
+      )}
+      {subTab === "music" && (
+        <MusicSection music={music} router={router} onReorder={onReorder} />
+      )}
     </div>
   );
 }
@@ -795,12 +1069,27 @@ function AboutMeTab({
 function PlacesSection({
   places,
   router,
+  onReorder,
 }: {
   places: Place[];
   router: ReturnType<typeof useRouter>;
+  onReorder: ReorderHandler;
 }) {
   const [editing, setEditing] = useState<Place | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const sensors = useDndSensors();
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = places.findIndex((p) => p.id === active.id);
+    const newIndex = places.findIndex((p) => p.id === over.id);
+    const newOrder = arrayMove(places, oldIndex, newIndex);
+    onReorder(
+      "places",
+      newOrder.map((p) => p.id),
+    );
+  };
 
   return (
     <>
@@ -813,7 +1102,7 @@ function PlacesSection({
             setShowAdd(true);
             setEditing(null);
           }}
-          className="px-3 py-1.5 bg-cyan-600 text-white rounded-md hover:bg-cyan-500 transition text-sm"
+          className="px-3 py-1.5 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 hover:scale-105 active:scale-110 transition text-sm"
         >
           + Add
         </button>
@@ -828,6 +1117,7 @@ function PlacesSection({
           }}
           onSuccess={() => {
             setShowAdd(false);
+            toast.success(editing ? "Place updated" : "Place added");
             setEditing(null);
             router.refresh();
           }}
@@ -835,47 +1125,63 @@ function PlacesSection({
       )}
 
       <div className="space-y-3 mt-4">
-        {places.map((place) => (
-          <div
-            key={place.id}
-            className="border border-black/20 dark:border-white/10 rounded-lg p-3 flex items-center gap-4"
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={places.map((p) => p.id)}
+            strategy={verticalListSortingStrategy}
           >
-            {place.image && (
-              <div className="relative w-16 h-12 shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-slate-800">
-                <Image
-                  src={place.image}
-                  alt={place.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 dark:text-slate-100 text-sm">
-                {place.name}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-slate-400">
-                {place.description}
-              </p>
-            </div>
-            <div className="flex gap-2 shrink-0">
-              <button
-                onClick={() => {
-                  setEditing(place);
-                  setShowAdd(false);
-                }}
-                className="px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-500 transition"
-              >
-                Edit
-              </button>
-              <DeleteButton
-                onDelete={() => deletePlace(place.id)}
-                onSuccess={() => router.refresh()}
-                small
-              />
-            </div>
-          </div>
-        ))}
+            {places.map((place) => (
+              <SortableItem key={place.id} id={place.id}>
+                {({ handleProps }) => (
+                  <div className="border border-black/20 dark:border-white/10 rounded-lg p-3 flex items-center gap-4">
+                    <DragHandle {...handleProps} />
+                    {place.image && (
+                      <div className="relative w-16 h-12 shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-slate-800">
+                        <Image
+                          src={place.image}
+                          alt={place.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 dark:text-slate-100 text-sm">
+                        {place.name}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-slate-400">
+                        {place.description}
+                      </p>
+                    </div>
+                    <div className="flex gap-2 shrink-0">
+                      <button
+                        onClick={() => {
+                          setEditing(place);
+                          setShowAdd(false);
+                        }}
+                        className="px-2 py-1 bg-blue-600 text-white rounded-full text-xs hover:bg-blue-500 hover:scale-105 transition"
+                      >
+                        Edit
+                      </button>
+                      <DeleteButton
+                        onDelete={() => deletePlace(place.id)}
+                        onSuccess={() => {
+                          toast.success("Place deleted");
+                          router.refresh();
+                        }}
+                        small
+                      />
+                    </div>
+                  </div>
+                )}
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
     </>
   );
@@ -934,7 +1240,7 @@ function PlaceForm({
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="px-3 py-1.5 bg-gray-200 dark:bg-slate-700 text-sm rounded-md hover:bg-gray-300 dark:hover:bg-slate-600 transition"
+            className="px-3 py-1.5 bg-gray-200 dark:bg-slate-700 text-sm rounded-full hover:bg-gray-300 dark:hover:bg-slate-600 transition"
           >
             {uploading
               ? "Uploading..."
@@ -961,14 +1267,14 @@ function PlaceForm({
           <button
             type="submit"
             disabled={pending || !imageUrl}
-            className="px-4 py-1.5 bg-cyan-600 text-white rounded-md hover:bg-cyan-500 disabled:opacity-50 transition text-sm"
+            className="px-4 py-1.5 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 disabled:opacity-50 transition text-sm"
           >
             {pending ? "..." : isEditing ? "Update" : "Add"}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-1.5 bg-gray-300 dark:bg-slate-700 rounded-md text-sm transition"
+            className="px-4 py-1.5 bg-gray-300 dark:bg-slate-700 rounded-full text-sm transition"
           >
             Cancel
           </button>
@@ -983,12 +1289,27 @@ function PlaceForm({
 function BooksSection({
   books,
   router,
+  onReorder,
 }: {
   books: Book[];
   router: ReturnType<typeof useRouter>;
+  onReorder: ReorderHandler;
 }) {
   const [editing, setEditing] = useState<Book | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const sensors = useDndSensors();
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = books.findIndex((b) => b.id === active.id);
+    const newIndex = books.findIndex((b) => b.id === over.id);
+    const newOrder = arrayMove(books, oldIndex, newIndex);
+    onReorder(
+      "books",
+      newOrder.map((b) => b.id),
+    );
+  };
 
   return (
     <>
@@ -1001,7 +1322,7 @@ function BooksSection({
             setShowAdd(true);
             setEditing(null);
           }}
-          className="px-3 py-1.5 bg-cyan-600 text-white rounded-md hover:bg-cyan-500 transition text-sm"
+          className="px-3 py-1.5 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 hover:scale-105 active:scale-110 transition text-sm"
         >
           + Add
         </button>
@@ -1016,6 +1337,7 @@ function BooksSection({
           }}
           onSuccess={() => {
             setShowAdd(false);
+            toast.success(editing ? "Book updated" : "Book added");
             setEditing(null);
             router.refresh();
           }}
@@ -1023,47 +1345,63 @@ function BooksSection({
       )}
 
       <div className="space-y-3 mt-4">
-        {books.map((book) => (
-          <div
-            key={book.id}
-            className="border border-black/20 dark:border-white/10 rounded-lg p-3 flex items-center gap-4"
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={books.map((b) => b.id)}
+            strategy={verticalListSortingStrategy}
           >
-            {book.image && (
-              <div className="relative w-10 h-14 shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-slate-800">
-                <Image
-                  src={book.image}
-                  alt={book.title}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 dark:text-slate-100 text-sm">
-                {book.title}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-slate-400">
-                {book.author}
-              </p>
-            </div>
-            <div className="flex gap-2 shrink-0">
-              <button
-                onClick={() => {
-                  setEditing(book);
-                  setShowAdd(false);
-                }}
-                className="px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-500 transition"
-              >
-                Edit
-              </button>
-              <DeleteButton
-                onDelete={() => deleteBook(book.id)}
-                onSuccess={() => router.refresh()}
-                small
-              />
-            </div>
-          </div>
-        ))}
+            {books.map((book) => (
+              <SortableItem key={book.id} id={book.id}>
+                {({ handleProps }) => (
+                  <div className="border border-black/20 dark:border-white/10 rounded-lg p-3 flex items-center gap-4">
+                    <DragHandle {...handleProps} />
+                    {book.image && (
+                      <div className="relative w-10 h-14 shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-slate-800">
+                        <Image
+                          src={book.image}
+                          alt={book.title}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 dark:text-slate-100 text-sm">
+                        {book.title}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-slate-400">
+                        {book.author}
+                      </p>
+                    </div>
+                    <div className="flex gap-2 shrink-0">
+                      <button
+                        onClick={() => {
+                          setEditing(book);
+                          setShowAdd(false);
+                        }}
+                        className="px-2 py-1 bg-blue-600 text-white rounded-full text-xs hover:bg-blue-500 hover:scale-105 transition"
+                      >
+                        Edit
+                      </button>
+                      <DeleteButton
+                        onDelete={() => deleteBook(book.id)}
+                        onSuccess={() => {
+                          toast.success("Book deleted");
+                          router.refresh();
+                        }}
+                        small
+                      />
+                    </div>
+                  </div>
+                )}
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
     </>
   );
@@ -1117,14 +1455,14 @@ function BookForm({
           <button
             type="submit"
             disabled={pending}
-            className="px-4 py-1.5 bg-cyan-600 text-white rounded-md hover:bg-cyan-500 disabled:opacity-50 transition text-sm"
+            className="px-4 py-1.5 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 disabled:opacity-50 transition text-sm"
           >
             {pending ? "..." : isEditing ? "Update" : "Add"}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-1.5 bg-gray-300 dark:bg-slate-700 rounded-md text-sm transition"
+            className="px-4 py-1.5 bg-gray-300 dark:bg-slate-700 rounded-full text-sm transition"
           >
             Cancel
           </button>
@@ -1139,12 +1477,27 @@ function BookForm({
 function MusicSection({
   music,
   router,
+  onReorder,
 }: {
   music: Music[];
   router: ReturnType<typeof useRouter>;
+  onReorder: ReorderHandler;
 }) {
   const [editing, setEditing] = useState<Music | null>(null);
   const [showAdd, setShowAdd] = useState(false);
+  const sensors = useDndSensors();
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = music.findIndex((m) => m.id === active.id);
+    const newIndex = music.findIndex((m) => m.id === over.id);
+    const newOrder = arrayMove(music, oldIndex, newIndex);
+    onReorder(
+      "music",
+      newOrder.map((m) => m.id),
+    );
+  };
 
   return (
     <>
@@ -1157,7 +1510,7 @@ function MusicSection({
             setShowAdd(true);
             setEditing(null);
           }}
-          className="px-3 py-1.5 bg-cyan-600 text-white rounded-md hover:bg-cyan-500 transition text-sm"
+          className="px-3 py-1.5 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 hover:scale-105 active:scale-110 transition text-sm"
         >
           + Add
         </button>
@@ -1172,6 +1525,7 @@ function MusicSection({
           }}
           onSuccess={() => {
             setShowAdd(false);
+            toast.success(editing ? "Track updated" : "Track added");
             setEditing(null);
             router.refresh();
           }}
@@ -1179,47 +1533,63 @@ function MusicSection({
       )}
 
       <div className="space-y-3 mt-4">
-        {music.map((track) => (
-          <div
-            key={track.id}
-            className="border border-black/20 dark:border-white/10 rounded-lg p-3 flex items-center gap-4"
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={music.map((m) => m.id)}
+            strategy={verticalListSortingStrategy}
           >
-            {track.cover && (
-              <div className="relative w-12 h-12 shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-slate-800">
-                <Image
-                  src={track.cover}
-                  alt={track.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 dark:text-slate-100 text-sm">
-                {track.title}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-slate-400">
-                {track.artist}
-              </p>
-            </div>
-            <div className="flex gap-2 shrink-0">
-              <button
-                onClick={() => {
-                  setEditing(track);
-                  setShowAdd(false);
-                }}
-                className="px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-500 transition"
-              >
-                Edit
-              </button>
-              <DeleteButton
-                onDelete={() => deleteMusic(track.id)}
-                onSuccess={() => router.refresh()}
-                small
-              />
-            </div>
-          </div>
-        ))}
+            {music.map((track) => (
+              <SortableItem key={track.id} id={track.id}>
+                {({ handleProps }) => (
+                  <div className="border border-black/20 dark:border-white/10 rounded-lg p-3 flex items-center gap-4">
+                    <DragHandle {...handleProps} />
+                    {track.cover && (
+                      <div className="relative w-12 h-12 shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-slate-800">
+                        <Image
+                          src={track.cover}
+                          alt={track.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 dark:text-slate-100 text-sm">
+                        {track.title}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-slate-400">
+                        {track.artist}
+                      </p>
+                    </div>
+                    <div className="flex gap-2 shrink-0">
+                      <button
+                        onClick={() => {
+                          setEditing(track);
+                          setShowAdd(false);
+                        }}
+                        className="px-2 py-1 bg-blue-600 text-white rounded-full text-xs hover:bg-blue-500 hover:scale-105 transition"
+                      >
+                        Edit
+                      </button>
+                      <DeleteButton
+                        onDelete={() => deleteMusic(track.id)}
+                        onSuccess={() => {
+                          toast.success("Track deleted");
+                          router.refresh();
+                        }}
+                        small
+                      />
+                    </div>
+                  </div>
+                )}
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
     </>
   );
@@ -1281,14 +1651,14 @@ function MusicForm({
           <button
             type="submit"
             disabled={pending}
-            className="px-4 py-1.5 bg-cyan-600 text-white rounded-md hover:bg-cyan-500 disabled:opacity-50 transition text-sm"
+            className="px-4 py-1.5 bg-cyan-600 text-white rounded-full hover:bg-cyan-500 disabled:opacity-50 transition text-sm"
           >
             {pending ? "..." : isEditing ? "Update" : "Add"}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-1.5 bg-gray-300 dark:bg-slate-700 rounded-md text-sm transition"
+            className="px-4 py-1.5 bg-gray-300 dark:bg-slate-700 rounded-full text-sm transition"
           >
             Cancel
           </button>
@@ -1321,13 +1691,13 @@ function DeleteButton({
       <div className="flex gap-1">
         <button
           onClick={handleDelete}
-          className={`${small ? "px-1.5 py-0.5 text-[0.65rem]" : "px-2 py-1.5 text-xs"} bg-red-600 text-white rounded-md hover:bg-red-500 transition`}
+          className={`${small ? "px-1.5 py-0.5 text-[0.65rem]" : "px-2 py-1.5 text-xs"} bg-red-600 text-white rounded-full hover:bg-red-500 transition`}
         >
           Yes
         </button>
         <button
           onClick={() => setConfirming(false)}
-          className={`${small ? "px-1.5 py-0.5 text-[0.65rem]" : "px-2 py-1.5 text-xs"} bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-md transition`}
+          className={`${small ? "px-1.5 py-0.5 text-[0.65rem]" : "px-2 py-1.5 text-xs"} bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-full transition`}
         >
           No
         </button>
@@ -1338,7 +1708,7 @@ function DeleteButton({
   return (
     <button
       onClick={() => setConfirming(true)}
-      className={`${small ? "text-red-500 hover:text-red-400 text-xs font-medium" : "px-3 py-1.5 bg-red-600 text-white rounded-md hover:bg-red-500 transition text-sm"}`}
+      className={`${small ? "text-red-500 hover:text-red-400 text-xs font-medium" : "px-3 py-1.5 bg-red-600 text-white rounded-full hover:bg-red-500 hover:scale-105 transition text-sm"}`}
     >
       Delete
     </button>

@@ -19,7 +19,7 @@ async function getCollection() {
 
 export async function getExperiencesFromDb(): Promise<Experience[]> {
   const collection = await getCollection();
-  const docs = await collection.find({}).sort({ _id: 1 }).toArray();
+  const docs = await collection.find({}).sort({ order: 1, _id: 1 }).toArray();
   return docs.map((doc) => ({
     id: doc._id.toString(),
     company: doc.company,

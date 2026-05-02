@@ -19,7 +19,7 @@ async function getCollection() {
 
 export async function getProjectsFromDb(): Promise<Project[]> {
   const collection = await getCollection();
-  const docs = await collection.find({}).toArray();
+  const docs = await collection.find({}).sort({ order: 1, _id: 1 }).toArray();
   return docs.map((doc) => ({
     id: doc._id.toString(),
     title: doc.title,
