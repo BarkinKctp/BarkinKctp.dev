@@ -16,7 +16,7 @@ export const sendEmail = async (formData: FormData) => {
     headersList.get("x-real-ip") ??
     "unknown";
 
-  const { success } = rateLimit(ip);
+  const { success } = await rateLimit(ip);
   if (!success) {
     return {
       error: "Too many requests. Please try again in a minute.",

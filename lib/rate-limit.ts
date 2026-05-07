@@ -1,33 +1,27 @@
-const WINDOW_MS = 60 * 1000; // 1 minute window
-const MAX_REQUESTS = 3; // max 3 emails per minute per IP
+import { Redis } from "@upstash/redis";
 
-const requests = new Map<string, { count: number; resetTime: number }>();
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+});
 
-export function rateLimit(identifier: string): {
+const WINDOW_SEC = 60; // 1 minute window
+const MAX_REQUESTS = 3; // max 3 per minute per IP
+
+export async function rateLimit(identifier: string): Promise<{
   success: boolean;
   remaining: number;
-} {
-  const now = Date.now();
-  const entry = requests.get(identifier);
+}> {
+  const key = `ratelimit:contact:${identifier}`;
+  const count = await redis.incr(key);
 
-  // Clean up expired entries periodically
-  if (requests.size > 1000) {
-    for (const [key, value] of requests) {
-      if (now > value.resetTime) {
-        requests.delete(key);
-      }
-    }
+  if (count === 1) {
+    await redis.expire(key, WINDOW_SEC);
   }
 
-  if (!entry || now > entry.resetTime) {
-    requests.set(identifier, { count: 1, resetTime: now + WINDOW_MS });
-    return { success: true, remaining: MAX_REQUESTS - 1 };
-  }
-
-  if (entry.count >= MAX_REQUESTS) {
+  if (count > MAX_REQUESTS) {
     return { success: false, remaining: 0 };
   }
 
-  entry.count++;
-  return { success: true, remaining: MAX_REQUESTS - entry.count };
+  return { success: true, remaining: MAX_REQUESTS - count };
 }

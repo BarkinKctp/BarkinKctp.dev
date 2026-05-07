@@ -15,6 +15,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@react-email/components": "^1.0.8",
     "@react-email/render": "^2.0.4",
+    "@upstash/redis": "^1.38.0",
     "@vercel/blob": "^2.3.3",
     "clsx": "^2.1.1",
     "framer-motion": "^12.35.1",

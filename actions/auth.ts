@@ -9,12 +9,19 @@ import {
   resetAttempts,
 } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 export async function loginAction(
   _prevState: { error: string } | null,
   formData: FormData
 ) {
-  const rateLimit = checkRateLimit();
+  const headersList = await headers();
+  const ip =
+    headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    headersList.get("x-real-ip") ??
+    "unknown";
+
+  const rateLimit = await checkRateLimit(ip);
   if (rateLimit.locked) {
     return { error: `Too many failed attempts. Try again in ${formatDuration(rateLimit.remainingSeconds)}.` };
   }
@@ -26,15 +33,15 @@ export async function loginAction(
   }
 
   if (!verifyPassword(password)) {
-    recordFailedAttempt();
-    const remaining = checkRateLimit();
+    await recordFailedAttempt(ip);
+    const remaining = await checkRateLimit(ip);
     if (remaining.locked) {
       return { error: `Account locked. Try again in ${formatDuration(remaining.remainingSeconds)}.` };
     }
-    return { error: "Invalid password" };
+    return { error: "Invalid credentials" };
   }
 
-  resetAttempts();
+  await resetAttempts(ip);
   await createSession();
   redirect("/admin");
 }
