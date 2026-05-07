@@ -64,8 +64,9 @@ import { CSS } from "@dnd-kit/utilities";
 import { MdDragIndicator } from "react-icons/md";
 import { BsArrowLeft } from "react-icons/bs";
 import { motion } from "framer-motion";
+import { deleteMessage, type Message } from "@/actions/messages";
 
-type Tab = "projects" | "experiences" | "skills" | "about";
+type Tab = "projects" | "experiences" | "skills" | "about" | "messages";
 
 export default function AdminDashboardClient({
   projects,
@@ -74,6 +75,7 @@ export default function AdminDashboardClient({
   places,
   books,
   music,
+  messages,
 }: {
   projects: Project[];
   experiences: Experience[];
@@ -81,6 +83,7 @@ export default function AdminDashboardClient({
   places: Place[];
   books: Book[];
   music: Music[];
+  messages: Message[];
 }) {
   const [activeTab, setActiveTab] = useState<Tab>("projects");
   const router = useRouter();
@@ -127,6 +130,7 @@ export default function AdminDashboardClient({
       label: "About Me",
       count: places.length + books.length + music.length,
     },
+    { key: "messages", label: "Messages", count: messages.length },
   ];
 
   return (
@@ -226,6 +230,9 @@ export default function AdminDashboardClient({
             router={router}
             onReorder={handleReorder}
           />
+        )}
+        {activeTab === "messages" && (
+          <MessagesTab messages={messages} router={router} />
         )}
       </motion.div>
     </motion.div>
@@ -1767,5 +1774,58 @@ function DeleteButton({
     >
       Delete
     </button>
+  );
+}
+
+/* ======================== MESSAGES TAB ======================== */
+
+function MessagesTab({
+  messages,
+  router,
+}: {
+  messages: Message[];
+  router: ReturnType<typeof useRouter>;
+}) {
+  if (messages.length === 0) {
+    return (
+      <p className="text-gray-500 dark:text-slate-400 text-center py-10">
+        No messages yet.
+      </p>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {messages.map((msg) => (
+        <div
+          key={msg.id}
+          className="border border-black/10 dark:border-white/10 rounded-lg p-4 bg-white dark:bg-slate-900 shadow-sm"
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-sm font-medium text-cyan-600 dark:text-cyan-400">
+                  {msg.sender_email}
+                </span>
+                <span className="text-xs text-gray-400 dark:text-slate-500">
+                  {new Date(msg.created_at).toLocaleString()}
+                </span>
+              </div>
+              <p className="text-sm text-gray-700 dark:text-slate-300 whitespace-pre-wrap break-words">
+                {msg.message}
+              </p>
+            </div>
+            <DeleteButton
+              onDelete={() => deleteMessage(msg.id)}
+              onSuccess={() => {
+                toast.success("Message deleted");
+                router.refresh();
+              }}
+              small
+            />
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
