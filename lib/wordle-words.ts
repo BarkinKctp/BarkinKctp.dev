@@ -102,11 +102,11 @@ export const VALID_ENGLISH_GUESSES: Set<string> = new Set(
   allEnglishWords.filter((w: string) => w.length === 5).map((w: string) => w.toUpperCase())
 );
 
-// Seeded daily word picker — same word for everyone on the same day
-const EPOCH = new Date(2024, 0, 1).getTime(); // Jan 1 2024
+// Seeded daily word picker — same word for everyone on the same day (UTC)
+const EPOCH = Date.UTC(2024, 0, 1); // Jan 1 2024 UTC
 export function getDailyWordIndex(answers: string[]): number {
-  const now = new Date();
-  const daysSinceEpoch = Math.floor((now.getTime() - EPOCH) / 86400000);
+  const now = Date.now();
+  const daysSinceEpoch = Math.floor((now - EPOCH) / 86400000);
   return daysSinceEpoch % answers.length;
 }
 

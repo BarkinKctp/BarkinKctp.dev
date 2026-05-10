@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { createHmac, timingSafeEqual } from "crypto";
 
 const IDLE_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
-function verifySignedCookie(signed: string): boolean {
+async function verifySignedCookie(signed: string): Promise<boolean> {
   const secret = process.env.ADMIN_SESSION_SECRET;
   if (!secret) return false;
 
@@ -14,23 +13,37 @@ function verifySignedCookie(signed: string): boolean {
   const value = signed.slice(0, lastDot);
   const signature = signed.slice(lastDot + 1);
 
-  const expected = createHmac("sha256", secret).update(value).digest("hex");
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const mac = await crypto.subtle.sign("HMAC", key, encoder.encode(value));
+  const expected = Array.from(new Uint8Array(mac))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 
-  const sigBuf = Buffer.from(signature, "hex");
-  const expBuf = Buffer.from(expected, "hex");
+  if (signature.length !== expected.length) return false;
 
-  if (sigBuf.length !== expBuf.length) return false;
-  return timingSafeEqual(sigBuf, expBuf);
+  // Constant-time comparison
+  let mismatch = 0;
+  for (let i = 0; i < signature.length; i++) {
+    mismatch |= signature.charCodeAt(i) ^ expected.charCodeAt(i);
+  }
+  return mismatch === 0;
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Only protect /admin routes (except /admin/login)
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
     const sessionCookie = request.cookies.get("admin_session");
 
-    if (!sessionCookie || !verifySignedCookie(sessionCookie.value)) {
+    if (!sessionCookie || !(await verifySignedCookie(sessionCookie.value))) {
       const response = NextResponse.redirect(new URL("/admin/login", request.url));
       response.cookies.delete("admin_session");
       response.cookies.delete("admin_last_activity");
