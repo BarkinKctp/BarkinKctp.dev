@@ -10,6 +10,13 @@ import {
 
 type Language = "en" | "tr";
 type LetterStatus = "correct" | "present" | "absent" | "empty" | "tbd";
+type LeaderboardTab = "today" | "all";
+
+interface HintData {
+  type: "eliminate" | "yellow" | "green";
+  letter: string;
+  position?: number;
+}
 
 interface GameState {
   answer: string;
@@ -18,8 +25,16 @@ interface GameState {
   gameOver: boolean;
   won: boolean;
   hintsUsed: number;
-  revealedHints: string[]; // letters revealed as hints
-  date: string; // YYYY-MM-DD to detect new day
+  revealedHints: HintData[];
+  submitted: boolean;
+  date: string;
+}
+
+interface LeaderboardEntry {
+  name: string;
+  guesses: number;
+  hintsUsed: number;
+  date?: string;
 }
 
 const MAX_HINTS = 3;
@@ -127,8 +142,16 @@ export default function Wordle() {
   const [message, setMessage] = useState("");
   const [hydrated, setHydrated] = useState(false);
   const [hintsUsed, setHintsUsed] = useState(0);
-  const [revealedHints, setRevealedHints] = useState<string[]>([]);
+  const [revealedHints, setRevealedHints] = useState<HintData[]>([]);
+  const [submitted, setSubmitted] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [loadingBoard, setLoadingBoard] = useState(false);
+  const [boardTab, setBoardTab] = useState<LeaderboardTab>("today");
   const initialized = useRef(false);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   // Hydrate from localStorage on mount (once)
   useEffect(() => {
@@ -143,7 +166,13 @@ export default function Wordle() {
       setGameOver(saved.gameOver);
       setWon(saved.won);
       setHintsUsed(saved.hintsUsed ?? 0);
-      setRevealedHints(saved.revealedHints ?? []);
+      // Migrate old string[] format to HintData[]
+      const rawHints = saved.revealedHints ?? [];
+      const migratedHints: HintData[] = rawHints.map((h: HintData | string) =>
+        typeof h === "string" ? { type: "yellow" as const, letter: h } : h,
+      );
+      setRevealedHints(migratedHints);
+      setSubmitted(saved.submitted ?? false);
     } else {
       setAnswer(getDailyWord());
     }
@@ -161,6 +190,7 @@ export default function Wordle() {
       won,
       hintsUsed,
       revealedHints,
+      submitted,
       date: getTodayKey(),
     });
   }, [
@@ -172,7 +202,26 @@ export default function Wordle() {
     won,
     hintsUsed,
     revealedHints,
+    submitted,
   ]);
+
+  const fetchLeaderboard = useCallback(
+    async (scope: LeaderboardTab = "today") => {
+      setLoadingBoard(true);
+      try {
+        const res = await fetch(`/api/wordle/leaderboard?scope=${scope}`);
+        if (res.ok) {
+          const data = await res.json();
+          setLeaderboard(data);
+        }
+      } catch {
+        // silently fail
+      } finally {
+        setLoadingBoard(false);
+      }
+    },
+    [],
+  );
 
   const keyboardRows = language === "en" ? KEYBOARD_ROWS_EN : KEYBOARD_ROWS_TR;
 
@@ -190,11 +239,19 @@ export default function Wordle() {
     });
   });
 
-  // Mark hint-revealed letters as present on keyboard
-  revealedHints.forEach((letter) => {
-    const current = keyStatuses.get(letter);
-    if (!current || current === "empty" || current === "tbd") {
-      keyStatuses.set(letter, "present");
+  // Mark hint-revealed letters on keyboard (hints override guess-derived statuses)
+  revealedHints.forEach((hint) => {
+    const current = keyStatuses.get(hint.letter);
+    if (hint.type === "eliminate") {
+      if (!current || current === "empty" || current === "tbd") {
+        keyStatuses.set(hint.letter, "absent");
+      }
+    } else if (hint.type === "yellow") {
+      if (current !== "correct") {
+        keyStatuses.set(hint.letter, "present");
+      }
+    } else if (hint.type === "green") {
+      keyStatuses.set(hint.letter, "correct");
     }
   });
 
@@ -202,6 +259,38 @@ export default function Wordle() {
     setMessage(msg);
     setTimeout(() => setMessage(""), duration);
   }, []);
+
+  const submitName = useCallback(async () => {
+    const trimmed = nameInput.trim();
+    if (!trimmed || trimmed.length > 20 || submitting) return;
+    setSubmitting(true);
+    try {
+      await fetch("/api/wordle/leaderboard", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: trimmed,
+          guesses: guesses.length,
+          hintsUsed,
+        }),
+      });
+      setSubmitted(true);
+      setNameInput("");
+      showMessage("Added to leaderboard!", 2000);
+    } catch {
+      showMessage("Failed to submit", 2000);
+    } finally {
+      setSubmitting(false);
+    }
+  }, [nameInput, submitting, guesses.length, hintsUsed, showMessage]);
+
+  // Focus name input when it appears
+  useEffect(() => {
+    if (won && !submitted && nameInputRef.current) {
+      const timer = setTimeout(() => nameInputRef.current?.focus(), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [won, submitted]);
 
   const handleKey = useCallback(
     (key: string) => {
@@ -267,6 +356,13 @@ export default function Wordle() {
   }, [handleKey]);
 
   // Build grid rows (for English mode)
+  const greenHints = revealedHints.filter(
+    (h): h is HintData & { position: number } =>
+      h.type === "green" && h.position !== undefined,
+  );
+  const greenHintMap = new Map<number, string>();
+  greenHints.forEach((h) => greenHintMap.set(h.position, h.letter));
+
   const rows = [];
   for (let i = 0; i < MAX_GUESSES; i++) {
     if (i < guesses.length) {
@@ -298,6 +394,7 @@ export default function Wordle() {
         >
           {Array.from({ length: WORD_LENGTH }).map((_, j) => {
             const letter = currentGuess[j] || "";
+            const hintLetter = !letter ? greenHintMap.get(j) : undefined;
             return (
               <motion.div
                 key={j}
@@ -307,10 +404,12 @@ export default function Wordle() {
                   text-xl sm:text-2xl font-bold border-2 rounded-md ${
                     letter
                       ? "border-gray-500 dark:border-gray-400 text-gray-900 dark:text-gray-100"
-                      : "border-gray-300 dark:border-gray-600"
+                      : hintLetter
+                        ? "bg-green-500/20 border-green-500/50 text-green-600 dark:text-green-400"
+                        : "border-gray-300 dark:border-gray-600"
                   }`}
               >
-                {letter}
+                {letter || hintLetter || ""}
               </motion.div>
             );
           })}
@@ -319,13 +418,22 @@ export default function Wordle() {
     } else {
       rows.push(
         <div key={i} className="flex gap-1.5 justify-center">
-          {Array.from({ length: WORD_LENGTH }).map((_, j) => (
-            <div
-              key={j}
-              className="w-[3.2rem] h-[3.2rem] sm:w-[3.6rem] sm:h-[3.6rem] flex items-center justify-center 
-                text-xl sm:text-2xl font-bold border-2 rounded-md border-gray-300 dark:border-gray-600"
-            />
-          ))}
+          {Array.from({ length: WORD_LENGTH }).map((_, j) => {
+            const hintLetter = greenHintMap.get(j);
+            return (
+              <div
+                key={j}
+                className={`w-[3.2rem] h-[3.2rem] sm:w-[3.6rem] sm:h-[3.6rem] flex items-center justify-center 
+                  text-xl sm:text-2xl font-bold border-2 rounded-md ${
+                    hintLetter
+                      ? "bg-green-500/20 border-green-500/50 text-green-600 dark:text-green-400"
+                      : "border-gray-300 dark:border-gray-600"
+                  }`}
+              >
+                {hintLetter || ""}
+              </div>
+            );
+          })}
         </div>,
       );
     }
@@ -348,11 +456,23 @@ export default function Wordle() {
           WORDLE
         </motion.h1>
         <motion.div
-          className="flex gap-1"
+          className="flex items-center gap-2"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
         >
+          <motion.button
+            onClick={() => {
+              setShowLeaderboard((prev) => !prev);
+              if (!showLeaderboard) fetchLeaderboard(boardTab);
+            }}
+            whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.9 }}
+            className="text-xl mr-1 transition"
+            title="Leaderboard"
+          >
+            🏆
+          </motion.button>
           <motion.button
             onClick={() => setLanguage("en")}
             whileHover={{ scale: 1.08 }}
@@ -391,28 +511,119 @@ export default function Wordle() {
           <motion.button
             onClick={() => {
               if (hintsUsed >= MAX_HINTS || gameOver) return;
-              // Find a letter in the answer not yet revealed or guessed correctly
-              const guessedCorrect = new Set<string>();
+
+              const hintNumber = revealedHints.length + 1; // use actual array length, not counter
+
+              // Gather letters already known
+              const guessedCorrect = new Map<number, string>(); // position → letter
+              const guessedPresent = new Set<string>();
               guesses.forEach((g, gi) => {
                 g.split("").forEach((l, li) => {
-                  if (statuses[gi]?.[li] === "correct") guessedCorrect.add(l);
+                  if (statuses[gi]?.[li] === "correct")
+                    guessedCorrect.set(li, l);
+                  if (statuses[gi]?.[li] === "present") guessedPresent.add(l);
                 });
               });
-              const alreadyRevealed = new Set(revealedHints);
-              const candidates = answer
-                .split("")
-                .filter(
-                  (l) => !guessedCorrect.has(l) && !alreadyRevealed.has(l),
+
+              const eliminatedLetters = new Set(
+                revealedHints
+                  .filter((h) => h.type === "eliminate")
+                  .map((h) => h.letter),
+              );
+              const revealedYellow = new Set(
+                revealedHints
+                  .filter((h) => h.type === "yellow")
+                  .map((h) => h.letter),
+              );
+              const revealedGreen = new Set(
+                revealedHints
+                  .filter((h) => h.type === "green")
+                  .map((h) => h.letter),
+              );
+
+              if (hintNumber === 1) {
+                // Eliminate a letter NOT in the answer
+                const answerLetters = new Set(answer.split(""));
+                const allUsed = new Set<string>();
+                guesses.forEach((g) =>
+                  g.split("").forEach((l) => allUsed.add(l)),
                 );
-              if (candidates.length === 0) {
-                showMessage("No more hints available");
-                return;
+                const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+                const candidates = alphabet.filter(
+                  (l) =>
+                    !answerLetters.has(l) &&
+                    !eliminatedLetters.has(l) &&
+                    keyStatuses.get(l) !== "absent",
+                );
+                if (candidates.length === 0) {
+                  showMessage("No letters to eliminate");
+                  return;
+                }
+                const pick =
+                  candidates[Math.floor(Math.random() * candidates.length)];
+                setRevealedHints((prev) => [
+                  ...prev,
+                  { type: "eliminate", letter: pick },
+                ]);
+                setHintsUsed((prev) => prev + 1);
+                showMessage(`"${pick}" is not in the word`, 2500);
+              } else if (hintNumber === 2) {
+                // Reveal a yellow letter (in the answer, not yet guessed correct)
+                const known = new Set([
+                  ...Array.from(guessedCorrect.values()),
+                  ...revealedYellow,
+                  ...revealedGreen,
+                ]);
+                const candidates = answer
+                  .split("")
+                  .filter((l) => !known.has(l));
+                if (candidates.length === 0) {
+                  showMessage("No more letters to reveal");
+                  return;
+                }
+                const pick =
+                  candidates[Math.floor(Math.random() * candidates.length)];
+                setRevealedHints((prev) => [
+                  ...prev,
+                  { type: "yellow", letter: pick },
+                ]);
+                setHintsUsed((prev) => prev + 1);
+                showMessage(`The word contains "${pick}"`, 2500);
+              } else if (hintNumber === 3) {
+                // Reveal a green letter with its position
+                const unrevealedPositions: { letter: string; pos: number }[] =
+                  [];
+                answer.split("").forEach((l, i) => {
+                  if (guessedCorrect.get(i) !== l) {
+                    unrevealedPositions.push({ letter: l, pos: i });
+                  }
+                });
+                if (unrevealedPositions.length === 0) {
+                  showMessage(
+                    `All positions are known! The word is "${answer}"`,
+                    3000,
+                  );
+                  setHintsUsed((prev) => prev + 1);
+                  return;
+                }
+                const pick =
+                  unrevealedPositions[
+                    Math.floor(Math.random() * unrevealedPositions.length)
+                  ];
+                setRevealedHints((prev) => [
+                  ...prev,
+                  {
+                    type: "green",
+                    letter: pick.letter,
+                    position: pick.pos,
+                  },
+                ]);
+                setHintsUsed((prev) => prev + 1);
+                showMessage(
+                  `"${pick.letter}" is at position ${pick.pos + 1}`,
+                  3000,
+                );
               }
-              const hintLetter =
-                candidates[Math.floor(Math.random() * candidates.length)];
-              setRevealedHints((prev) => [...prev, hintLetter]);
-              setHintsUsed((prev) => prev + 1);
-              showMessage(`Hint: the word contains "${hintLetter}"`, 2500);
             }}
             disabled={hintsUsed >= MAX_HINTS}
             whileHover={hintsUsed < MAX_HINTS ? { scale: 1.08 } : {}}
@@ -423,7 +634,15 @@ export default function Wordle() {
                 : "bg-yellow-400 dark:bg-yellow-500 text-gray-900 border-yellow-500 dark:border-yellow-600 hover:bg-yellow-300 dark:hover:bg-yellow-400"
             }`}
           >
-            💡 Hint ({MAX_HINTS - hintsUsed} left)
+            {hintsUsed >= MAX_HINTS
+              ? "💡 All hints used"
+              : `💡 Hint ${hintsUsed + 1}/${MAX_HINTS} — ${
+                  hintsUsed === 0
+                    ? "Eliminate a letter"
+                    : hintsUsed === 1
+                      ? "Reveal a letter"
+                      : "Reveal a position"
+                }`}
           </motion.button>
         </motion.div>
       )}
@@ -555,19 +774,158 @@ export default function Wordle() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center mt-2"
+              className="text-center mt-2 w-full"
             >
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
                 {won
                   ? `Solved in ${guesses.length}/${MAX_GUESSES}`
                   : `The word was ${answer}`}
               </p>
-              <p className="text-xs text-gray-400 dark:text-gray-500">
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">
                 Come back tomorrow for a new word!
               </p>
+
+              {/* Name prompt (only on win, if not yet submitted/skipped) */}
+              {won && !submitted && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center gap-2 mt-1"
+                >
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Add your name to the leaderboard?
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      ref={nameInputRef}
+                      type="text"
+                      maxLength={20}
+                      value={nameInput}
+                      onChange={(e) => setNameInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") submitName();
+                        e.stopPropagation();
+                      }}
+                      placeholder="Your name"
+                      className="px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600
+                        bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100
+                        focus:outline-none focus:ring-2 focus:ring-cyan-500 w-36"
+                    />
+                    <motion.button
+                      onClick={submitName}
+                      disabled={submitting || !nameInput.trim()}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-3 py-1.5 text-sm font-semibold rounded-md bg-green-500 text-white
+                        hover:bg-green-400 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                    >
+                      {submitting ? "..." : "Submit"}
+                    </motion.button>
+                    <motion.button
+                      onClick={() => setSubmitted(true)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-3 py-1.5 text-sm font-semibold rounded-md border border-gray-300 dark:border-gray-600
+                        text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                    >
+                      Skip
+                    </motion.button>
+                  </div>
+                </motion.div>
+              )}
             </motion.div>
           )}
         </>
+      )}
+
+      {/* Leaderboard panel */}
+      {showLeaderboard && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="w-full mt-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-gray-700
+            rounded-lg p-4 overflow-hidden"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100">
+              🏆 Leaderboard
+            </h3>
+            <button
+              onClick={() => setShowLeaderboard(false)}
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-lg leading-none transition"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex mb-3 bg-gray-200 dark:bg-slate-700 rounded-md p-0.5">
+            {(["today", "all"] as LeaderboardTab[]).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => {
+                  setBoardTab(tab);
+                  fetchLeaderboard(tab);
+                }}
+                className={`flex-1 py-1.5 text-xs font-semibold rounded transition ${
+                  boardTab === tab
+                    ? "bg-white dark:bg-slate-600 text-gray-900 dark:text-gray-100 shadow-sm"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                }`}
+              >
+                {tab === "today" ? "Today" : "All Time"}
+              </button>
+            ))}
+          </div>
+
+          {loadingBoard ? (
+            <p className="text-xs text-gray-400 dark:text-gray-500 text-center py-3">
+              Loading...
+            </p>
+          ) : leaderboard.length === 0 ? (
+            <p className="text-xs text-gray-400 dark:text-gray-500 text-center py-3">
+              {boardTab === "today"
+                ? "No entries yet today. Be the first!"
+                : "No entries yet. Start playing!"}
+            </p>
+          ) : (
+            <div className="space-y-1 max-h-48 overflow-y-auto">
+              {leaderboard.map((entry, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.04 }}
+                  className="flex items-center justify-between py-1.5 px-2 rounded-md
+                    hover:bg-gray-100 dark:hover:bg-slate-700 transition text-sm"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 text-right font-bold text-gray-400 dark:text-gray-500 text-xs">
+                      {i + 1}
+                    </span>
+                    <span className="font-medium text-gray-800 dark:text-gray-200">
+                      {entry.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                    <span>{entry.guesses}/6</span>
+                    {entry.hintsUsed > 0 && (
+                      <span className="text-yellow-500">
+                        💡{entry.hintsUsed}
+                      </span>
+                    )}
+                    {boardTab === "all" && entry.date && (
+                      <span className="text-gray-400 dark:text-gray-500">
+                        {entry.date}
+                      </span>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </motion.div>
       )}
     </div>
   );
