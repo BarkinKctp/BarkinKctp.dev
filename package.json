@@ -17,6 +17,7 @@
     "@react-email/render": "^2.0.4",
     "@upstash/redis": "^1.38.0",
     "@vercel/blob": "^2.3.3",
+    "an-array-of-english-words": "^2.0.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.35.1",
     "mongodb": "^7.2.0",

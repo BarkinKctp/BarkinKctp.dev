@@ -29,7 +29,7 @@ export default function Intro() {
   const handlePhotoClick = useCallback(() => {
     if (isFlipping) return;
     const nextTotal = totalClicks + 1;
-    if (nextTotal >= 6) {
+    if (nextTotal >= 3) {
       localStorage.removeItem("photoFlipCount");
       router.push("/secret");
       return;
