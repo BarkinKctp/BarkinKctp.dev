@@ -4,6 +4,7 @@ import { getProjects } from "@/actions/projects";
 import { getExperiences } from "@/actions/experiences";
 import { getSkills } from "@/actions/skills";
 import { getPlaces, getBooks, getMusic } from "@/actions/about";
+import { getVisitStats } from "@/actions/visits";
 import AdminDashboardClient from "./dashboard-client";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +15,7 @@ export default async function AdminPage() {
     redirect("/admin/login");
   }
 
-  const [projects, experiences, skills, places, books, music] =
+  const [projects, experiences, skills, places, books, music, visitStats] =
     await Promise.all([
       getProjects(),
       getExperiences(),
@@ -22,6 +23,7 @@ export default async function AdminPage() {
       getPlaces(),
       getBooks(),
       getMusic(),
+      getVisitStats(),
     ]);
 
   return (
@@ -32,6 +34,7 @@ export default async function AdminPage() {
       places={places}
       books={books}
       music={music}
+      visitStats={visitStats}
     />
   );
 }

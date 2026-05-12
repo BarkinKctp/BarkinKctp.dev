@@ -152,6 +152,7 @@ export default function GuessTheWord() {
   const [boardTab, setBoardTab] = useState<LeaderboardTab>("today");
   const initialized = useRef(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
 
   // Hydrate from localStorage on mount (once)
   useEffect(() => {
@@ -714,10 +715,10 @@ export default function GuessTheWord() {
                 🚧
               </motion.div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-                Yakında Geliyor
+                Work In Progress
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Türkçe Guess The Word yapım aşamasında
+                The Turkish version is coming soon !
               </p>
             </div>
           </motion.div>
@@ -726,17 +727,51 @@ export default function GuessTheWord() {
         <>
           {/* Grid */}
           <motion.div
-            className="flex flex-col gap-1.5"
+            className="flex flex-col gap-1.5 cursor-pointer"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1, duration: 0.3 }}
+            onClick={() => {
+              if (!gameOver && mobileInputRef.current) {
+                mobileInputRef.current.focus();
+              }
+            }}
           >
             {rows}
           </motion.div>
 
-          {/* Keyboard */}
+          {/* Hidden input for mobile native keyboard */}
+          <input
+            ref={mobileInputRef}
+            type="text"
+            autoCapitalize="none"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            className="sr-only"
+            inputMode="text"
+            value=""
+            onChange={(e) => {
+              const val = e.target.value.toUpperCase();
+              if (val && /^[A-Z]$/.test(val)) {
+                handleKey(val);
+              }
+              e.target.value = "";
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleKey("ENTER");
+              } else if (e.key === "Backspace") {
+                e.preventDefault();
+                handleKey("⌫");
+              }
+            }}
+          />
+
+          {/* Keyboard — hidden on mobile (use native keyboard via grid tap) */}
           <motion.div
-            className="flex flex-col gap-1.5 mt-2 w-full"
+            className="hidden sm:flex flex-col gap-1.5 mt-2 w-full"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.4 }}

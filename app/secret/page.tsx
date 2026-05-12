@@ -1,6 +1,6 @@
 "use client";
 
-import Wordle from "@/components/wordle";
+import GuessTheWord from "@/components/guess-the-word";
 import SectionHeading from "@/components/section-heading";
 import Link from "next/link";
 import Image from "next/image";
@@ -61,10 +61,10 @@ export default function SecretPage() {
           transition={{ delay: 0.15 }}
         >
           🎉 You found the <span className="font-bold">secret!</span> Enjoy a
-          game of <span className="font-bold underline">Wordle</span>.
+          game of <span className="font-bold underline">Guess The Word</span>.
         </motion.p>
 
-        {/* Wordle card */}
+        {/* Guess The Word card */}
         <motion.div
           className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 
             rounded-lg p-6 sm:p-10 max-w-[42rem] w-full"
@@ -76,7 +76,7 @@ export default function SecretPage() {
             y: -4,
           }}
         >
-          <Wordle />
+          <GuessTheWord />
         </motion.div>
 
         {/* Back to Home */}

@@ -7,6 +7,7 @@ import Footer from "@/components/footer";
 import { Toaster } from "react-hot-toast";
 import ThemeSwitch from "@/components/theme-switch";
 import ThemeContextProvider from "./context/theme-context";
+import VisitTracker from "@/components/visit-tracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
             <Footer />
             <Toaster position="top-right" />
             <ThemeSwitch />
+            <VisitTracker />
           </ActiveSessionContextProvider>
         </ThemeContextProvider>
       </body>

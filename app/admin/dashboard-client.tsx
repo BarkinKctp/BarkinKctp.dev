@@ -43,6 +43,7 @@ import {
 } from "@/actions/about";
 import { uploadImage } from "@/actions/upload";
 import { reorderItems } from "@/actions/reorder";
+import type { VisitStats } from "@/actions/visits";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -74,6 +75,7 @@ export default function AdminDashboardClient({
   places,
   books,
   music,
+  visitStats,
 }: {
   projects: Project[];
   experiences: Experience[];
@@ -81,6 +83,7 @@ export default function AdminDashboardClient({
   places: Place[];
   books: Book[];
   music: Music[];
+  visitStats: VisitStats;
 }) {
   const [activeTab, setActiveTab] = useState<Tab>("projects");
   const router = useRouter();
@@ -163,6 +166,46 @@ export default function AdminDashboardClient({
               </span>
             </motion.button>
           </form>
+        </div>
+      </motion.div>
+
+      {/* Visit Stats */}
+      <motion.div
+        className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05, duration: 0.4 }}
+      >
+        <div className="bg-white dark:bg-slate-900 border border-black/20 dark:border-white/15 rounded-lg p-4">
+          <p className="text-sm text-gray-500 dark:text-slate-400">
+            Total Visits
+          </p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-slate-100">
+            {visitStats.totalVisits.toLocaleString()}
+          </p>
+        </div>
+        <div className="bg-white dark:bg-slate-900 border border-black/20 dark:border-white/15 rounded-lg p-4">
+          <p className="text-sm text-gray-500 dark:text-slate-400">
+            Unique Visitors
+          </p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-slate-100">
+            {visitStats.uniqueVisitors.toLocaleString()}
+          </p>
+        </div>
+        <div className="bg-white dark:bg-slate-900 border border-black/20 dark:border-white/15 rounded-lg p-4 col-span-2 sm:col-span-1">
+          <p className="text-sm text-gray-500 dark:text-slate-400">
+            Last Visit
+          </p>
+          <p className="text-lg font-semibold text-gray-900 dark:text-slate-100">
+            {visitStats.lastVisited
+              ? new Date(visitStats.lastVisited).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "—"}
+          </p>
         </div>
       </motion.div>
 
@@ -1774,7 +1817,7 @@ function DeleteButton({
 
 /* ======================== GAMES TAB ======================== */
 
-interface WordleEntry {
+interface GuessTheWordEntry {
   id: string;
   name: string;
   guesses: number;
@@ -1783,18 +1826,18 @@ interface WordleEntry {
   createdAt: string;
 }
 
-interface WordleAdminData {
+interface GuessTheWordAdminData {
   todayWord: string;
   wordIndex: number;
   totalAnswers: number;
   today: string;
   stats: { todayCount: number; totalCount: number };
-  todayEntries: WordleEntry[];
-  allEntries: WordleEntry[];
+  todayEntries: GuessTheWordEntry[];
+  allEntries: GuessTheWordEntry[];
 }
 
 function GamesTab() {
-  const [data, setData] = useState<WordleAdminData | null>(null);
+  const [data, setData] = useState<GuessTheWordAdminData | null>(null);
   const [loading, setLoading] = useState(true);
   const [viewTab, setViewTab] = useState<"today" | "all">("today");
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -1803,14 +1846,14 @@ function GamesTab() {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/wordle/admin");
+      const res = await fetch("/api/guess-the-word/admin");
       if (res.ok) {
         setData(await res.json());
       } else {
-        toast.error("Failed to load wordle data");
+        toast.error("Failed to load game data");
       }
     } catch {
-      toast.error("Failed to load wordle data");
+      toast.error("Failed to load game data");
     } finally {
       setLoading(false);
     }
@@ -1823,7 +1866,7 @@ function GamesTab() {
   const handleDelete = async (id: string) => {
     setDeleting(id);
     try {
-      const res = await fetch(`/api/wordle/admin?id=${id}`, {
+      const res = await fetch(`/api/guess-the-word/admin?id=${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -1840,7 +1883,7 @@ function GamesTab() {
   };
 
   const handleClear = async (scope: "today" | "all") => {
-    const res = await fetch(`/api/wordle/admin?clearAll=${scope}`, {
+    const res = await fetch(`/api/guess-the-word/admin?clearAll=${scope}`, {
       method: "DELETE",
     });
     if (res.ok) {
@@ -1877,7 +1920,7 @@ function GamesTab() {
   return (
     <div className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-6 sm:p-8">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-6">
-        Wordle
+        Guess The Word
       </h2>
 
       {/* Today's Word Card */}
