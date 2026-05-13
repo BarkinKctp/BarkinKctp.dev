@@ -348,6 +348,8 @@ export default function GuessTheWord() {
   // Physical keyboard input
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // Skip if the hidden mobile input is focused — its own handlers will process the key
+      if (mobileInputRef.current && e.target === mobileInputRef.current) return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const key = e.key.toUpperCase();
       if (key === "ENTER") handleKey("ENTER");
