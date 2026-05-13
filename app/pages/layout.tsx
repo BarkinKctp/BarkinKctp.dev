@@ -1,15 +1,32 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import toast from "react-hot-toast";
+import { useTheme } from "@/app/context/theme-context";
 
 export default function PagesLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { theme } = useTheme();
+  const [showCat, setShowCat] = useState(true);
+
   useEffect(() => {
     window.scrollTo(0, 0.2);
+  }, []);
+
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowCat(!entry.isIntersecting),
+      { threshold: 0 },
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -43,6 +60,21 @@ export default function PagesLayout({
       >
         <Image src="/bg-images/cloud2.svg" alt="" width={135} height={90} />
       </motion.div>
+
+      {/* Floating cat — clickable easter egg */}
+      {showCat && (
+        <motion.div
+          className="fixed bottom-3.5 left-[3%] z-50 text-3xl sm:text-4xl cursor-pointer opacity-40 hover:opacity-90 transition-opacity"
+          animate={{ y: [0, -10, 0], rotate: [0, -5, 5, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          whileHover={{ scale: 1.4 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => toast("You found the secret! 🎉")}
+          title="Meow?"
+        >
+          {theme === "dark" ? "🐈‍⬛" : "🐈"}
+        </motion.div>
+      )}
 
       {children}
     </motion.div>
