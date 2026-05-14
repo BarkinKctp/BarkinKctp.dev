@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 import { useTheme } from "@/app/context/theme-context";
 
 export default function PagesLayout({
@@ -11,7 +11,24 @@ export default function PagesLayout({
   children: React.ReactNode;
 }>) {
   const { theme } = useTheme();
+  const router = useRouter();
   const [showCat, setShowCat] = useState(true);
+  const catClicks = useRef(0);
+  const catTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleCatClick = useCallback(() => {
+    catClicks.current += 1;
+    if (catClicks.current >= 2) {
+      catClicks.current = 0;
+      if (catTimer.current) clearTimeout(catTimer.current);
+      router.push("/admin/login");
+      return;
+    }
+    if (catTimer.current) clearTimeout(catTimer.current);
+    catTimer.current = setTimeout(() => {
+      catClicks.current = 0;
+    }, 800);
+  }, [router]);
 
   useEffect(() => {
     window.scrollTo(0, 0.2);
@@ -69,7 +86,7 @@ export default function PagesLayout({
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           whileHover={{ scale: 1.4 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => toast("You found the secret! 🎉")}
+          onClick={handleCatClick}
           title="Meow?"
         >
           {theme === "dark" ? "🐈‍⬛" : "🐈"}

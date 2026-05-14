@@ -42,6 +42,8 @@ import {
   type Music,
 } from "@/actions/about";
 import { uploadImage } from "@/actions/upload";
+import { uploadResume } from "@/actions/resume";
+import type { ResumeStats } from "@/lib/resume";
 import { reorderItems } from "@/actions/reorder";
 import type { VisitStats } from "@/actions/visits";
 import { useRouter } from "next/navigation";
@@ -66,7 +68,7 @@ import { MdDragIndicator } from "react-icons/md";
 import { BsArrowLeft } from "react-icons/bs";
 import { motion } from "framer-motion";
 
-type Tab = "projects" | "experiences" | "skills" | "about" | "games";
+type Tab = "projects" | "experiences" | "skills" | "about" | "resume" | "games";
 
 export default function AdminDashboardClient({
   projects,
@@ -76,6 +78,7 @@ export default function AdminDashboardClient({
   books,
   music,
   visitStats,
+  resumeStats,
 }: {
   projects: Project[];
   experiences: Experience[];
@@ -84,6 +87,7 @@ export default function AdminDashboardClient({
   books: Book[];
   music: Music[];
   visitStats: VisitStats;
+  resumeStats: ResumeStats;
 }) {
   const [activeTab, setActiveTab] = useState<Tab>("projects");
   const router = useRouter();
@@ -130,6 +134,7 @@ export default function AdminDashboardClient({
       label: "About Me",
       count: places.length + books.length + music.length,
     },
+    { key: "resume", label: "Resume", count: resumeStats.uniqueDownloaders },
     { key: "games", label: "Games", count: 0 },
   ];
 
@@ -270,6 +275,9 @@ export default function AdminDashboardClient({
             router={router}
             onReorder={handleReorder}
           />
+        )}
+        {activeTab === "resume" && (
+          <ResumeTab resumeStats={resumeStats} router={router} />
         )}
         {activeTab === "games" && <GamesTab />}
       </motion.div>
@@ -1812,6 +1820,187 @@ function DeleteButton({
     >
       Delete
     </button>
+  );
+}
+
+/* ======================== RESUME TAB ======================== */
+
+function ResumeTab({
+  resumeStats,
+  router,
+}: {
+  resumeStats: ResumeStats;
+  router: ReturnType<typeof useRouter>;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleUpload = async (file: File) => {
+    setUploading(true);
+    setUploadError("");
+    const formData = new FormData();
+    formData.set("file", file);
+    const result = await uploadResume(formData);
+    if (result.error) {
+      setUploadError(result.error);
+    } else if (result.url) {
+      toast.success("Resume updated successfully");
+      router.refresh();
+    }
+    setUploading(false);
+  };
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleUpload(file);
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleUpload(file);
+  };
+
+  return (
+    <div className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-6 sm:p-8">
+      <h2 className="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-6">
+        Resume
+      </h2>
+
+      {/* Current Resume & Upload */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+          <p className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">
+            Current Resume
+          </p>
+          {resumeStats.resumeUrl ? (
+            <a
+              href={resumeStats.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-green-700 dark:text-green-300 underline break-all"
+            >
+              View current resume
+            </a>
+          ) : (
+            <p className="text-sm text-green-700 dark:text-green-300">
+              No resume uploaded yet
+            </p>
+          )}
+        </div>
+        <div className="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded-lg p-4">
+          <p className="text-xs text-cyan-600 dark:text-cyan-400 font-medium mb-1">
+            Unique Downloaders
+          </p>
+          <p className="text-2xl font-bold text-cyan-700 dark:text-cyan-300">
+            {resumeStats.uniqueDownloaders}
+          </p>
+        </div>
+        <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+          <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mb-1">
+            Total Downloads
+          </p>
+          <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+            {resumeStats.totalDownloads}
+          </p>
+        </div>
+      </div>
+
+      {/* Upload Area */}
+      <div className="mb-6">
+        <p className="text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+          Upload New Resume
+        </p>
+        <div
+          onClick={() => fileInputRef.current?.click()}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragOver(true);
+          }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={onDrop}
+          className={`relative border-2 border-dashed rounded-md p-6 text-center cursor-pointer transition-all ${dragOver ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20" : "border-black/20 dark:border-white/20 hover:border-cyan-400"} ${uploading ? "opacity-60 pointer-events-none" : ""}`}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/pdf"
+            onChange={onFileChange}
+            className="hidden"
+          />
+          <p className="text-sm text-gray-600 dark:text-slate-400">
+            {uploading
+              ? "Uploading..."
+              : "Click or drag & drop a PDF here to update your resume"}
+          </p>
+          <p className="text-xs text-gray-400 dark:text-slate-600 mt-1">
+            PDF only - max 10MB
+          </p>
+        </div>
+        {uploadError && (
+          <p className="text-red-500 text-sm mt-2">{uploadError}</p>
+        )}
+      </div>
+
+      {/* Download History */}
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">
+        Recent Downloads
+      </h3>
+      {resumeStats.recentDownloads.length === 0 ? (
+        <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-8">
+          No downloads yet.
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-200 dark:border-gray-700 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="py-2 pr-3">#</th>
+                <th className="py-2 pr-3">Visitor</th>
+                <th className="py-2 pr-3">Downloads</th>
+                <th className="py-2 pr-3">User Agent</th>
+                <th className="py-2 pr-3">Last Download</th>
+              </tr>
+            </thead>
+            <tbody>
+              {resumeStats.recentDownloads.map((download, i) => (
+                <tr
+                  key={i}
+                  className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-slate-800/50 transition"
+                >
+                  <td className="py-2.5 pr-3 text-gray-400 dark:text-gray-500 font-medium">
+                    {i + 1}
+                  </td>
+                  <td className="py-2.5 pr-3 font-mono text-xs text-gray-600 dark:text-gray-400">
+                    {download.ipHash}
+                  </td>
+                  <td className="py-2.5 pr-3 text-gray-600 dark:text-gray-400">
+                    {download.downloads}
+                  </td>
+                  <td className="py-2.5 pr-3 text-gray-600 dark:text-gray-400 max-w-[20rem] truncate">
+                    {download.userAgent}
+                  </td>
+                  <td className="py-2.5 pr-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                    {new Date(download.lastDownloadedAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      },
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }
 
