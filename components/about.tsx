@@ -51,7 +51,7 @@ export default function About() {
       </motion.p>
 
       <motion.div
-        className="mt-8 flex justify-center "
+        className="mt-16 flex justify-center "
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -59,9 +59,9 @@ export default function About() {
       >
         <Link
           href="/pages/about-me"
-          className="group inline-flex items-center gap-3
+          className="group inline-flex items-center gap-4
           bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-700 dark:to-cyan-700
-          text-white/92 px-8 py-3 rounded-xl
+          text-white/92 px-10 py-4 rounded-xl text-lg
           font-semibold shadow-lg border 
           border-b-4 border-gray-700 dark:border-slate-900 hover:border-gray-900
           hover:scale-105 hover:shadow-xl

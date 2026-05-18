@@ -15,9 +15,21 @@ export default function Header() {
 
   if (pathname.startsWith("/admin")) return null;
 
-  const handleLinkClick = (section: (typeof links)[number]["name"]) => {
-    setActiveSection(section);
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    link: (typeof links)[number],
+  ) => {
+    setActiveSection(link.name);
     setIsMobileMenuOpen(false);
+
+    // If it's a hash link and we're on the homepage, manually scroll
+    if (link.hash.startsWith("#") && (pathname === "/" || pathname === "")) {
+      e.preventDefault();
+      const el = document.querySelector(link.hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   return (
@@ -83,7 +95,7 @@ export default function Header() {
                     },
                   )}
                   href={`/${link.hash}`}
-                  onClick={() => handleLinkClick(link.name)}
+                  onClick={(e) => handleLinkClick(e, link)}
                 >
                   {link.name}
                   {link.name === activeSection && (
@@ -131,7 +143,7 @@ export default function Header() {
                     },
                   )}
                   href={`/${link.hash}`}
-                  onClick={() => handleLinkClick(link.name)}
+                  onClick={(e) => handleLinkClick(e, link)}
                 >
                   {link.name}
                 </Link>

@@ -23,12 +23,12 @@ export default function Projects({ projects }: { projects: ProjectType[] }) {
           </React.Fragment>
         ))}
       </div>
-      <div className="flex justify-center mt-12">
+      <div className="flex justify-center mt-32">
         <Link
           href="/pages/projects"
-          className="group inline-flex items-center gap-3
+          className="group inline-flex items-center gap-4
             bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-cyan-700 dark:to-blue-800
-            text-white/88 px-8 py-3 rounded-xl
+            text-white/88 px-10 py-4 rounded-xl text-lg
             font-semibold shadow-lg border 
             border-b-4 border-gray-700 dark:border-slate-900 hover:border-gray-900
             hover:scale-110 hover:shadow-xl
