@@ -39,7 +39,6 @@ export async function setResumeUrl(url: string): Promise<void> {
 
 export async function recordResumeDownload(
   ipHash: string,
-  userAgent: string,
 ): Promise<void> {
   const db = await getDb();
   const col = db.collection("resumeDownloads");
@@ -52,20 +51,37 @@ export async function recordResumeDownload(
   });
   if (recent) return;
 
-  await col.updateOne(
-    { ipHash },
-    {
-      $inc: { downloads: 1 },
-      $set: { lastDownloadedAt: new Date(), userAgent: userAgent.slice(0, 256) },
-      $setOnInsert: { firstDownloadedAt: new Date() },
-    },
-    { upsert: true },
-  );
+  // Check if this visitor already exists (same computer = same number)
+  const existing = await col.findOne({ ipHash });
+  if (existing) {
+    await col.updateOne(
+      { ipHash },
+      {
+        $inc: { downloads: 1 },
+        $set: { lastDownloadedAt: new Date() },
+      },
+    );
+  } else {
+    // Assign the next visitor number
+    const maxDoc = await col
+      .find()
+      .sort({ visitorNumber: -1 })
+      .limit(1)
+      .toArray();
+    const nextNumber = (maxDoc[0]?.visitorNumber ?? 0) + 1;
+
+    await col.insertOne({
+      ipHash,
+      downloads: 1,
+      visitorNumber: nextNumber,
+      firstDownloadedAt: new Date(),
+      lastDownloadedAt: new Date(),
+    });
+  }
 }
 
 export interface ResumeDownloadEntry {
-  ipHash: string;
-  userAgent: string;
+  visitorNumber: number;
   downloads: number;
   lastDownloadedAt: string;
   firstDownloadedAt: string;
@@ -103,8 +119,7 @@ export async function getResumeStats(): Promise<ResumeStats> {
     totalDownloads,
     resumeUrl,
     recentDownloads: recentDocs.map((d) => ({
-      ipHash: (d.ipHash as string).slice(0, 8) + "...",
-      userAgent: d.userAgent as string,
+      visitorNumber: (d.visitorNumber as number) ?? 0,
       downloads: d.downloads as number,
       lastDownloadedAt: new Date(d.lastDownloadedAt).toISOString(),
       firstDownloadedAt: new Date(d.firstDownloadedAt).toISOString(),

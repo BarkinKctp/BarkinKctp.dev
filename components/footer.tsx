@@ -136,10 +136,19 @@ export default function Footer() {
 
         <div className="border-t border-black/60 dark:border-white/10 mt-6 pt-4 flex flex-col gap-2 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
           <span>&copy; 2026 Barkın Kocatepe. All rights reserved.</span>
-          <span>
-            Built with Next.js · TypeScript · Tailwind CSS · Framer Motion ·
-            Vercel
-          </span>
+          <div className="flex items-center gap-3">
+            <a
+              href="/pages/privacy"
+              className="hover:text-white transition-colors duration-150"
+            >
+              Privacy Policy
+            </a>
+            <span className="text-zinc-600">·</span>
+            <span>
+              Built with Next.js · TypeScript · Tailwind CSS · Framer Motion ·
+              Vercel
+            </span>
+          </div>
         </div>
       </div>
     </footer>

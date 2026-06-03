@@ -1961,7 +1961,6 @@ function ResumeTab({
                 <th className="py-2 pr-3">#</th>
                 <th className="py-2 pr-3">Visitor</th>
                 <th className="py-2 pr-3">Downloads</th>
-                <th className="py-2 pr-3">User Agent</th>
                 <th className="py-2 pr-3">Last Download</th>
               </tr>
             </thead>
@@ -1974,14 +1973,11 @@ function ResumeTab({
                   <td className="py-2.5 pr-3 text-gray-400 dark:text-gray-500 font-medium">
                     {i + 1}
                   </td>
-                  <td className="py-2.5 pr-3 font-mono text-xs text-gray-600 dark:text-gray-400">
-                    {download.ipHash}
+                  <td className="py-2.5 pr-3 text-gray-600 dark:text-gray-400">
+                    Unique Visitor {download.visitorNumber}
                   </td>
                   <td className="py-2.5 pr-3 text-gray-600 dark:text-gray-400">
                     {download.downloads}
-                  </td>
-                  <td className="py-2.5 pr-3 text-gray-600 dark:text-gray-400 max-w-[20rem] truncate">
-                    {download.userAgent}
                   </td>
                   <td className="py-2.5 pr-3 text-gray-500 dark:text-gray-400 whitespace-nowrap">
                     {new Date(download.lastDownloadedAt).toLocaleDateString(
