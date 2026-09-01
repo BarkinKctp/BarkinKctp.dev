@@ -16,51 +16,519 @@ html[data-theme="dark"] {
 /* Scrollbar */
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 13px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  border-left: 1px solid rgba(7, 89, 133, .28);
+  background:
+    repeating-linear-gradient(180deg, rgba(7,89,133,.35) 0 1px, transparent 1px 14px),
+    linear-gradient(180deg, #e0f2fe, #bae6fd);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 9999px;
+  border: 3px solid #bae6fd;
+  border-radius: 999px;
+  background: #ef4444;
+  box-shadow: inset 0 0 0 1px #991b1b;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #22d3ee;
+  background: #dc2626;
 }
 
 html.dark::-webkit-scrollbar,
 html[data-theme="dark"]::-webkit-scrollbar {
-  width: 8px;
+  width: 13px;
 }
 
 html.dark::-webkit-scrollbar-track,
 html[data-theme="dark"]::-webkit-scrollbar-track {
-  background: #0f172a;
+  border-left-color: rgba(125,211,252,.25);
+  background:
+    repeating-linear-gradient(180deg, rgba(125,211,252,.32) 0 1px, transparent 1px 14px),
+    #0f172a;
 }
 
 html.dark::-webkit-scrollbar-thumb,
 html[data-theme="dark"]::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  border-color: #0f172a;
+  background: #facc15;
+  box-shadow: inset 0 0 0 1px #a16207, 0 0 5px rgba(250,204,21,.45);
   border-radius: 9999px;
 }
 
 html.dark::-webkit-scrollbar-thumb:hover,
 html[data-theme="dark"]::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #fde047;
 }
 
 /* Firefox */
 
 * {
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
+  scrollbar-width: auto;
+  scrollbar-color: #ef4444 #bae6fd;
 }
 
 html.dark,
 html[data-theme="dark"] {
-  scrollbar-color: #1e293b #0f172a;
+  scrollbar-color: #facc15 #0f172a;
+}
+
+html,
+body,
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Flight deck theme */
+body {
+  background-image:
+    linear-gradient(180deg, #dff4ff 0%, #eaf8ff 28%, #d8f0fc 62%, #bfe3f6 100%);
+  background-attachment: fixed;
+}
+
+html.dark body,
+html[data-theme="dark"] body {
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(56, 189, 248, 0.18), transparent 38%),
+    linear-gradient(180deg, #071426 0%, #0b2138 52%, #0f2942 100%);
+}
+
+.flight-page {
+  isolation: isolate;
+}
+
+.sky-cloud {
+  position: absolute;
+  z-index: -1;
+  opacity: .48;
+  filter: drop-shadow(0 20px 18px rgba(56, 125, 165, .14));
+  pointer-events: none;
+  animation: cloud-drift 12s ease-in-out infinite alternate;
+}
+
+.sky-cloud-one { top: 18rem; left: -2rem; font-size: clamp(7rem, 16vw, 15rem); }
+.sky-cloud-two { top: 63rem; right: -3rem; font-size: clamp(8rem, 18vw, 17rem); animation-delay: -4s; }
+.sky-cloud-three { top: 132rem; left: 4%; font-size: clamp(5rem, 12vw, 11rem); animation-delay: -8s; }
+
+.flight-header {
+  position: relative;
+  align-items: flex-start;
+  filter: drop-shadow(0 12px 12px rgba(28, 94, 129, .18));
+}
+
+.flight-header::before {
+  position: absolute;
+  top: 1.32rem;
+  left: 3.2rem;
+  right: .8rem;
+  z-index: 0;
+  content: "";
+  border-top: 2px dashed rgba(7, 89, 133, .72);
+}
+
+.header-plane {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  flex: 0 0 auto;
+  color: #075985;
+  font-size: 2.35rem;
+  margin-top: -.35rem;
+  transform: scaleX(-1) rotate(-5deg);
+  filter: drop-shadow(0 4px 0 rgba(255,255,255,.7));
+}
+
+.tow-rope {
+  width: clamp(1.4rem, 3vw, 3rem);
+  height: 1px;
+}
+
+.name-banner,
+.nav-flag {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #0c4a6e;
+  background: rgba(255,255,255,.92);
+  color: #082f49;
+  box-shadow: 3px 4px 0 rgba(14, 116, 144, .15);
+}
+
+.name-banner {
+  margin-top: .82rem;
+  min-width: 10.8rem;
+  height: 3.1rem;
+  padding: 0 1.1rem;
+  font-weight: 800;
+  letter-spacing: .025em;
+  clip-path: polygon(0 0, 100% 7%, 96% 100%, 3% 92%);
+}
+
+.name-banner::before {
+  position: absolute;
+  top: -.86rem;
+  left: 50%;
+  width: 1px;
+  height: .9rem;
+  content: "";
+  background: #0c4a6e;
+}
+
+.flag-wrap {
+  position: relative;
+  padding-top: .85rem;
+}
+
+.flag-wrap::before {
+  position: absolute;
+  top: -.1rem;
+  left: 50%;
+  width: 1px;
+  height: 1.1rem;
+  content: "";
+  background: #0c4a6e;
+}
+
+.nav-flag {
+  min-height: 2.65rem;
+  padding: .65rem .72rem;
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform .2s ease, background .2s ease;
+  clip-path: polygon(3% 2%, 98% 6%, 94% 100%, 0 92%);
+}
+
+.nav-flag:hover,
+.nav-flag-active {
+  background: #0ea5e9;
+  color: white;
+  transform: translateY(3px) rotate(-1deg);
+}
+
+.scroll-flight {
+  position: fixed;
+  top: 7rem;
+  right: clamp(.6rem, 2vw, 2rem);
+  z-index: 30;
+  width: 2.6rem;
+  height: 8rem;
+  color: #0284c7;
+  pointer-events: none;
+  animation: page-descent linear both;
+  animation-timeline: scroll(root block);
+}
+
+.scroll-flight span {
+  position: absolute;
+  z-index: 1;
+  font-size: 1.8rem;
+  transform: rotate(135deg);
+  filter: drop-shadow(0 5px 4px rgba(3, 105, 161, .24));
+}
+
+.scroll-flight i {
+  position: absolute;
+  top: -6rem;
+  left: .72rem;
+  width: 1px;
+  height: 6.5rem;
+  border-left: 2px dashed rgba(2, 132, 199, .32);
+}
+
+.about-balloon-section {
+  position: relative;
+  filter: drop-shadow(0 28px 30px rgba(3, 105, 161, .18));
+}
+
+.about-balloon {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3.5rem, 7vw, 5.2rem) clamp(2rem, 8vw, 6rem) clamp(4.3rem, 8vw, 6rem);
+  border: 2px solid #075985;
+  border-radius: 50% 50% 46% 46% / 43% 43% 57% 57%;
+  background:
+    linear-gradient(90deg,
+      rgba(14,165,233,.92) 0 17%,
+      rgba(186,230,253,.95) 17% 34%,
+      rgba(255,255,255,.96) 34% 50%,
+      rgba(186,230,253,.95) 50% 67%,
+      rgba(14,165,233,.92) 67% 84%,
+      rgba(3,105,161,.92) 84% 100%);
+  box-shadow: inset 0 -22px 40px rgba(3, 105, 161, .18);
+}
+
+.about-balloon::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 20%, rgba(255,255,255,.55), transparent 42%);
+}
+
+.about-balloon > * { position: relative; z-index: 1; }
+.about-balloon h2 { color: #082f49 !important; }
+.about-balloon p { color: #0f2942 !important; text-shadow: 0 1px 0 rgba(255,255,255,.48); }
+.balloon-glint { position: absolute; top: 10%; left: 23%; width: 14%; height: 24%; border-radius: 50%; background: rgba(255,255,255,.28); transform: rotate(22deg); }
+
+.balloon-ropes {
+  position: relative;
+  width: 9rem;
+  height: 4.5rem;
+  margin: -1rem auto 0;
+}
+
+.balloon-ropes i {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 5rem;
+  background: #78350f;
+}
+
+.balloon-ropes i:first-child { left: 2.2rem; transform: rotate(-10deg); }
+.balloon-ropes i:last-child { right: 2.2rem; transform: rotate(10deg); }
+.balloon-basket { width: 6.5rem; height: 4rem; margin: -.2rem auto 0; border: 2px solid #78350f; border-radius: .6rem .6rem 1.2rem 1.2rem; background: repeating-linear-gradient(45deg,#92400e 0 8px,#b45309 8px 16px); box-shadow: 0 14px 20px rgba(69,26,3,.2); }
+
+.cloud-menu-button {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 1.5px solid #0c4a6e;
+  border-radius: 48% 52% 45% 55%;
+  background: white;
+  color: #075985;
+  font-size: 1.55rem;
+  box-shadow: 0 8px 20px rgba(7, 89, 133, .18);
+}
+
+.mobile-cloud-menu,
+.cloud-project,
+.experience-cloud-card {
+  border: 1.5px solid rgba(3, 105, 161, .55);
+  background: rgba(255,255,255,.9);
+  box-shadow:
+    0 22px 40px rgba(2, 93, 139, .14),
+    inset 0 1px 0 white;
+  backdrop-filter: blur(12px);
+}
+
+.mobile-cloud-menu {
+  border-radius: 3rem 4rem 2.8rem 3.6rem;
+}
+
+.cloud-projects {
+  position: relative;
+}
+
+.cloud-projects::before {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  z-index: -1;
+  content: "☁️";
+  font-size: clamp(10rem, 34vw, 27rem);
+  opacity: .42;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 25px 18px rgba(14, 116, 144, .12));
+}
+
+.cloud-project-wrap:nth-of-type(even) {
+  transform: translateX(2.2rem);
+}
+
+.cloud-project {
+  border-radius: 4.5rem 5.5rem 4rem 5rem / 3rem 4rem 3.4rem 4.2rem;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+.cloud-project::before,
+.cloud-project::after {
+  position: absolute;
+  z-index: 0;
+  content: "";
+  border-radius: 50%;
+  background: rgba(255,255,255,.88);
+  pointer-events: none;
+}
+
+.cloud-project::before { width: 8rem; height: 8rem; top: -4.4rem; left: 13%; }
+.cloud-project::after { width: 11rem; height: 11rem; right: 8%; bottom: -7.5rem; }
+.cloud-project > div { position: relative; z-index: 1; }
+.cloud-project > img { z-index: 1; }
+.cloud-project:hover { transform: translateY(-9px) rotate(.35deg); box-shadow: 0 30px 55px rgba(2, 93, 139, .22); }
+
+.experience-title-wrap {
+  position: relative;
+  overflow: hidden;
+  min-height: 5.5rem;
+}
+
+.experience-plane {
+  position: absolute;
+  top: .35rem;
+  left: 50%;
+  color: #0369a1;
+  font-size: 2rem;
+  transform: rotate(7deg);
+}
+
+.experience-plane::after {
+  position: absolute;
+  top: 50%;
+  right: 2.4rem;
+  width: 9rem;
+  content: "";
+  border-top: 2px dashed rgba(3, 105, 161, .45);
+}
+
+.experience-clouds {
+  display: grid;
+  gap: 2.6rem;
+}
+
+.experience-cloud-card {
+  position: relative;
+  width: min(86%, 40rem);
+  padding: 2rem 2.25rem;
+  border-radius: 4rem 5rem 3.4rem 4.8rem;
+}
+
+.experience-left { justify-self: start; }
+.experience-right { justify-self: end; }
+.experience-cloud-card h3 { color: #0c4a6e; font-size: 1.25rem; font-weight: 800; }
+.flight-date { margin-bottom: .45rem; color: #0284c7; font-family: var(--font-geist-mono); font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.company-name { margin-top: .2rem; color: #0369a1; font-weight: 700; }
+.experience-description { margin-top: .85rem; color: #334155; line-height: 1.65; }
+.experience-location { margin-top: .65rem; color: #64748b; font-size: .88rem; font-style: italic; }
+.card-plane { position: absolute; top: 50%; color: #0284c7; font-size: 1.25rem; }
+.experience-left .card-plane { right: -2.3rem; transform: translateY(-50%) rotate(8deg); }
+.experience-right .card-plane { left: -2.3rem; transform: translateY(-50%) scaleX(-1) rotate(8deg); }
+
+.flight-log-link {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  width: fit-content;
+  margin: 3rem auto 0;
+  border: 1.5px solid #075985;
+  border-radius: 999px;
+  background: rgba(255,255,255,.86);
+  padding: .8rem 1.25rem;
+  color: #075985;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.flight-divider {
+  position: relative;
+  width: 13rem;
+  height: 3.2rem;
+  margin-bottom: 8rem;
+  overflow: hidden;
+}
+
+.flight-divider::before {
+  position: absolute;
+  top: 50%;
+  inset-inline: 0;
+  content: "";
+  border-top: 2px dashed rgba(2, 132, 199, .38);
+}
+
+.flight-divider-plane {
+  position: absolute;
+  top: .72rem;
+  left: 50%;
+  z-index: 1;
+  color: #0284c7;
+  font-size: 1.45rem;
+  transform: translateX(-50%) rotate(7deg);
+}
+
+html.dark .mobile-cloud-menu,
+html.dark .cloud-project,
+html.dark .experience-cloud-card,
+html[data-theme="dark"] .mobile-cloud-menu,
+html[data-theme="dark"] .cloud-project,
+html[data-theme="dark"] .experience-cloud-card {
+  border-color: rgba(125, 211, 252, .32);
+  background: rgba(8, 35, 57, .88);
+  box-shadow: 0 22px 45px rgba(0,0,0,.28);
+}
+
+html.dark .cloud-project::before,
+html.dark .cloud-project::after,
+html[data-theme="dark"] .cloud-project::before,
+html[data-theme="dark"] .cloud-project::after { background: rgba(8, 35, 57, .86); }
+html.dark .experience-cloud-card h3,
+html[data-theme="dark"] .experience-cloud-card h3 { color: #e0f2fe; }
+html.dark .experience-description,
+html[data-theme="dark"] .experience-description { color: #cbd5e1; }
+
+@keyframes cloud-drift {
+  from { transform: translate3d(-12px, 0, 0); }
+  to { transform: translate3d(22px, -12px, 0); }
+}
+
+@keyframes page-descent {
+  from { transform: translateY(0) translateX(0); opacity: .75; }
+  35% { transform: translateY(28vh) translateX(-12px); opacity: 1; }
+  70% { transform: translateY(58vh) translateX(8px); opacity: 1; }
+  to { transform: translateY(78vh) translateX(-5px); opacity: .2; }
+}
+
+@media (max-width: 639px) {
+  .flight-header { height: 4rem; }
+  .header-plane { width: 2.75rem; height: 2.75rem; font-size: 1.8rem; }
+  .tow-rope { width: 1.1rem; }
+  .name-banner { min-width: 9.4rem; height: 2.7rem; font-size: .88rem; }
+  .experience-cloud-card { width: calc(100% - 1.5rem); padding: 1.6rem 1.4rem; }
+  .experience-left, .experience-right { justify-self: center; }
+  .experience-left .card-plane, .experience-right .card-plane { display: none; }
+  .cloud-project-wrap:nth-of-type(even) { transform: none; }
+  .cloud-project { border-radius: 2.8rem 3.5rem 2.6rem 3.2rem; }
+  .flight-divider { margin-bottom: 5rem; }
+  .flight-header::before { left: 2.5rem; right: 3rem; }
+  .name-banner { margin-top: .75rem; }
+  .scroll-flight { right: .15rem; opacity: .6; }
+  .about-balloon { padding: 3.5rem 1.6rem 4.4rem; border-radius: 48% 48% 44% 44% / 35% 35% 60% 60%; }
+  .about-balloon p { font-size: .92rem; line-height: 1.65; }
+  .balloon-ropes { height: 3.6rem; }
+  .balloon-ropes i { height: 4rem; }
+  .balloon-basket { width: 5.2rem; height: 3.2rem; }
+}
+
+@media (min-width: 640px) {
+  .cloud-menu-button { display: none !important; }
+  .cloud-project > img {
+    position: absolute !important;
+    top: 3.25rem !important;
+    right: -6rem !important;
+    width: 28.25rem !important;
+    height: auto !important;
+  }
+  .cloud-project-wrap:nth-of-type(even) .cloud-project > img {
+    right: auto !important;
+    left: -6rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-cloud { animation: none; }
+  .scroll-flight { display: none; }
 }

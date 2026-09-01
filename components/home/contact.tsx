@@ -1,10 +1,10 @@
 "use client";
 
-import SectionHeading from "./section-heading";
+import SectionHeading from "../section-heading";
 import { motion } from "framer-motion";
 import { useSectionInView } from "@/lib/hooks";
 import { sendEmail } from "@/actions/sendEmail";
-import SubmitButton from "./submit-btn";
+import SubmitButton from "../submit-btn";
 import toast from "react-hot-toast";
 
 export default function Contact() {
@@ -14,7 +14,7 @@ export default function Contact() {
     <motion.section
       id="contact"
       ref={ref}
-      className="mb-10 sm:mb-16 w-[min(100%,38rem)] text-center scroll-mt-40"
+      className="contact-tower mb-10 sm:mb-16 w-[min(100%,38rem)] text-center scroll-mt-40"
       initial={{
         opacity: 0,
       }}
@@ -28,25 +28,31 @@ export default function Contact() {
         once: true,
       }}
     >
-      <SectionHeading>Contact Me</SectionHeading>
+      <div className="tower-side-wing tower-side-wing-left" aria-hidden="true" />
+      <div className="tower-side-wing tower-side-wing-right" aria-hidden="true" />
+      <div className="tower-roof-cap" aria-hidden="true" />
+      <SectionHeading>Contact Tower</SectionHeading>
+      <div className="tower-windows" aria-hidden="true"><i /><i /><i /><i /></div>
 
-      <p className="text-gray-700 dark:text-slate-300 -mt-6">
-        Please contact me directly at{" "}
-        <a
-          className="underline"
-          href="mailto:barkinkocatepe12@gmail.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          barkinkocatepe12@gmail.com
-        </a>{" "}
-        or through this form.
-      </p>
+      <div className="tower-message-band">
+        <p className="text-gray-700 dark:text-slate-300">
+          Contact the tower directly at{" "}
+          <a
+            className="underline"
+            href="mailto:barkinkocatepe12@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            barkinkocatepe12@gmail.com
+          </a>{" "}
+          or send a transmission through this form.
+        </p>
+      </div>
 
       <form
         className="mt-10 flex flex-col"
         action={async (formData) => {
-          const { data, error } = await sendEmail(formData);
+          const { error } = await sendEmail(formData);
 
           if (error) {
             toast.error(error);
@@ -77,6 +83,10 @@ export default function Contact() {
         />
         <SubmitButton />
       </form>
+      <div className="tower-shaft" aria-hidden="true">
+        <i /><i />
+        <span />
+      </div>
     </motion.section>
   );
 }

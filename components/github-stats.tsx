@@ -16,7 +16,16 @@ interface LanguageStats {
   [key: string]: number;
 }
 
-export default function GitHubStats({ limit = 15 }: { limit?: number }) {
+interface GitHubRepo {
+  name: string;
+  html_url: string;
+  description: string | null;
+  updated_at: string;
+  language: string | null;
+  languages_url: string;
+}
+
+export default function GitHubStats({ limit = 3 }: { limit?: number }) {
   const [repos, setRepos] = useState<Repo[]>([]);
   const [languages, setLanguages] = useState<LanguageStats>({});
   const [loading, setLoading] = useState(true);
@@ -40,12 +49,12 @@ export default function GitHubStats({ limit = 15 }: { limit?: number }) {
 
         if (!reposResponse.ok) throw new Error("Failed to fetch repositories");
 
-        const reposData = await reposResponse.json();
+        const reposData = (await reposResponse.json()) as GitHubRepo[];
 
         const formattedRepos = reposData
-          .filter((repo: any) => !excludeRepos.includes(repo.name.toLowerCase()))
-          .slice(0, 3)
-          .map((repo: any) => ({
+          .filter((repo) => !excludeRepos.includes(repo.name.toLowerCase()))
+          .slice(0, limit)
+          .map((repo) => ({
             name: repo.name,
             url: repo.html_url,
             description: repo.description,
@@ -59,7 +68,7 @@ export default function GitHubStats({ limit = 15 }: { limit?: number }) {
         
         // Update This When I Add More Repos !!
         const filteredRepos = reposData
-          .filter((repo: any) => !excludeRepos.includes(repo.name.toLowerCase()))
+          .filter((repo) => !excludeRepos.includes(repo.name.toLowerCase()))
           .slice(0, 5);
 
         for (const repo of filteredRepos) {
@@ -76,7 +85,7 @@ export default function GitHubStats({ limit = 15 }: { limit?: number }) {
                 }
               });
             }
-          } catch (e) {
+          } catch {
           }
         }
 
@@ -97,7 +106,7 @@ export default function GitHubStats({ limit = 15 }: { limit?: number }) {
     };
 
     fetchGitHubData();
-  }, []);
+  }, [limit]);
 
   if (loading)
     return (

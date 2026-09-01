@@ -3,5 +3,5 @@ export const Github = "https://github.com/BarkinKctp";
 export const pages = [
   { label: "About Me", href: "/pages/about-me" },
   { label: "Projects", href: "/pages/projects" },
-  { label: "Blog", href: "/pages/blog" },
+  { label: "Blog", href: "https://medium.com/@barkinkocatepe12" },
 ];

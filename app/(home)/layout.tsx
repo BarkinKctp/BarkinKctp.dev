@@ -1,22 +1,22 @@
+import AltitudeScrollbar from "@/components/altitude-scrollbar";
+
 export default function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <div className="relative">
-      <div
-        className="bg-indigo-200 dark:bg-indigo-900/40 absolute top-[-15rem]
-        -z-10 right-[-18rem] h-[45rem] w-[60rem] rounded-full 
-        blur-[10rem] sm:top-[-6rem] sm:right-[-25rem] sm:w-[75rem] md:right-[-33rem]
-        lg:right-[-28rem] xl:right-[-15rem] 2xl:right-[-5rem]"
-      ></div>
-      <div
-        className="bg-cyan-200 dark:bg-cyan-900/35 absolute top-[-10rem]
-        -z-10 left-[-18rem] h-[25rem] w-[65rem] rounded-full 
-        blur-[10rem] sm:top-[-1rem] sm:left-[-25rem] sm:w-[65rem] md:left-[-33rem]   
-        lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem]"
-      ></div>
+    <div className="flight-page relative">
+      <AltitudeScrollbar />
+      <div className="sky-cloud sky-cloud-one" aria-hidden="true">☁️</div>
+      <div className="sky-cloud sky-cloud-two" aria-hidden="true">☁️</div>
+      <div className="sky-cloud sky-cloud-three" aria-hidden="true">☁️</div>
+      <div className="wind-field" aria-hidden="true">
+        <i className="wind-one" />
+        <i className="wind-two" />
+        <i className="wind-three" />
+        <i className="wind-four" />
+      </div>
       {children}
     </div>
   );

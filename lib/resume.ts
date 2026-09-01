@@ -2,6 +2,12 @@ import clientPromise from "./mongodb";
 
 const DB_NAME = "portfolio";
 
+interface ResumeSettings {
+  _id: string;
+  url: string;
+  updatedAt: Date;
+}
+
 let indexesEnsured = false;
 
 async function getDb() {
@@ -21,17 +27,17 @@ async function getDb() {
 export async function getResumeUrl(): Promise<string | null> {
   const db = await getDb();
   const doc = await db
-    .collection<{ url: string; updatedAt: Date }>("resumeSettings")
-    .findOne({ _id: "current" } as any);
+    .collection<ResumeSettings>("resumeSettings")
+    .findOne({ _id: "current" });
   return doc?.url ?? null;
 }
 
 export async function setResumeUrl(url: string): Promise<void> {
   const db = await getDb();
   await db
-    .collection("resumeSettings")
+    .collection<ResumeSettings>("resumeSettings")
     .updateOne(
-      { _id: "current" } as any,
+      { _id: "current" },
       { $set: { url, updatedAt: new Date() } },
       { upsert: true },
     );

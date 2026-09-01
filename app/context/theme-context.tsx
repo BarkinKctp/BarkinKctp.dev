@@ -28,6 +28,8 @@ export default function ThemeContextProvider({
     const savedTheme = window.localStorage.getItem("theme") as Theme | null;
 
     if (savedTheme) {
+      // Hydrate the client-only preference after mount.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTheme(savedTheme);
       applyThemeToDom(savedTheme);
       return;

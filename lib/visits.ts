@@ -3,6 +3,12 @@ import clientPromise from "./mongodb";
 const DB_NAME = "portfolio";
 const VISITOR_TTL_SECONDS = 90 * 24 * 60 * 60; // 90 days
 
+interface SiteStats {
+  _id: string;
+  totalVisits: number;
+  lastVisited: Date;
+}
+
 let indexesEnsured = false;
 
 async function getDb() {
@@ -27,8 +33,8 @@ export async function recordVisit(ipHash: string, path: string) {
   const db = await getDb();
 
   // Increment total visit counter
-  await db.collection<{ totalVisits: number; lastVisited: Date }>("siteStats").updateOne(
-    { _id: "counters" } as any,
+  await db.collection<SiteStats>("siteStats").updateOne(
+    { _id: "counters" },
     { $inc: { totalVisits: 1 }, $set: { lastVisited: new Date() } },
     { upsert: true }
   );
@@ -49,8 +55,8 @@ export async function getVisitStats() {
   const db = await getDb();
 
   const counters = await db
-    .collection<{ totalVisits: number; lastVisited: Date }>("siteStats")
-    .findOne({ _id: "counters" } as any);
+    .collection<SiteStats>("siteStats")
+    .findOne({ _id: "counters" });
 
   const uniqueVisitors = await db.collection("visitors").countDocuments();
 

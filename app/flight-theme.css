@@ -1,0 +1,2797 @@
+.flight-header {
+  position: relative;
+  left: .8rem;
+  align-items: flex-start;
+}
+
+.intro-flight-deck {
+  position: relative;
+  isolation: isolate;
+}
+
+.intro-cloud-layer {
+  position: absolute;
+  inset: -4rem -10vw -2rem;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.intro-cloud-layer i {
+  position: absolute;
+  display: block;
+  width: 13rem;
+  height: 4.2rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.26);
+  filter: blur(1px);
+  animation: intro-cloud-drift 28s ease-in-out infinite alternate;
+}
+
+.intro-cloud-layer i::before,
+.intro-cloud-layer i::after {
+  position: absolute;
+  bottom: 0;
+  content: "";
+  border-radius: 50%;
+  background: inherit;
+}
+
+.intro-cloud-layer i::before { left: 2rem; width: 5.2rem; height: 5.2rem; }
+.intro-cloud-layer i::after { right: 2rem; width: 6.2rem; height: 6.2rem; }
+.intro-cloud-layer i:nth-child(1) { top: 12%; left: -7%; opacity: .55; }
+.intro-cloud-layer i:nth-child(2) { top: 46%; right: -12%; opacity: .4; animation-delay: -5s; }
+.intro-cloud-layer i:nth-child(3) { bottom: 2%; left: 24%; opacity: .28; animation-delay: -9s; }
+
+.crew-badge {
+  border-radius: 47% 47% 45% 45% / 50% 50% 46% 46%;
+  border: 5px solid #cbd5e1;
+  outline: 3px solid rgba(49, 93, 136, .76);
+  outline-offset: .24rem;
+  background: linear-gradient(145deg, #f8fafc, #94a3b8);
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,.78), 0 0 0 7px rgba(148,163,184,.28);
+  filter: drop-shadow(0 9px 13px rgba(3, 105, 161, .2));
+}
+
+.aircraft-window {
+  position: absolute;
+  inset: .22rem;
+  overflow: hidden;
+  border: 3px solid #475569;
+  border-radius: 45% 45% 43% 43% / 49% 49% 45% 45%;
+  background: #7dd3fc;
+  box-shadow: inset 0 0 18px rgba(15,23,42,.34), inset 0 0 0 2px rgba(255,255,255,.5);
+}
+
+.aircraft-window-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(135deg, #e0f2fe 0 10%, #38bdf8 34%, #0284c7 78%, #075985 100%);
+  box-shadow: inset 0 0 26px rgba(3,105,161,.45), inset 13px 0 17px rgba(255,255,255,.3);
+  transition: opacity .78s ease;
+  pointer-events: none;
+}
+
+html:not(.dark):not([data-theme="dark"]) .crew-badge:hover .aircraft-window-glass,
+html[data-theme="light"] .crew-badge:hover .aircraft-window-glass {
+  opacity: 1;
+}
+
+.aircraft-window-curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  opacity: 0;
+  background:
+    repeating-linear-gradient(90deg, #172033 0 11px, #334155 11px 20px),
+    linear-gradient(180deg, #334155, #0f172a);
+  box-shadow: inset 0 -8px 0 #64748b, inset 0 -13px 7px rgba(0,0,0,.35);
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  transition: transform .72s cubic-bezier(.25,.75,.2,1), opacity .18s ease;
+  pointer-events: none;
+}
+
+html.dark .crew-badge:hover .aircraft-window-curtain,
+html[data-theme="dark"] .crew-badge:hover .aircraft-window-curtain {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.crew-badge::before {
+  position: absolute;
+  top: -.72rem;
+  left: 50%;
+  z-index: 2;
+  content: "CREW · BK";
+  padding: .12rem .42rem;
+  border: 1px solid #075985;
+  border-radius: 999px;
+  background: #f0f9ff;
+  color: #075985;
+  font-family: var(--font-geist-mono);
+  font-size: .52rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.intro-flight-code {
+  width: fit-content;
+  margin: 1.5rem auto -.45rem;
+  padding: .28rem .68rem;
+  border: 1px solid rgba(7, 89, 133, .45);
+  border-radius: 999px;
+  background: rgba(240,249,255,.7);
+  color: #075985;
+  font-family: var(--font-geist-mono);
+  font-size: .67rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+
+html.dark .crew-badge,
+html[data-theme="dark"] .crew-badge { outline-color: rgba(125, 211, 252, .65); }
+
+html.dark .crew-badge::before,
+html[data-theme="dark"] .crew-badge::before,
+html.dark .intro-flight-code,
+html[data-theme="dark"] .intro-flight-code {
+  border-color: #38bdf8;
+  background: rgba(15,23,42,.82);
+  color: #e0f2fe;
+}
+
+.contact-tower {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 46rem) !important;
+  margin-bottom: 12rem !important;
+  padding: 2.8rem 0 2.6rem;
+  border: 3px solid #315d88;
+  border-top: 12px solid #38b6d9;
+  border-radius: .45rem .45rem 1.6rem 1.6rem;
+  background: linear-gradient(160deg, rgba(241,245,249,.96), rgba(203,213,225,.92));
+  box-shadow: 0 11px 0 #315d88, 7px 13px 20px rgba(30,64,175,.15);
+}
+
+.contact-tower::before {
+  position: absolute;
+  top: -5rem;
+  left: 50%;
+  width: 2px;
+  height: 3.3rem;
+  content: "";
+  background: #075985;
+}
+
+.contact-tower::after {
+  position: absolute;
+  top: -5.35rem;
+  left: 50%;
+  width: .58rem;
+  height: .58rem;
+  content: "";
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: none;
+  transform: translateX(-50%);
+}
+
+.tower-side-wing {
+  position: absolute;
+  top: 5.2rem;
+  bottom: auto;
+  z-index: 0;
+  width: 4.6rem;
+  height: 10.8rem;
+  border: 3px solid #315d88;
+  background: linear-gradient(180deg, #e2e8f0, #94a3b8);
+  box-shadow: 0 7px 12px rgba(49,93,136,.16);
+}
+
+.tower-side-wing-left {
+  left: -2.9rem;
+  clip-path: polygon(28% 0, 100% 8%, 100% 100%, 0 88%);
+}
+
+.tower-side-wing-right {
+  right: -2.9rem;
+  clip-path: polygon(0 8%, 72% 0, 100% 88%, 0 100%);
+}
+
+.tower-roof-cap {
+  position: absolute;
+  top: -2.25rem;
+  left: 50%;
+  width: 52%;
+  height: 1.55rem;
+  border-bottom: 5px solid #315d88;
+  background: #94a3b8;
+  clip-path: polygon(12% 0, 88% 0, 100% 100%, 0 100%);
+  transform: translateX(-50%);
+}
+
+.tower-roof-cap::before {
+  position: absolute;
+  right: -10%;
+  bottom: -.45rem;
+  left: -10%;
+  height: .42rem;
+  content: "";
+  border-radius: 999px;
+  background: #315d88;
+}
+
+.tower-roof-cap::after {
+  position: absolute;
+  top: -1.15rem;
+  left: 50%;
+  width: 46%;
+  height: .48rem;
+  content: "";
+  border-radius: 999px;
+  background: #315d88;
+  transform: translateX(-50%);
+}
+
+.contact-tower > h2,
+.contact-tower > form,
+.contact-tower > .tower-windows { position: relative; z-index: 2; }
+
+.contact-tower > h2,
+.contact-tower > form {
+  width: min(100%, 38rem);
+  margin-inline: auto;
+}
+
+.contact-tower > h2 {
+  margin-bottom: 1.35rem;
+  padding-inline: 1rem;
+}
+
+html.dark .contact-tower,
+html[data-theme="dark"] .contact-tower {
+  border-color: rgba(125,211,252,.55);
+  border-top-color: #38bdf8;
+  background: linear-gradient(160deg, rgba(15,23,42,.97), rgba(30,58,138,.84));
+  box-shadow: 0 11px 0 #1e3a5f, 7px 13px 24px rgba(14,165,233,.2);
+}
+
+html.dark .tower-side-wing,
+html[data-theme="dark"] .tower-side-wing {
+  border-color: #1e3a5f;
+  background: linear-gradient(180deg, #475569, #1e293b);
+}
+
+html.dark .tower-roof-cap,
+html[data-theme="dark"] .tower-roof-cap { background: #475569; border-bottom-color: #1e3a5f; }
+
+html.dark .contact-tower::after,
+html[data-theme="dark"] .contact-tower::after {
+  background: #ff2d2d;
+  box-shadow: 0 0 8px #ef4444, 0 0 22px rgba(239,68,68,1), 0 0 42px rgba(239,68,68,.62);
+  animation: tower-beacon 1.2s ease-in-out infinite alternate;
+}
+
+.tower-windows {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .7rem;
+  margin: 0;
+  padding: .75rem 1.35rem;
+  border: 9px solid #315d88;
+  background: #1e3a5f;
+}
+
+.tower-windows i {
+  height: 4.25rem;
+  border: 1px solid #0e7490;
+  background: #38bdf8;
+  box-shadow: inset 0 8px 12px rgba(255,255,255,.14);
+}
+
+.tower-message-band {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 1.25rem clamp(1rem, 5vw, 3rem);
+  border-bottom: 10px solid #315d88;
+  background: rgba(241,245,249,.97);
+}
+
+.tower-message-band p { width: min(100%, 38rem); margin: 0 auto; }
+
+html.dark .tower-message-band,
+html[data-theme="dark"] .tower-message-band {
+  border-bottom-color: #1e3a5f;
+  background: rgba(30,41,59,.96);
+}
+
+html.dark .tower-windows i,
+html[data-theme="dark"] .tower-windows i {
+  border-color: #facc15;
+  background: #fef3c7;
+  box-shadow: inset 0 7px 12px rgba(255,255,255,.62), 0 0 14px rgba(250,204,21,.8), 0 0 28px rgba(250,204,21,.35);
+}
+
+html.dark .tower-windows,
+html[data-theme="dark"] .tower-windows {
+  box-shadow: 0 0 24px rgba(250,204,21,.22);
+}
+
+.tower-shaft {
+  position: absolute;
+  top: calc(100% + 11px);
+  left: 50%;
+  z-index: -1;
+  width: 44%;
+  height: 12rem;
+  border-inline: 3px solid #64748b;
+  background: linear-gradient(90deg, #94a3b8, #cbd5e1 50%, #94a3b8);
+  transform: translateX(-50%);
+}
+
+.tower-shaft::after {
+  position: absolute;
+  right: -26%;
+  bottom: 0;
+  left: -26%;
+  height: .72rem;
+  content: "";
+  background: #315d88;
+}
+
+.tower-shaft i {
+  position: absolute;
+  left: 50%;
+  width: 3rem;
+  height: .55rem;
+  background: #e2e8f0;
+  transform: translateX(-50%);
+}
+
+.tower-shaft i:first-child { top: 3.3rem; }
+.tower-shaft i:nth-child(2) { top: 4.65rem; }
+
+.tower-shaft span {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 2.2rem;
+  height: 3.7rem;
+  border-radius: .25rem .25rem 0 0;
+  background: #22b8df;
+  transform: translateX(-50%);
+}
+
+html.dark .tower-shaft,
+html[data-theme="dark"] .tower-shaft {
+  border-color: #334155;
+  background: linear-gradient(90deg, #334155, #64748b 50%, #334155);
+}
+
+.footer-runway { margin-top: 0 !important; }
+
+@keyframes tower-beacon {
+  from { opacity: .45; }
+  to { opacity: 1; }
+}
+
+@keyframes intro-cloud-drift {
+  from { translate: -10px 0; }
+  to { translate: 18px -8px; }
+}
+
+@keyframes balloon-day-sway {
+  0% { translate: -4px 1px; rotate: -.65deg; }
+  50% { translate: 1px -4px; rotate: .15deg; }
+  100% { translate: 5px 0; rotate: .7deg; }
+}
+
+@keyframes balloon-night-sway {
+  from { translate: -1.5px 0; rotate: -.16deg; }
+  to { translate: 1.5px -1px; rotate: .16deg; }
+}
+
+.flight-page::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 244, 184, .9) 0, rgba(255, 211, 75, .56) 25%, rgba(255, 220, 116, .23) 46%, transparent 68%),
+    linear-gradient(225deg, rgba(255, 210, 82, .38), transparent 50%);
+  opacity: 1;
+  animation: sky-light-fade linear both;
+  animation-timeline: scroll(root block);
+}
+
+.flight-page::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 239, 168, .68) 0, rgba(255, 214, 92, .35) 24%, rgba(255, 224, 138, .13) 43%, transparent 62%),
+    linear-gradient(135deg, rgba(255, 218, 112, .24), transparent 44%);
+  opacity: 1;
+  animation: left-sky-light-fade linear both;
+  animation-timeline: scroll(root block);
+}
+
+html.dark .flight-page::before,
+html[data-theme="dark"] .flight-page::before {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(235, 248, 255, .66) 0, rgba(157, 211, 242, .34) 27%, rgba(111, 175, 216, .12) 47%, transparent 65%),
+    linear-gradient(225deg, rgba(186, 230, 253, .24), transparent 47%);
+  opacity: 1;
+}
+
+html.dark .flight-page::after,
+html[data-theme="dark"] .flight-page::after {
+  background:
+    radial-gradient(circle at 0 0, rgba(235, 248, 255, .5) 0, rgba(157, 211, 242, .23) 27%, rgba(111, 175, 216, .08) 47%, transparent 62%),
+    linear-gradient(135deg, rgba(186, 230, 253, .16), transparent 44%);
+}
+
+.flight-header::before {
+  position: absolute;
+  top: 1.08rem;
+  left: 6.2rem;
+  right: .8rem;
+  z-index: 0;
+  content: "";
+  height: 4px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(90deg, #075985 0 8px, transparent 8px 15px),
+    linear-gradient(180deg, #fde68a 0 45%, #b45309 45% 72%, #fbbf24 72% 100%);
+  box-shadow: 0 2px 0 rgba(120,53,15,.25);
+  border: 0;
+  transform-origin: left center;
+}
+
+.header-plane {
+  position: relative;
+  left: .42rem;
+  width: 6.7rem !important;
+  height: 4.2rem !important;
+  margin-top: -1.05rem;
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+  transform: scaleX(-1) rotate(-3deg) !important;
+  filter: none !important;
+}
+
+.header-plane img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.05);
+}
+
+.plane-night { display: none; }
+
+html.dark .plane-day,
+html[data-theme="dark"] .plane-day { display: none; }
+
+html.dark .plane-night,
+html[data-theme="dark"] .plane-night { display: block; }
+
+.tow-rope {
+  width: clamp(3.2rem, 5vw, 5.2rem);
+  height: 1px;
+}
+
+.name-banner {
+  margin-top: .82rem;
+  margin-right: 1.2rem;
+  flex: 0 0 auto;
+  left: .45rem;
+}
+
+.name-banner::before {
+  position: absolute;
+  top: -.86rem;
+  left: 50%;
+  width: 1px;
+  height: .9rem;
+  content: "";
+  background: #d97706;
+}
+
+.header-flags {
+  position: relative;
+  left: .45rem;
+  margin-left: 4.6rem;
+  margin-right: auto;
+}
+
+.header-flags .nav-flag {
+  min-height: 2.9rem;
+  padding: .72rem .9rem;
+  font-size: .9rem;
+}
+
+.flag-wrap::before {
+  display: none !important;
+}
+
+.header-turbulence .header-plane {
+  animation: plane-click-turbulence .42s ease-in-out both;
+}
+
+.header-turbulence::before {
+  animation: rope-click-turbulence .46s .12s ease-in-out both;
+}
+
+.header-turbulence .name-banner,
+.header-turbulence .flag-wrap {
+  animation: card-click-turbulence .48s .25s ease-in-out both;
+}
+
+.header-scroll-turbulence .header-plane { animation: plane-scroll-turbulence .42s ease-in-out both; }
+.header-scroll-turbulence::before { animation: rope-scroll-turbulence .46s .1s ease-in-out both; }
+.header-scroll-turbulence .name-banner,
+.header-scroll-turbulence .flag-wrap { animation: card-scroll-turbulence .48s .18s ease-in-out both; }
+
+.wind-field {
+  position: fixed;
+  inset: 5rem 0 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  animation: wind-altitude linear both;
+  animation-timeline: scroll(root block);
+}
+
+.wind-field i {
+  position: absolute;
+  right: -22rem;
+  width: clamp(13rem, 25vw, 24rem);
+  height: 3px;
+  border-radius: 999px;
+  opacity: .42;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.95) 35%, rgba(125,211,252,.7));
+  box-shadow: 0 8px 18px rgba(255,255,255,.35);
+  animation: wind-sweep 4.8s linear infinite;
+}
+
+.wind-field i::after {
+  position: absolute;
+  top: .55rem;
+  right: 18%;
+  width: 62%;
+  height: 2px;
+  border-radius: inherit;
+  content: "";
+  background: inherit;
+}
+
+.wind-one { top: 12%; }
+.wind-two { top: 36%; animation-delay: -1.3s !important; animation-duration: 5.6s !important; }
+.wind-three { top: 62%; animation-delay: -2.8s !important; animation-duration: 4.2s !important; }
+.wind-four { top: 82%; animation-delay: -.6s !important; animation-duration: 6.1s !important; }
+
+html.dark .wind-three,
+html.dark .wind-four,
+html[data-theme="dark"] .wind-three,
+html[data-theme="dark"] .wind-four {
+  display: none;
+}
+
+.helicopter-theme-switch {
+  width: 5.4rem;
+  height: 4.6rem;
+  border: 0;
+  background: transparent;
+  color: #082f49;
+  transition: transform .25s ease;
+}
+
+.helicopter-theme-switch:hover { transform: translateY(-5px) rotate(-2deg); }
+
+.helicopter-theme-switch {
+  right: auto !important;
+  left: 1rem !important;
+}
+
+.helicopter-body {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  width: 3.9rem;
+  height: 2.45rem;
+  border: 2px solid #475569;
+  border-radius: 55% 48% 48% 42%;
+  background: #ef4444;
+  box-shadow: 0 8px 16px rgba(3,105,161,.24), inset -13px 0 #7dd3fc;
+  font-size: 1.05rem;
+}
+
+.helicopter-tail {
+  position: absolute;
+  left: .25rem;
+  bottom: 1.25rem;
+  width: 2.2rem;
+  height: .5rem;
+  border: 1.5px solid #475569;
+  background: #ef4444;
+  transform: rotate(-8deg);
+}
+
+.helicopter-tail::before {
+  position: absolute;
+  top: -.58rem;
+  left: -.35rem;
+  width: .25rem;
+  height: 1.7rem;
+  content: "";
+  border-radius: 999px;
+  background: #64748b;
+}
+
+.helicopter-rotor {
+  position: absolute;
+  top: .35rem;
+  right: .05rem;
+  width: 4.9rem;
+  height: 2px;
+  border-radius: 999px;
+  background: #64748b;
+  transform-origin: center;
+  animation: rotor-spin .55s linear infinite;
+}
+
+.helicopter-rotor::after {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 1.1rem;
+  content: "";
+  background: #64748b;
+}
+
+html.dark .header-plane img,
+html[data-theme="dark"] .header-plane img {
+  filter: brightness(1.12) saturate(1.1);
+  opacity: 1;
+}
+
+html.dark .helicopter-body,
+html[data-theme="dark"] .helicopter-body {
+  border-color: #075985;
+  background: #facc15;
+  box-shadow: 0 8px 16px rgba(3,105,161,.24), inset -11px 0 rgba(125,211,252,.75);
+}
+
+html.dark .helicopter-tail,
+html[data-theme="dark"] .helicopter-tail {
+  border-color: #075985;
+  background: #facc15;
+}
+
+html.dark .helicopter-tail::before,
+html.dark .helicopter-rotor,
+html.dark .helicopter-rotor::after,
+html[data-theme="dark"] .helicopter-tail::before,
+html[data-theme="dark"] .helicopter-rotor,
+html[data-theme="dark"] .helicopter-rotor::after {
+  background: #075985;
+}
+
+.about-balloon-section {
+  position: relative;
+  width: min(100%, 46rem);
+  scroll-margin-top: 8rem;
+  filter: drop-shadow(0 28px 30px rgba(153, 27, 27, .17));
+  animation: balloon-day-sway 5.4s ease-in-out infinite alternate;
+}
+
+html.dark .about-balloon-section,
+html[data-theme="dark"] .about-balloon-section {
+  animation: balloon-night-sway 10s ease-in-out infinite alternate;
+}
+
+.about-balloon {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3rem, 5vw, 4rem) clamp(2rem, 6vw, 4.5rem) clamp(3.8rem, 6vw, 4.8rem);
+  border: 2px solid #991b1b;
+  border-radius: 50% 50% 46% 46% / 43% 43% 57% 57%;
+  background: linear-gradient(90deg,
+    rgba(239,68,68,.95) 0 17%,
+    rgba(254,202,202,.98) 17% 34%,
+    rgba(255,255,255,.98) 34% 50%,
+    rgba(254,202,202,.98) 50% 67%,
+    rgba(239,68,68,.95) 67% 84%,
+    rgba(185,28,28,.95) 84% 100%);
+  box-shadow: inset 0 -22px 40px rgba(127, 29, 29, .2);
+}
+
+.about-balloon::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 20%, rgba(255,255,255,.55), transparent 42%);
+}
+
+.about-balloon > * { position: relative; z-index: 1; }
+.about-balloon h2 { color: #082f49 !important; }
+.about-balloon p { color: #0f2942 !important; text-shadow: 0 1px 0 rgba(255,255,255,.48); }
+
+html.dark .about-balloon,
+html[data-theme="dark"] .about-balloon {
+  border-color: #4c1d95;
+  background: linear-gradient(90deg,
+    rgba(88,28,135,.97) 0 17%,
+    rgba(76,29,149,.96) 17% 34%,
+    rgba(30,41,59,.98) 34% 50%,
+    rgba(76,29,149,.96) 50% 67%,
+    rgba(88,28,135,.97) 67% 84%,
+    rgba(30,58,138,.96) 84% 100%);
+  box-shadow: inset 0 -24px 42px rgba(15, 23, 42, .45);
+}
+
+html.dark .about-balloon h2,
+html.dark .about-balloon p,
+html[data-theme="dark"] .about-balloon h2,
+html[data-theme="dark"] .about-balloon p {
+  color: #f1f5f9 !important;
+  text-shadow: 0 1px 2px rgba(15, 23, 42, .72);
+}
+
+.balloon-glint {
+  position: absolute;
+  top: 10%;
+  left: 23%;
+  width: 14%;
+  height: 24%;
+  border-radius: 50%;
+  background: rgba(255,255,255,.28);
+  transform: rotate(22deg);
+}
+
+.balloon-ropes {
+  position: relative;
+  width: 9rem;
+  height: 4.5rem;
+  margin: -1rem auto 0;
+}
+
+.balloon-ropes i {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 5rem;
+  background: #78350f;
+}
+
+.balloon-ropes i:first-child { left: 2.2rem; transform: rotate(-10deg); }
+.balloon-ropes i:last-child { right: 2.2rem; transform: rotate(10deg); }
+
+.balloon-burner {
+  position: relative;
+  z-index: 2;
+  width: 2.5rem;
+  height: 1rem;
+  margin: -1.15rem auto .1rem;
+  border: 2px solid #475569;
+  border-radius: .25rem .25rem .5rem .5rem;
+  background: linear-gradient(90deg, #64748b, #e2e8f0 48%, #64748b);
+  box-shadow: 0 3px 5px rgba(15, 23, 42, .24);
+}
+
+.balloon-flame {
+  position: absolute;
+  left: 50%;
+  bottom: .7rem;
+  display: block;
+  width: 1.15rem;
+  height: 2rem;
+  margin-left: -.575rem;
+  opacity: 0;
+  transform-origin: 50% 100%;
+  clip-path: polygon(50% 0, 82% 38%, 100% 72%, 75% 100%, 25% 100%, 0 72%, 20% 38%);
+  background: linear-gradient(180deg, #60a5fa 0 18%, #fde047 42%, #f97316 74%, #ef4444 100%);
+  filter: drop-shadow(0 0 7px rgba(249, 115, 22, .8));
+  will-change: opacity, transform;
+}
+
+.blog-flag-wrap { margin-left: 1.15rem; }
+
+.header-flags .blog-nav-flag {
+  min-width: 7.2rem;
+  padding-inline: 1.2rem;
+  background: #ef4444;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  box-shadow: 4px 5px 0 rgba(153, 27, 27, .2);
+}
+
+.header-flags .blog-nav-flag:hover { background: #dc2626; }
+
+html.dark .header-flags .blog-nav-flag,
+html[data-theme="dark"] .header-flags .blog-nav-flag {
+  border-color: #14532d;
+  background: #16a34a;
+  color: #fff;
+  box-shadow: 4px 5px 0 rgba(20, 83, 45, .28);
+}
+
+html.dark .header-flags .blog-nav-flag:hover,
+html[data-theme="dark"] .header-flags .blog-nav-flag:hover { background: #15803d; }
+
+.blog-mobile-link { border-color: #991b1b !important; background: #ef4444 !important; color: #fff !important; }
+html.dark .blog-mobile-link,
+html[data-theme="dark"] .blog-mobile-link { border-color: #14532d !important; background: #16a34a !important; }
+
+.cargo-skill {
+  position: relative;
+  overflow: visible;
+  border: 2px solid #166534 !important;
+  border-radius: .4rem !important;
+  background: linear-gradient(145deg, #86efac, #4ade80) !important;
+  color: #052e16 !important;
+  box-shadow: 0 6px 0 #15803d, 0 10px 16px rgba(20, 83, 45, .22);
+}
+
+.cargo-skill::before,
+.cargo-skill::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+  background: rgba(20, 83, 45, .3);
+}
+
+.cargo-skill::before { inset: 0 auto 0 48%; width: .42rem; }
+.cargo-skill::after { inset: 44% 0 auto; height: .32rem; }
+
+html.dark .cargo-skill,
+html[data-theme="dark"] .cargo-skill {
+  border-color: #92400e !important;
+  background: linear-gradient(145deg, #fde047, #fbbf24) !important;
+  color: #422006 !important;
+  box-shadow: 0 6px 0 #b45309, 0 10px 16px rgba(120, 53, 15, .24);
+}
+
+html.dark .cargo-skill::before,
+html.dark .cargo-skill::after,
+html[data-theme="dark"] .cargo-skill::before,
+html[data-theme="dark"] .cargo-skill::after {
+  background: rgba(146, 64, 14, .3);
+}
+
+.cargo-label { position: relative; z-index: 1; }
+
+.cargo-parachute {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + .2rem);
+  z-index: 3;
+  width: 4rem;
+  height: 3.2rem;
+  margin-left: -2rem;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+}
+
+.cargo-parachute::before {
+  position: absolute;
+  top: 0;
+  left: .2rem;
+  width: 3.6rem;
+  height: 1.75rem;
+  content: "";
+  border: 2px solid #991b1b;
+  border-radius: 3.6rem 3.6rem .45rem .45rem;
+  background: linear-gradient(90deg, #ef4444 0 24%, #fff7ed 24% 50%, #ef4444 50% 76%, #fff7ed 76% 100%);
+  box-shadow: 0 5px 10px rgba(127, 29, 29, .18);
+}
+
+.cargo-parachute i {
+  position: absolute;
+  top: 1.55rem;
+  width: 1px;
+  height: 1.75rem;
+  background: #78350f;
+  transform-origin: top;
+}
+
+.cargo-parachute i:first-child { left: .65rem; transform: rotate(-18deg); }
+.cargo-parachute i:last-child { right: .65rem; transform: rotate(18deg); }
+
+html.dark .cargo-parachute::before,
+html[data-theme="dark"] .cargo-parachute::before {
+  border-color: #14532d;
+  background: linear-gradient(90deg, #16a34a 0 24%, #dcfce7 24% 50%, #15803d 50% 76%, #dcfce7 76% 100%);
+  box-shadow: 0 5px 12px rgba(34, 197, 94, .25);
+}
+
+html.dark .cargo-parachute i,
+html[data-theme="dark"] .cargo-parachute i { background: #86efac; }
+
+.footer-runway {
+  position: relative;
+  overflow: hidden;
+  border-top: 3px solid #facc15;
+  border-bottom: 3px solid #facc15;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.05), transparent 35%, rgba(0,0,0,.18)),
+    repeating-linear-gradient(92deg, #303944 0 70px, #343e49 70px 140px) !important;
+  box-shadow: inset 0 9px 22px rgba(0,0,0,.24), inset 0 -9px 22px rgba(0,0,0,.24);
+}
+
+.footer-runway p,
+.footer-runway a,
+.footer-runway span {
+  color: #f1f5f9 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .72);
+}
+
+html.dark .footer-runway p,
+html.dark .footer-runway a,
+html.dark .footer-runway span,
+html[data-theme="dark"] .footer-runway p,
+html[data-theme="dark"] .footer-runway a,
+html[data-theme="dark"] .footer-runway span {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .9);
+}
+
+.footer-runway::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 5px;
+  content: "";
+  opacity: .2;
+  background: repeating-linear-gradient(90deg, #f8fafc 0 42px, transparent 42px 82px);
+  transform: translateY(-50%);
+}
+
+.footer-runway::after {
+  position: absolute;
+  inset: 8px 0;
+  content: "";
+  opacity: .16;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, #fef08a 0 5px, transparent 5px 48px) top / 100% 3px no-repeat,
+    repeating-linear-gradient(90deg, #fef08a 0 5px, transparent 5px 48px) bottom / 100% 3px no-repeat;
+  filter: none;
+}
+
+html.dark .footer-runway::after,
+html[data-theme="dark"] .footer-runway::after {
+  opacity: 1;
+  filter: drop-shadow(0 0 5px rgba(254, 240, 138, .92));
+}
+
+.footer-runway > * { position: relative; z-index: 1; }
+
+.certificates-flight-link {
+  margin-top: 0;
+  box-shadow: 3px 4px 0 rgba(14, 116, 144, .16);
+  transition: transform .22s ease, background-color .22s ease, box-shadow .22s ease;
+}
+
+.certificates-flight-link:hover {
+  background: #e0f2fe;
+  box-shadow: 5px 6px 0 rgba(14, 116, 144, .2);
+  transform: translateY(-2px) rotate(-.6deg);
+}
+
+.altitude-scrollbar {
+  position: fixed;
+  top: 1.35rem;
+  right: .45rem;
+  bottom: 1.4rem;
+  z-index: 1200;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: end;
+  gap: .55rem;
+  width: 6.8rem;
+  color: #075985;
+  pointer-events: none;
+  transition: opacity .28s ease, transform .28s ease;
+}
+
+/* Let the fixed altitude controls remain clickable through empty header space. */
+header:has(.flight-header),
+.flight-header { pointer-events: none; }
+header:has(.flight-header) a,
+header:has(.flight-header) button,
+.flight-header a,
+.flight-header button { pointer-events: auto; }
+
+.altitude-scrollbar.is-at-runway {
+  opacity: 0;
+  transform: translateX(1rem);
+  pointer-events: none;
+}
+
+.altitude-scrollbar.is-at-runway .altitude-scrollbar-route { pointer-events: none; }
+
+.altitude-scrollbar-title,
+.altitude-scrollbar > strong {
+  padding: .2rem .38rem;
+  border: 1px solid rgba(7,89,133,.4);
+  border-radius: .35rem;
+  background: rgba(240,249,255,.78);
+  font-family: var(--font-geist-mono);
+  font-size: .57rem;
+  letter-spacing: .08em;
+  backdrop-filter: blur(6px);
+}
+
+.altitude-scrollbar > strong {
+  min-width: 6.25rem;
+  padding: .35rem .5rem;
+  text-align: center;
+  font-size: .67rem;
+  margin-top: .68rem;
+}
+
+.fleet-caption {
+  width: fit-content;
+  margin: -1.8rem auto 3.6rem;
+  padding: .3rem .7rem;
+  border: 1px solid rgba(7,89,133,.42);
+  border-radius: 999px;
+  background: rgba(240,249,255,.72);
+  color: #075985;
+  font-family: var(--font-geist-mono);
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+
+.fleet-formation { position: relative; }
+
+.fleet-formation::before { display: none; }
+
+.fleet-unit { position: relative; }
+
+.fleet-unit::before {
+  position: absolute;
+  top: -1.5rem;
+  left: .75rem;
+  z-index: 3;
+  content: "PROJECT " attr(data-fleet);
+  padding: .24rem .55rem;
+  border: 1px solid #075985;
+  border-radius: .35rem;
+  background: #e0f2fe;
+  color: #075985;
+  font-family: var(--font-geist-mono);
+  font-size: .62rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+}
+
+.fleet-unit:nth-child(even)::before { right: .75rem; left: auto; }
+
+.fleet-unit {
+  isolation: isolate;
+  padding-block: 2rem;
+}
+
+.fleet-unit > a { position: relative; z-index: 2; }
+
+.fleet-unit .cloud-project {
+  border-radius: 3.4rem 8rem 8rem 3.4rem / 3.4rem 7rem 7rem 3.4rem;
+}
+
+.fleet-unit:nth-child(even) .cloud-project {
+  border-radius: 8rem 3.4rem 3.4rem 8rem / 7rem 3.4rem 3.4rem 7rem;
+}
+
+.fleet-unit .cloud-project::before,
+.fleet-unit .cloud-project::after { display: none; }
+
+.fleet-glider .cloud-project { background: rgba(248,250,252,.94); border-color: #64748b; }
+.fleet-jet .cloud-project { background: rgba(191,219,254,.94); border-color: #1d4ed8; }
+
+.fleet-airframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  width: 112%;
+  height: 27rem;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.fleet-wing,
+.fleet-tail {
+  position: absolute;
+  left: 50%;
+  display: block;
+  border: 2px solid #475569;
+  background: #e2e8f0;
+  transform: translateX(-50%);
+  box-shadow: 0 10px 18px rgba(15,23,42,.13);
+}
+
+.fleet-wing {
+  top: 1.5rem;
+  width: 72%;
+  height: 24rem;
+}
+
+.fleet-glider .fleet-wing {
+  width: 82%;
+  clip-path: polygon(45% 0,55% 0,58% 43%,100% 48%,100% 55%,56% 53%,53% 100%,47% 100%,44% 53%,0 55%,0 48%,42% 43%);
+}
+
+.fleet-jet .fleet-wing {
+  width: 68%;
+  border-color: #1e3a8a;
+  background: #60a5fa;
+  clip-path: polygon(46% 0,54% 0,59% 39%,95% 68%,86% 76%,56% 57%,54% 100%,46% 100%,44% 57%,14% 76%,5% 68%,41% 39%);
+}
+
+.fleet-tail {
+  top: 10.5rem;
+  width: 22%;
+  height: 7rem;
+  clip-path: polygon(36% 0,64% 0,100% 100%,0 100%);
+}
+
+.fleet-jet .fleet-tail { border-color: #1e3a8a; background: #2563eb; }
+
+html.dark .fleet-glider .cloud-project,
+html[data-theme="dark"] .fleet-glider .cloud-project { background: rgba(51,65,85,.94); }
+
+html.dark .fleet-jet .cloud-project,
+html[data-theme="dark"] .fleet-jet .cloud-project { background: rgba(30,58,138,.94); }
+
+/* Home fleet: each project lives inside an aircraft window panel. */
+.fleet-unit {
+  min-height: 27rem;
+  padding-top: 3.5rem;
+}
+
+.fleet-unit > a {
+  display: block;
+  width: min(82%, 44rem);
+  margin-inline: auto;
+}
+
+.fleet-unit .cloud-project,
+.fleet-unit:nth-child(even) .cloud-project {
+  border: 4px solid #64748b;
+  border-radius: 2rem !important;
+  background: rgba(248,250,252,.97);
+  box-shadow: inset 0 0 18px rgba(15,23,42,.12), 0 16px 30px rgba(15,23,42,.18);
+}
+
+.fleet-plane .fleet-airframe,
+.fleet-blimp .fleet-airframe {
+  top: 48%;
+  width: min(118%, 62rem);
+  height: 25rem;
+  border: 3px solid #64748b;
+  box-shadow: inset 0 0 35px rgba(15,23,42,.14), 0 20px 35px rgba(15,23,42,.16);
+}
+
+.fleet-plane .fleet-airframe {
+  border-radius: 48% 18% 24% 48% / 46% 30% 38% 46%;
+  background: linear-gradient(155deg, #fff 0 58%, #cbd5e1 82%, #94a3b8);
+}
+
+.fleet-plane .fleet-airframe::before {
+  position: absolute;
+  top: 50%;
+  left: -1.3rem;
+  width: 1.2rem;
+  height: 11rem;
+  content: "";
+  border-radius: 999px;
+  background: #1e293b;
+  box-shadow: 0 0 0 5px #ef4444;
+  transform: translateY(-50%);
+}
+
+.fleet-plane .fleet-airframe::after {
+  position: absolute;
+  top: -4rem;
+  right: 8%;
+  width: 8rem;
+  height: 8rem;
+  content: "";
+  border: 3px solid #991b1b;
+  background: #ef4444;
+  clip-path: polygon(18% 100%, 48% 0, 100% 100%);
+}
+
+.fleet-plane .fleet-wing {
+  top: 17.5rem;
+  left: 49%;
+  width: 82%;
+  height: 7rem;
+  border-color: #991b1b;
+  background: linear-gradient(180deg, #fff, #ef4444);
+  clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 70%);
+}
+
+.fleet-plane .fleet-tail { display: none; }
+
+.fleet-blimp .fleet-airframe {
+  border-radius: 50%;
+  background: linear-gradient(160deg, #fff 0 54%, #dbeafe 72%, #94a3b8 100%);
+}
+
+.fleet-blimp .fleet-airframe::before {
+  position: absolute;
+  top: 42%;
+  left: 1.4rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  content: "BK";
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #1d4ed8;
+  color: white;
+  font-family: var(--font-geist-mono);
+  font-size: .7rem;
+  font-weight: 900;
+}
+
+.fleet-blimp .fleet-airframe::after {
+  position: absolute;
+  bottom: -2.1rem;
+  left: 50%;
+  width: 9rem;
+  height: 2.6rem;
+  content: "";
+  border: 3px solid #1e3a8a;
+  border-radius: .5rem 1.4rem 1.4rem .5rem;
+  background: #315d88;
+  box-shadow: 0 7px 12px rgba(15,23,42,.22);
+  transform: translateX(-50%);
+}
+
+.fleet-blimp .fleet-wing {
+  top: auto;
+  right: -1.8rem;
+  bottom: 1.2rem;
+  left: auto;
+  width: 9rem;
+  height: 8rem;
+  border-color: #1e3a8a;
+  background: #2563eb;
+  clip-path: polygon(0 42%, 100% 0, 72% 48%, 100% 100%, 0 62%);
+  transform: none;
+}
+
+.fleet-blimp .fleet-tail { display: none; }
+
+html.dark .fleet-plane .fleet-airframe,
+html[data-theme="dark"] .fleet-plane .fleet-airframe {
+  border-color: #7dd3fc;
+  background: linear-gradient(155deg, #334155, #0f172a 76%);
+}
+
+html.dark .fleet-blimp .fleet-airframe,
+html[data-theme="dark"] .fleet-blimp .fleet-airframe {
+  border-color: #60a5fa;
+  background: linear-gradient(160deg, #1e3a8a, #0f172a 78%);
+}
+
+html.dark .fleet-unit .cloud-project,
+html[data-theme="dark"] .fleet-unit .cloud-project {
+  border-color: #94a3b8;
+  background: rgba(15,23,42,.94);
+}
+
+html.dark .fleet-caption,
+html.dark .fleet-unit::before,
+html[data-theme="dark"] .fleet-caption,
+html[data-theme="dark"] .fleet-unit::before {
+  border-color: rgba(125,211,252,.5);
+  background: rgba(15,23,42,.82);
+  color: #e0f2fe;
+}
+
+.altitude-scrollbar-route-shell {
+  position: relative;
+  width: .72rem;
+  height: 100%;
+  margin-right: .34rem;
+}
+
+.altitude-scrollbar-route {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #075985;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(180deg, rgba(7,89,133,.42) 0 1px, transparent 1px 13px),
+    rgba(224,242,254,.72);
+  cursor: ns-resize;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.altitude-scrollbar-route::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(56,189,248,.08), rgba(239,68,68,.12));
+  pointer-events: none;
+}
+
+.altitude-scrollbar-thumb {
+  position: absolute;
+  left: 50%;
+  z-index: 3;
+  width: 1.35rem;
+  height: .34rem;
+  border: 1px solid #991b1b;
+  border-radius: 999px;
+  background: #ef4444;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.75), 0 2px 5px rgba(127,29,29,.3);
+  transform: translate(-50%, -50%);
+  transition: top .12s linear;
+  pointer-events: none;
+}
+
+.altitude-scrollbar-checkpoints {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.altitude-scrollbar-checkpoints button {
+  position: absolute;
+  right: 1.15rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: .28rem;
+  min-width: 3.7rem;
+  border: 1px solid rgba(7,89,133,.38);
+  border-radius: .35rem;
+  background: rgba(240,249,255,.74);
+  padding: .16rem .28rem;
+  color: #075985;
+  font-family: var(--font-geist-mono);
+  transform: translateY(-50%);
+  transition: transform .18s ease, background-color .18s ease;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.altitude-scrollbar-checkpoints button span {
+  display: grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: .2rem;
+  background: rgba(14,116,144,.12);
+  font-size: .55rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.altitude-scrollbar-checkpoints button em {
+  font-size: .46rem;
+  font-style: normal;
+  font-weight: 750;
+}
+
+.altitude-scrollbar-checkpoints button.is-active {
+  background: #e0f2fe;
+  box-shadow: 2px 3px 0 rgba(14,116,144,.16);
+  transform: translateY(-50%) translateX(-3px);
+}
+
+html.dark .altitude-scrollbar,
+html[data-theme="dark"] .altitude-scrollbar { color: #e0f2fe; }
+
+html.dark .altitude-scrollbar-title,
+html.dark .altitude-scrollbar > strong,
+html.dark .altitude-scrollbar-checkpoints button,
+html[data-theme="dark"] .altitude-scrollbar-title,
+html[data-theme="dark"] .altitude-scrollbar > strong,
+html[data-theme="dark"] .altitude-scrollbar-checkpoints button {
+  border-color: rgba(125,211,252,.42);
+  background: rgba(15,23,42,.8);
+  color: #e0f2fe;
+}
+
+html.dark .altitude-scrollbar-route,
+html[data-theme="dark"] .altitude-scrollbar-route {
+  border-color: #7dd3fc;
+  background: repeating-linear-gradient(180deg, rgba(125,211,252,.38) 0 1px, transparent 1px 13px), rgba(15,23,42,.76);
+}
+
+html.dark .altitude-scrollbar-thumb,
+html[data-theme="dark"] .altitude-scrollbar-thumb {
+  border-color: #a16207;
+  background: #facc15;
+  box-shadow: 0 0 0 2px rgba(15,23,42,.76), 0 0 7px rgba(250,204,21,.6);
+}
+
+html.dark .certificates-flight-link,
+html[data-theme="dark"] .certificates-flight-link {
+  border-color: #7dd3fc;
+  background: rgba(15, 23, 42, .88);
+  color: #e0f2fe;
+  box-shadow: 3px 4px 0 rgba(14, 165, 233, .2);
+}
+
+.balloon-basket {
+  width: 6.5rem;
+  height: 4rem;
+  margin: -.2rem auto 0;
+  border: 2px solid #78350f;
+  border-radius: .6rem .6rem 1.2rem 1.2rem;
+  background: repeating-linear-gradient(45deg,#92400e 0 8px,#b45309 8px 16px);
+  box-shadow: 0 14px 20px rgba(69,26,3,.2);
+}
+
+@keyframes wind-sweep {
+  from { transform: translate3d(0, 0, 0) skewX(-18deg); opacity: 0; }
+  14% { opacity: .48; }
+  80% { opacity: .35; }
+  to { transform: translate3d(-135vw, 3rem, 0) skewX(-18deg); opacity: 0; }
+}
+
+@keyframes wind-altitude {
+  from { transform: translateY(0); }
+  to { transform: translateY(-18vh); }
+}
+
+@keyframes sky-light-fade {
+  0% { opacity: 1; }
+  18% { opacity: .94; }
+  46% { opacity: .68; }
+  62% { opacity: .34; }
+  74%, 100% { opacity: 0; }
+}
+
+@keyframes left-sky-light-fade {
+  0% { opacity: .94; }
+  18% { opacity: .78; }
+  38% { opacity: .34; }
+  52%, 100% { opacity: 0; }
+}
+
+@keyframes burner-ignite {
+  0% { opacity: 0; transform: translateX(-50%) scale(.08, .05); }
+  45% { opacity: .9; transform: translateX(-50%) scale(.55, .42); }
+  78% { opacity: 1; transform: translateX(-50%) scale(1.12, 1.18); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1, 1); }
+}
+
+@keyframes burner-flame {
+  from { transform: translateX(-50%) scale(.9, .82) rotate(-2deg); }
+  to { transform: translateX(-50%) scale(1.05, 1.12) rotate(2deg); }
+}
+
+@keyframes rotor-spin {
+  to { transform: rotateY(180deg); }
+}
+
+@keyframes plane-flight-sway {
+  0%, 34%, 100% { translate: 0 0; rotate: 0deg; }
+  8% { translate: 0 -1.8px; rotate: -.5deg; }
+  18% { translate: 0 1.5px; rotate: .45deg; }
+  28% { translate: 0 -.7px; rotate: -.2deg; }
+}
+
+@keyframes card-flight-sway {
+  0%, 55%, 100% { translate: 0 0; rotate: 0deg; }
+  66% { translate: 3.5px 0; rotate: .32deg; }
+  80% { translate: -3px 0; rotate: -.28deg; }
+  92% { translate: 1.4px 0; rotate: .12deg; }
+}
+
+@keyframes card-flight-sway-reverse {
+  0%, 55%, 100% { translate: 0 0; rotate: 0deg; }
+  66% { translate: -3.2px 0; rotate: -.3deg; }
+  80% { translate: 2.8px 0; rotate: .26deg; }
+  92% { translate: -1.2px 0; rotate: -.1deg; }
+}
+
+@keyframes rope-flight-sway {
+  0%, 27%, 66%, 100% { translate: 0 0; }
+  38% { translate: 0 2.8px; }
+  50% { translate: 0 -2.3px; }
+  59% { translate: 0 1.1px; }
+}
+
+@keyframes plane-click-turbulence {
+  0%, 100% { translate: 0 0; rotate: 0deg; }
+  28% { translate: 0 -2px; rotate: -.6deg; }
+  58% { translate: 0 1.5px; rotate: .45deg; }
+  80% { translate: 0 -.7px; rotate: -.2deg; }
+}
+
+@keyframes rope-click-turbulence {
+  0%, 100% { translate: 0 0; }
+  34% { translate: 0 2.8px; }
+  68% { translate: 0 -2.2px; }
+}
+
+@keyframes card-click-turbulence {
+  0%, 100% { translate: 0 0; }
+  30% { translate: 3.6px 0; }
+  62% { translate: -3px 0; }
+  82% { translate: 1.3px 0; }
+}
+
+@media (max-width: 639px) {
+  .altitude-scrollbar { right: .12rem; width: 2.2rem; opacity: .78; }
+  .altitude-scrollbar-checkpoints button { right: .8rem; min-width: 1.25rem; padding: .1rem; }
+  .altitude-scrollbar-checkpoints button em { display: none; }
+  .altitude-scrollbar-title, .altitude-scrollbar > strong { font-size: .48rem; }
+  .flight-header { left: .25rem; }
+  .flight-header::before { left: 5rem; right: 3rem; }
+  .header-plane { width: 5.1rem !important; height: 3.35rem !important; }
+  .tow-rope { width: 1rem; }
+  .header-flags { margin-left: 0; }
+  .name-banner { margin-top: .75rem; }
+  .wind-field { opacity: .62; }
+  .helicopter-theme-switch { right: auto !important; left: .65rem !important; bottom: .65rem !important; transform: scale(.86); }
+  .about-balloon-section { width: min(100%, 23rem); scroll-margin-top: 6rem; }
+  .fleet-unit { min-height: 25rem; padding-top: 3rem; }
+  .fleet-unit > a { width: 88%; }
+  .fleet-plane .fleet-airframe, .fleet-blimp .fleet-airframe { width: 112%; height: 22rem; }
+  .fleet-plane .fleet-wing { top: 15.5rem; }
+  .fleet-blimp .fleet-wing { right: -1rem; width: 6rem; }
+  .about-balloon { padding: 3.2rem 1.6rem 4.1rem; border-radius: 48% 48% 44% 44% / 35% 35% 60% 60%; }
+  .about-balloon p { font-size: .92rem; line-height: 1.65; }
+  .balloon-ropes { height: 3.6rem; }
+  .balloon-ropes i { height: 4rem; }
+  .balloon-basket { width: 5.2rem; height: 3.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name-banner,
+  .flag-wrap,
+  .intro-cloud-layer i,
+  .about-balloon-section,
+  .header-plane,
+  .flight-header::before,
+  .flight-page::before,
+  .flight-page::after,
+  .balloon-flame,
+  .wind-field i,
+  .helicopter-rotor {
+    animation: none !important;
+  }
+}
+
+/* Exact aircraft artwork used by the two-project home fleet. */
+.fleet-art-unit {
+  position: relative;
+  width: min(96vw, 70rem);
+  margin: 0 auto 8rem;
+}
+
+.fleet-art-unit:last-child {
+  margin-bottom: 0;
+}
+
+.fleet-art-blimp { width: min(98vw, 76rem); }
+
+.fleet-art-unit > a {
+  display: block;
+  transform-origin: 50% 55%;
+  animation: fleet-aircraft-sway 4.8s ease-in-out infinite alternate;
+}
+
+.fleet-art-unit:last-child > a { animation-delay: -2.1s; }
+
+.fleet-artwork {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border: 0;
+  outline: 0;
+  border-radius: 1.7rem;
+  background: transparent;
+  box-shadow: 0 24px 55px rgba(15, 23, 42, .14);
+  transition: transform .35s ease, filter .35s ease, box-shadow .35s ease;
+}
+
+.fleet-artwork-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-inline: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.fleet-art-unit:hover .fleet-artwork {
+  transform: translateY(-5px) scale(1.012);
+  filter: saturate(1.04);
+  box-shadow: 0 30px 65px rgba(15, 23, 42, .2);
+}
+
+@keyframes fleet-aircraft-sway {
+  0% { transform: translate3d(-9px, 2px, 0) rotate(-.9deg); }
+  45% { transform: translate3d(2px, -8px, 0) rotate(.2deg); }
+  100% { transform: translate3d(10px, 2px, 0) rotate(1deg); }
+}
+
+@media (max-width: 640px) {
+  .fleet-art-unit,
+  .fleet-art-blimp {
+    width: 100%;
+    margin-bottom: 4.5rem;
+  }
+
+  .fleet-artwork { border-radius: .9rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fleet-art-unit > a { animation: none !important; }
+}
+
+/* Interactive header details. */
+.header-plane {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform-origin: 72% 52%;
+}
+
+.header-plane:focus-visible {
+  outline: 2px solid #0284c7;
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+.header-plane.plane-click-turbulence img {
+  animation: plane-image-click-bump .72s cubic-bezier(.22, .8, .28, 1) both;
+}
+
+.name-banner {
+  transition: color .2s ease, background-color .2s ease, box-shadow .2s ease;
+  transform-origin: 22% 0;
+  pointer-events: auto;
+}
+
+.name-banner:hover {
+  color: #0369a1;
+  background: #bae6fd;
+  box-shadow: 4px 5px 0 rgba(3,105,161,.2), 0 0 12px rgba(14,165,233,.5), 0 0 28px rgba(14,165,233,.28);
+  animation: name-banner-wind .9s ease-in-out infinite alternate;
+}
+
+html.dark .name-banner:hover,
+html[data-theme="dark"] .name-banner:hover { color: #38bdf8; background: #172554; }
+
+@keyframes plane-click-bump {
+  0% { transform: translate3d(0,0,0) rotate(0); }
+  24% { transform: translate3d(3px,-5px,0) rotate(-3deg); }
+  48% { transform: translate3d(7px,3px,0) rotate(2.3deg); }
+  72% { transform: translate3d(3px,-2px,0) rotate(-1.2deg); }
+  100% { transform: translate3d(0,0,0) rotate(0); }
+}
+
+@keyframes plane-image-click-bump {
+  0% { transform: scale(1.05) translate3d(0,0,0) rotate(0); }
+  24% { transform: scale(1.05) translate3d(-3px,-5px,0) rotate(-3.4deg); }
+  48% { transform: scale(1.05) translate3d(5px,3px,0) rotate(2.6deg); }
+  72% { transform: scale(1.05) translate3d(-2px,-2px,0) rotate(-1.3deg); }
+  100% { transform: scale(1.05) translate3d(0,0,0) rotate(0); }
+}
+
+@keyframes name-banner-wind {
+  0% { transform: translateY(0) rotate(-.45deg); }
+  45% { transform: translateY(-2px) rotate(.7deg); }
+  100% { transform: translateY(1px) rotate(-.8deg); }
+}
+
+/* The click motion lives inside the balloon's continuous ambient sway. */
+.about-balloon-rig { transform-origin: 50% 12%; }
+.basket-click-swing { animation: basket-click-swing .9s cubic-bezier(.22,.75,.28,1) both; }
+.balloon-basket { cursor: pointer; }
+.balloon-basket:focus-visible { outline: 3px solid #0284c7; outline-offset: 4px; }
+
+@keyframes basket-click-swing {
+  0% { transform: rotate(0) translateX(0); }
+  25% { transform: rotate(-2.5deg) translateX(-6px); }
+  52% { transform: rotate(2.1deg) translateX(5px); }
+  76% { transform: rotate(-.8deg) translateX(-2px); }
+  100% { transform: rotate(0) translateX(0); }
+}
+
+/* Larger, persistent flight-level scrollbar. */
+.altitude-scrollbar {
+  right: .7rem;
+  bottom: .65rem;
+  width: 8rem;
+  z-index: 9999 !important;
+}
+
+.footer-runway { z-index: 1; }
+
+.altitude-scrollbar-route-shell { width: .9rem; }
+.altitude-scrollbar-checkpoints button { right: 1.4rem; min-width: 4.4rem; padding: .22rem .38rem; }
+.altitude-scrollbar-checkpoints button em { font-size: .53rem; }
+.altitude-scrollbar-checkpoints button span { width: 1.15rem; height: 1.15rem; font-size: .62rem; }
+.altitude-scrollbar-title,
+.altitude-scrollbar > strong { font-size: .64rem; }
+
+/* CSS-built home fleet. No bitmap aircraft shells. */
+.cloud-project-wrap .cloud-project { max-width: 38rem; }
+
+.fleet-css-unit {
+  position: relative;
+  width: min(88vw, 60rem);
+  margin: 0 auto 8rem;
+}
+
+.fleet-css-unit > a {
+  display: block;
+  color: inherit;
+  animation: fleet-css-flight 4.5s ease-in-out infinite alternate;
+}
+
+.fleet-css-blimp { width: min(92vw, 66rem); }
+.fleet-css-blimp > a { animation-delay: -2.1s; }
+
+.fleet-css-aircraft {
+  position: relative;
+  min-height: 24rem;
+  isolation: isolate;
+  border: 2px solid rgba(49,93,136,.78);
+  background: linear-gradient(150deg, rgba(255,255,255,.97), rgba(219,234,254,.88) 68%, rgba(191,219,254,.82));
+  box-shadow: inset 0 -20px 36px rgba(30,64,175,.08), 0 26px 48px rgba(15,23,42,.14);
+  transition: filter .3s ease, box-shadow .3s ease;
+}
+
+.fleet-css-unit:hover .fleet-css-aircraft {
+  filter: saturate(1.06);
+  box-shadow: inset 0 -20px 36px rgba(30,64,175,.1), 0 32px 60px rgba(15,23,42,.2);
+}
+
+.fleet-css-plane .fleet-css-aircraft {
+  min-height: 22rem;
+  padding: 3rem 7.4rem 3.6rem 8.8rem;
+  border-radius: 48% 18% 22% 48% / 48% 31% 38% 48%;
+}
+
+.fleet-css-blimp .fleet-css-aircraft {
+  min-height: 24rem;
+  padding: 3.8rem 7.8rem 4.8rem;
+  border-radius: 50% / 46%;
+  background:
+    radial-gradient(ellipse at 52% 18%, rgba(255,255,255,.98), transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(226,232,240,.94) 54%, rgba(148,163,184,.76) 100%);
+  box-shadow: inset 0 -30px 45px rgba(30,64,175,.12), inset 0 15px 24px rgba(255,255,255,.72), 0 26px 48px rgba(15,23,42,.14);
+}
+
+.fleet-css-aircraft::before {
+  position: absolute;
+  top: 1.1rem;
+  left: 50%;
+  z-index: 4;
+  content: "PROJECT " attr(data-fleet);
+  padding: .28rem .65rem;
+  border: 1px solid #2563eb;
+  border-radius: 999px;
+  background: rgba(239,246,255,.92);
+  color: #1e3a8a;
+  font: 800 .62rem/1 var(--font-geist-mono);
+  letter-spacing: .1em;
+  transform: translateX(-50%);
+}
+
+.aircraft-project-window {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(9rem, .65fr);
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 16rem;
+  padding: 1.5rem 1.65rem;
+  overflow: hidden;
+  border: 3px solid #64748b;
+  border-radius: 1.6rem;
+  background: rgba(248,250,252,.9);
+  box-shadow: inset 0 0 18px rgba(15,23,42,.1);
+}
+
+.aircraft-project-copy { min-width: 0; }
+.aircraft-project-copy small { color: #2563eb; font: 800 .62rem/1 var(--font-geist-mono); letter-spacing: .09em; }
+.aircraft-project-copy h3 { margin-top: .65rem; color: #172554; font-size: clamp(1.25rem,2.4vw,2rem); font-weight: 800; line-height: 1.08; }
+.aircraft-project-copy p { margin-top: .7rem; color: #334155; font-size: .9rem; line-height: 1.55; }
+.aircraft-project-copy ul { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: 1rem; }
+.aircraft-project-copy li { padding: .22rem .48rem; border-radius: 999px; background: #1e3a5f; color: white; font: 750 .55rem/1 var(--font-geist-mono); text-transform: uppercase; }
+
+.aircraft-project-image {
+  display: block;
+  width: min(100%, 12rem);
+  max-height: 9rem;
+  margin-inline: auto;
+  border: 1px solid rgba(100,116,139,.32);
+  border-radius: .8rem;
+  object-fit: contain;
+  object-position: center;
+  box-shadow: 0 8px 20px rgba(15,23,42,.12);
+}
+
+.aircraft-cockpit { position: absolute; z-index: 2; display: flex; gap: .3rem; }
+.aircraft-cockpit i { display: block; width: 2.6rem; height: 2.1rem; border: 2px solid #315d88; background: linear-gradient(145deg,#93c5fd,#1e3a5f); transform: skewX(-18deg); }
+.fleet-css-plane .aircraft-cockpit { top: 8rem; left: 1.6rem; }
+.fleet-css-blimp .aircraft-cockpit { display: none; }
+
+.aircraft-tail { position: absolute; z-index: -1; background: linear-gradient(135deg,#fee2e2,#ef4444); }
+.fleet-css-plane .aircraft-tail { top: -5rem; right: 2.6rem; width: 8rem; height: 10rem; border: 2px solid #315d88; clip-path: polygon(45% 0,100% 0,78% 100%,0 100%); }
+.fleet-css-blimp .aircraft-tail { top: 2rem; right: auto; left: -2rem; width: 10rem; height: 9rem; border: 2px solid #315d88; clip-path: polygon(100% 28%,0 0,22% 50%,0 100%,100% 72%); }
+
+.fleet-css-blimp .fleet-css-aircraft::after {
+  position: absolute;
+  top: 50%;
+  right: -1rem;
+  z-index: 1;
+  width: 4.8rem;
+  height: 8.2rem;
+  content: "";
+  border-right: 2px solid #315d88;
+  border-radius: 0 100% 100% 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.8));
+  transform: translateY(-50%);
+}
+
+.blimp-seams,
+.blimp-gondola,
+.blimp-propeller { display: none; }
+
+.fleet-css-blimp .blimp-seams {
+  position: absolute;
+  inset: 1.2rem 4.4rem;
+  z-index: 1;
+  display: block;
+  border-radius: 50%;
+  opacity: .36;
+  background:
+    linear-gradient(90deg, transparent 24%, rgba(71,85,105,.28) 24.3% 24.6%, transparent 25% 49%, rgba(71,85,105,.25) 49.3% 49.6%, transparent 50% 74%, rgba(71,85,105,.22) 74.3% 74.6%, transparent 75%),
+    linear-gradient(180deg, transparent 49.4%, rgba(71,85,105,.2) 49.7% 50.1%, transparent 50.4%);
+  pointer-events: none;
+}
+
+.fleet-css-blimp .blimp-gondola {
+  position: absolute;
+  bottom: -3.1rem;
+  left: 50%;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .48rem;
+  width: 13rem;
+  height: 4.6rem;
+  border: 2px solid #315d88;
+  border-radius: 1rem 1rem 2.4rem 2.4rem;
+  background: linear-gradient(180deg,#64748b,#334155);
+  box-shadow: 0 10px 18px rgba(15,23,42,.24);
+  transform: translateX(-50%);
+}
+
+@keyframes plane-scroll-turbulence {
+  0%,100% { translate: 0 0; rotate: 0deg; }
+  35% { translate: 1px -1.5px; rotate: -.55deg; }
+  70% { translate: 2px 1px; rotate: .45deg; }
+}
+@keyframes rope-scroll-turbulence {
+  0%,100% { transform: translateY(0) scaleY(1); }
+  45% { transform: translateY(-1px) scaleY(.99); }
+  75% { transform: translateY(1px) scaleY(1.01); }
+}
+@keyframes card-scroll-turbulence {
+  0%,100% { translate: 0 0; rotate: 0deg; }
+  40% { translate: -1px 0; rotate: -.35deg; }
+  75% { translate: 1px .5px; rotate: .3deg; }
+}
+
+/* A smaller fleet keeps the project content in focus. */
+.cloud-project-wrap .cloud-project { max-width: 34rem; }
+.fleet-css-unit { width: min(82vw,54rem); }
+.fleet-css-blimp { width: min(86vw,60rem); }
+.fleet-css-plane .fleet-css-aircraft { min-height: 20rem; padding: 2.7rem 6.4rem 3.2rem 7.7rem; }
+.fleet-css-blimp .fleet-css-aircraft { min-height: 22rem; padding: 3.3rem 6.8rem 4.2rem; }
+.aircraft-project-window { min-height: 14rem; padding: 1.25rem 1.4rem; }
+.aircraft-project-copy h3 { font-size: clamp(1.15rem,2.1vw,1.7rem); }
+.aircraft-project-copy p { font-size: .82rem; }
+.aircraft-project-image { width: min(100%,10rem); max-height: 7.5rem; }
+.fleet-css-plane .aircraft-wing { right: 7rem; bottom: -4.2rem; width: 22rem; height: 7.6rem; }
+.fleet-css-blimp .blimp-gondola { width: 11.5rem; height: 4.1rem; bottom: -2.8rem; }
+
+.fleet-css-blimp .fleet-css-aircraft {
+  min-height: 19rem;
+  padding: 2.8rem 6.3rem 3.6rem;
+}
+.fleet-css-blimp .aircraft-project-window { min-height: 12.5rem; }
+
+/* The blimp engine spins up on hover and coasts down after departure. */
+.fleet-css-blimp .blimp-propeller {
+  animation: none;
+  transform: translateY(-50%) rotate(0deg);
+  transition: transform 1.8s cubic-bezier(.16,.72,.28,1);
+}
+.fleet-css-blimp:hover .blimp-propeller {
+  transform: translateY(-50%) rotate(1440deg);
+  transition-duration: 2.5s;
+  transition-timing-function: cubic-bezier(.22,.55,.28,1);
+}
+
+/* Mobile fleet: compact readable panels without clipped wings or horizontal overflow. */
+@media (max-width: 700px) {
+  .cloud-projects { width: 100%; }
+  .fleet-formation { width: 100%; }
+  .fleet-css-unit,
+  .fleet-css-blimp {
+    width: min(92vw, 32rem);
+    margin-inline: auto;
+    margin-bottom: 6.5rem;
+  }
+
+  .fleet-css-plane .fleet-css-aircraft,
+  .fleet-css-blimp .fleet-css-aircraft {
+    min-height: 0;
+    padding: 3rem 1rem 3.5rem;
+    border-radius: 2.5rem;
+  }
+
+  .aircraft-project-window,
+  .fleet-css-blimp .aircraft-project-window {
+    grid-template-columns: 1fr;
+    gap: .8rem;
+    min-height: 0;
+    padding: 1.05rem;
+    border-width: 2px;
+    border-radius: 1.25rem;
+  }
+
+  .aircraft-project-copy h3 { margin-top: .45rem; font-size: 1.08rem; line-height: 1.15; overflow-wrap: anywhere; }
+  .aircraft-project-copy p { margin-top: .5rem; font-size: .76rem; line-height: 1.45; }
+  .aircraft-project-copy ul { gap: .25rem; margin-top: .65rem; }
+  .aircraft-project-copy li { padding: .18rem .36rem; font-size: .48rem; }
+  .aircraft-project-image { width: 7rem; max-height: 5rem; border-radius: .55rem; }
+
+  .fleet-css-aircraft::before { top: .85rem; font-size: .52rem; }
+  .fleet-css-plane .aircraft-wing { right: 12%; bottom: -2.8rem; width: 62%; height: 5.5rem; }
+  .fleet-css-plane .aircraft-tail { top: -2.8rem; right: 1.4rem; width: 5rem; height: 6rem; }
+  .fleet-css-blimp .aircraft-tail { top: 1.4rem; left: -1rem; width: 5rem; height: 5.5rem; }
+  .fleet-css-blimp .blimp-propeller { left: -1.7rem; width: 2.5rem; }
+  .fleet-css-blimp .blimp-propeller::before { height: 2.5rem; }
+  .fleet-css-blimp .blimp-gondola { bottom: -2.4rem; width: 8rem; height: 3.2rem; gap: .28rem; }
+  .fleet-css-blimp .blimp-gondola i { width: 1rem; height: .9rem; }
+
+  .fleet-hangar-link { padding: .78rem 1.25rem; font-size: .88rem; }
+  .intro-flight-deck h1 { padding-inline: .25rem; font-size: 1.08rem; line-height: 1.55 !important; }
+  .about-balloon-section { width: min(94vw, 25rem); }
+  .about-balloon { padding-inline: 1.35rem; }
+  .about-balloon p { font-size: .86rem; line-height: 1.55; }
+}
+
+.intro-social-row { display: flex; align-items: center; gap: .5rem; }
+
+@media (max-width: 700px) {
+  .intro-social-row { flex-direction: row; justify-content: center; }
+
+  .altitude-scrollbar {
+    top: 5.4rem;
+    right: .45rem;
+    bottom: .7rem;
+    display: grid !important;
+    width: 3.35rem;
+    opacity: 1;
+    visibility: visible !important;
+  }
+  .altitude-scrollbar-route-shell { width: .72rem; }
+  .altitude-scrollbar-checkpoints button { right: .85rem; min-width: 1.55rem; padding: .12rem; }
+  .altitude-scrollbar-checkpoints button span { width: 1rem; height: 1rem; }
+  .altitude-scrollbar-checkpoints button em { display: none; }
+  .altitude-scrollbar-title,
+  .altitude-scrollbar > strong { font-size: .48rem; }
+
+  /* Mobile projects use straightforward cards instead of aircraft silhouettes. */
+  .fleet-css-unit,
+  .fleet-css-blimp { width: min(88vw, 28rem); margin-bottom: 3rem; }
+  .fleet-css-unit > a,
+  .fleet-css-blimp > a { animation: none; }
+  .fleet-css-plane .fleet-css-aircraft,
+  .fleet-css-blimp .fleet-css-aircraft,
+  html.dark .fleet-css-plane .fleet-css-aircraft,
+  html.dark .fleet-css-blimp .fleet-css-aircraft,
+  html[data-theme="dark"] .fleet-css-plane .fleet-css-aircraft,
+  html[data-theme="dark"] .fleet-css-blimp .fleet-css-aircraft {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 2rem;
+    background: transparent;
+    box-shadow: none;
+  }
+  .fleet-css-aircraft::before,
+  .aircraft-cockpit,
+  .aircraft-tail,
+  .aircraft-wing,
+  .aircraft-light,
+  .blimp-seams,
+  .blimp-gondola,
+  .blimp-propeller { display: none !important; }
+  .aircraft-project-window,
+  .fleet-css-blimp .aircraft-project-window {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding: 1.25rem;
+    border: 1px solid rgba(100,116,139,.38);
+    border-radius: 2rem;
+    background: rgba(248,250,252,.94);
+    box-shadow: 0 18px 34px rgba(15,23,42,.13);
+  }
+  html.dark .aircraft-project-window,
+  html[data-theme="dark"] .aircraft-project-window {
+    border-color: rgba(125,211,252,.28);
+    background: rgba(15,23,42,.92);
+  }
+  .aircraft-project-copy h3 { font-size: 1.15rem; }
+  .aircraft-project-copy p { font-size: .8rem; }
+  .aircraft-project-image { width: 8rem; max-height: 5.5rem; }
+
+  /* Make the parachute landing begin while each mobile crate is clearly visible. */
+  .cargo-skill { will-change: transform, opacity; }
+  .cargo-parachute { display: block !important; visibility: visible; }
+}
+
+/* Final compact pass for the balloon and home fleet. */
+.about-balloon-section { width: min(100%, 41rem); }
+.about-balloon { padding: 3.2rem 3.25rem 4rem; }
+.about-balloon p { font-size: .94rem; line-height: 1.68; }
+
+.cloud-project-wrap .cloud-project { max-width: 32rem; }
+.fleet-css-unit { width: min(78vw, 51rem); }
+.fleet-css-blimp { width: min(82vw, 56rem); }
+.fleet-css-plane .fleet-css-aircraft { min-height: 18.5rem; padding: 2.55rem 5.9rem 3rem 7.1rem; }
+.fleet-css-blimp .fleet-css-aircraft { min-height: 17.5rem; padding: 2.55rem 5.8rem 3.35rem; }
+.aircraft-project-window,
+.fleet-css-blimp .aircraft-project-window { min-height: 11.5rem; padding: 1.05rem 1.2rem; }
+.aircraft-project-copy h3 { font-size: clamp(1.05rem,1.9vw,1.5rem); }
+.aircraft-project-copy p { font-size: .76rem; line-height: 1.45; }
+.aircraft-project-image { width: min(100%,9rem); max-height: 6.5rem; }
+
+@media (max-width: 700px) {
+  .about-balloon-section { width: min(91vw, 23rem); }
+  .about-balloon { padding: 2.8rem 1.15rem 3.6rem; }
+  .about-balloon p { font-size: .82rem; line-height: 1.5; }
+  .fleet-css-unit,
+  .fleet-css-blimp { width: min(89vw, 30rem); }
+  .fleet-css-plane .fleet-css-aircraft,
+  .fleet-css-blimp .fleet-css-aircraft { min-height: 0; padding: 2.8rem .85rem 3.3rem; }
+  .aircraft-project-window,
+  .fleet-css-blimp .aircraft-project-window { min-height: 0; padding: .9rem; }
+}
+
+.fleet-css-blimp .blimp-gondola::before,
+.fleet-css-blimp .blimp-gondola::after {
+  position: absolute;
+  bottom: 100%;
+  width: 2px;
+  height: 2.5rem;
+  content: "";
+  background: #475569;
+}
+.fleet-css-blimp .blimp-gondola::before { left: 2rem; transform: rotate(13deg); }
+.fleet-css-blimp .blimp-gondola::after { right: 2rem; transform: rotate(-13deg); }
+
+.fleet-css-blimp .blimp-gondola i {
+  width: 1.7rem;
+  height: 1.45rem;
+  border: 1px solid #fef3c7;
+  border-radius: .2rem;
+  background: #facc15;
+  opacity: .52;
+}
+
+html.dark .fleet-css-blimp .blimp-gondola i,
+html[data-theme="dark"] .fleet-css-blimp .blimp-gondola i {
+  opacity: 1;
+  background: #fef08a;
+  box-shadow: 0 0 8px #fde047, 0 0 18px rgba(250,204,21,.76);
+}
+
+.fleet-css-blimp .blimp-propeller {
+  position: absolute;
+  top: 50%;
+  left: -3.5rem;
+  z-index: 8;
+  display: block;
+  width: 4.2rem;
+  height: .5rem;
+  border-radius: 999px;
+  background: #334155;
+  transform: translateY(-50%);
+  transform-origin: center;
+  animation: blimp-propeller-spin .42s linear infinite;
+}
+
+.fleet-css-blimp .blimp-propeller::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: .5rem;
+  height: 4.2rem;
+  content: "";
+  border-radius: 999px;
+  background: #334155;
+  transform: translate(-50%,-50%);
+}
+
+.aircraft-wing { position: absolute; z-index: 5; border: 2px solid #315d88; background: linear-gradient(150deg,#fff,#dbeafe); }
+.fleet-css-plane .aircraft-wing {
+  right: 8rem;
+  bottom: -4.9rem;
+  width: 25rem;
+  height: 8.5rem;
+  border-radius: 42% 8% 28% 12%;
+  clip-path: polygon(10% 0,100% 64%,94% 84%,55% 62%,20% 42%,0 30%);
+  background: linear-gradient(155deg,#fff 0 44%,#dbeafe 45% 78%,#f87171 79% 100%);
+  box-shadow: inset 0 -8px 14px rgba(30,64,175,.1), 0 12px 18px rgba(15,23,42,.12);
+}
+.fleet-css-blimp .aircraft-wing { left: 50%; bottom: -3.2rem; width: 10rem; height: 4rem; border-radius: .8rem 2rem 2rem .8rem; transform: translateX(-50%); }
+
+html.dark .fleet-css-plane .aircraft-wing,
+html[data-theme="dark"] .fleet-css-plane .aircraft-wing {
+  border-color: #315d88;
+  background: linear-gradient(155deg,#f8fafc 0 44%,#bfdbfe 45% 78%,#22c55e 79% 92%,#166534 93% 100%);
+  box-shadow: inset 0 -8px 14px rgba(30,64,175,.12), 0 0 15px rgba(34,197,94,.2);
+}
+
+html.dark .fleet-css-blimp .aircraft-wing,
+html[data-theme="dark"] .fleet-css-blimp .aircraft-wing {
+  border-color: #315d88;
+  background: linear-gradient(150deg,#f8fafc,#bfdbfe);
+}
+
+html.dark .aircraft-tail,
+html[data-theme="dark"] .aircraft-tail {
+  border-color: #166534;
+  background: linear-gradient(135deg,#bbf7d0,#22c55e 64%,#166534);
+}
+
+.aircraft-light { position: absolute; z-index: 8; width: .58rem; height: .58rem; border-radius: 50%; opacity: .18; }
+.aircraft-light-red { right: 1.2rem; top: 50%; background: #ef4444; }
+.aircraft-light-green { left: 45%; bottom: -.3rem; background: #22c55e; }
+.aircraft-light-yellow { width: .72rem; height: .72rem; background: #facc15; opacity: .48; box-shadow: 0 0 4px rgba(250,204,21,.45); }
+.fleet-css-plane .aircraft-light-yellow-front { top: 51%; left: .45rem; }
+.fleet-css-plane .aircraft-light-yellow-lower { right: 27%; bottom: -2.1rem; }
+.fleet-css-blimp .aircraft-light-yellow-front { top: 50%; right: .25rem; }
+.fleet-css-blimp .aircraft-light-yellow-lower { left: 50%; bottom: -2.85rem; }
+html.dark .aircraft-light-red,
+html[data-theme="dark"] .aircraft-light-red { opacity: 1; box-shadow: 0 0 7px #ef4444,0 0 20px rgba(239,68,68,.8); animation: aircraft-beacon 1.1s ease-in-out infinite alternate; }
+html.dark .aircraft-light-green,
+html[data-theme="dark"] .aircraft-light-green { opacity: 1; box-shadow: 0 0 7px #22c55e,0 0 18px rgba(34,197,94,.72); }
+html.dark .aircraft-light-yellow,
+html[data-theme="dark"] .aircraft-light-yellow {
+  opacity: 1;
+  box-shadow: 0 0 8px #fde047, 0 0 20px rgba(250,204,21,.92), 0 0 38px rgba(250,204,21,.5);
+  animation: aircraft-yellow-pulse 1.7s ease-in-out infinite alternate;
+}
+
+html.dark .fleet-css-aircraft,
+html[data-theme="dark"] .fleet-css-aircraft { border-color: #7dd3fc; background: linear-gradient(155deg,#334155,#0f172a 78%); }
+html.dark .aircraft-project-window,
+html[data-theme="dark"] .aircraft-project-window { border-color: #64748b; background: rgba(15,23,42,.9); }
+html.dark .aircraft-project-copy h3,
+html[data-theme="dark"] .aircraft-project-copy h3 { color: #e0f2fe; }
+html.dark .aircraft-project-copy p,
+html[data-theme="dark"] .aircraft-project-copy p { color: #cbd5e1; }
+
+.fleet-hangar-link {
+  position: relative;
+  padding: .9rem 2rem;
+  border: 2px solid #315d88;
+  border-radius: .35rem;
+  background: linear-gradient(180deg,#f8fafc,#dbeafe);
+  color: #173b61;
+  font-size: 1rem;
+  font-weight: 800;
+  box-shadow: 5px 6px 0 rgba(49,93,136,.2);
+  transition: transform .22s ease, box-shadow .22s ease, background-color .22s ease;
+}
+.fleet-hangar-link::before { content: "HANGAR"; position: absolute; top: -.62rem; left: 1rem; padding: .12rem .38rem; background: #ef4444; color: white; font: 800 .52rem/1 var(--font-geist-mono); letter-spacing: .1em; }
+.fleet-hangar-link:hover { transform: translateY(-3px) rotate(-.35deg); box-shadow: 7px 9px 0 rgba(49,93,136,.2); }
+html.dark .fleet-hangar-link,
+html[data-theme="dark"] .fleet-hangar-link { border-color: #7dd3fc; background: #172554; color: #e0f2fe; }
+
+@keyframes fleet-css-flight {
+  0% { transform: translate3d(-10px,2px,0) rotate(-1deg); }
+  48% { transform: translate3d(2px,-9px,0) rotate(.3deg); }
+  100% { transform: translate3d(11px,3px,0) rotate(1.1deg); }
+}
+@keyframes aircraft-beacon { from { opacity: .5; } to { opacity: 1; } }
+@keyframes aircraft-yellow-pulse { from { filter: brightness(.82); } to { filter: brightness(1.3); } }
+@keyframes blimp-propeller-spin {
+  from { transform: translateY(-50%) rotate(0); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+@media (max-width: 700px) {
+  .fleet-css-unit,.fleet-css-blimp { width: 100%; margin-bottom: 6rem; }
+  .fleet-css-plane .fleet-css-aircraft,
+  .fleet-css-blimp .fleet-css-aircraft { min-height: 22rem; padding: 3.5rem 2rem 4rem; border-radius: 3rem; }
+  .aircraft-project-window { grid-template-columns: 1fr; gap: 1rem; padding: 1.25rem; }
+  .aircraft-project-copy p { font-size: .8rem; }
+  .aircraft-project-image { width: 8rem; max-height: 6rem; }
+  .aircraft-cockpit { display: none; }
+  .fleet-css-plane .aircraft-wing { right: 8%; width: 65%; }
+  .altitude-scrollbar { right: .2rem; width: 2.7rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-plane.plane-click-turbulence img,
+  .name-banner:hover,
+  .basket-click-swing,
+  .fleet-css-unit > a,
+  .aircraft-light { animation: none !important; }
+}
+
+/* Intro social links carried inside a compact CSS drone. */
+.intro-social-fleet {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  margin-left: .2rem;
+}
+
+.intro-social-drone {
+  position: relative;
+  flex: 0 0 auto;
+  width: 5.2rem;
+  height: 4.1rem;
+  margin-left: 0;
+  filter: drop-shadow(0 8px 9px rgba(15,23,42,.18));
+  animation: social-drone-hover 3.8s ease-in-out infinite alternate;
+}
+
+.drone-body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  width: 3.15rem;
+  height: 2.65rem;
+  border: 2px solid #315d88;
+  border-radius: 45% 45% 34% 34% / 48% 48% 40% 40%;
+  background: linear-gradient(155deg,#f8fafc,#bfdbfe);
+  transform: translate(-50%,-50%);
+}
+
+.drone-body a {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(49,93,136,.65);
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  color: #173b61;
+  font-size: 1.4rem;
+  transition: transform .18s ease, color .18s ease, background-color .18s ease;
+}
+
+.drone-body a:hover { color: #0284c7; background: white; transform: translateY(-2px) scale(1.08); }
+.drone-body a:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+
+.drone-arm {
+  position: absolute;
+  top: .7rem;
+  z-index: 1;
+  width: 2.3rem;
+  height: 2.7rem;
+  border-block: 3px solid #475569;
+  transform: skewY(-18deg);
+}
+.drone-arm-left { left: .1rem; }
+.drone-arm-right { right: .1rem; transform: skewY(18deg); }
+.drone-arm::before,
+.drone-arm::after {
+  position: absolute;
+  width: 2rem;
+  height: .28rem;
+  content: "";
+  border-radius: 999px;
+  background: #0f2942;
+  animation: drone-rotor-spin .24s linear infinite alternate;
+}
+.drone-arm-left::before,.drone-arm-left::after { left: -.65rem; }
+.drone-arm-right::before,.drone-arm-right::after { right: -.65rem; }
+.drone-arm::before { top: -.42rem; }
+.drone-arm::after { bottom: -.42rem; }
+.drone-arm span { display: none; }
+
+.drone-camera {
+  position: absolute;
+  bottom: .28rem;
+  left: 50%;
+  z-index: 4;
+  width: .7rem;
+  height: .7rem;
+  border: 2px solid #315d88;
+  border-radius: 50%;
+  background: #38bdf8;
+  transform: translateX(-50%);
+}
+
+html.dark .drone-body,
+html[data-theme="dark"] .drone-body { border-color: #166534; background: linear-gradient(155deg,#4ade80,#166534); }
+html.dark .drone-body a,
+html[data-theme="dark"] .drone-body a { border-color: rgba(187,247,208,.55); background: #14532d; color: #f0fdf4; }
+
+@keyframes social-drone-hover {
+  from { transform: translateY(1px) rotate(-.5deg); }
+  to { transform: translateY(-4px) rotate(.55deg); }
+}
+@keyframes drone-rotor-spin { from { transform: scaleX(.45); } to { transform: scaleX(1); } }
+
+@media (max-width: 640px) {
+.intro-social-drone { margin-top: .45rem; margin-left: 0; }
+  .intro-social-fleet { margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-social-drone,
+  .drone-arm::before,
+  .drone-arm::after { animation: none !important; }
+}
+
+/* Reference-inspired twin drones: blue cabin, high motor bar and landing legs. */
+.intro-social-fleet { gap: .65rem; }
+.intro-social-drone { width: 5.6rem; height: 4.5rem; }
+
+.drone-body {
+  top: 43%;
+  width: 3.45rem;
+  height: 2.15rem;
+  border-color: #3b82c4;
+  border-radius: .7rem .7rem 1rem 1rem;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 .34rem, rgba(30,64,175,.3) .34rem .46rem, transparent .46rem .72rem),
+    linear-gradient(155deg,#dbeafe,#7dd3fc 70%,#60a5fa);
+  box-shadow: inset 0 5px 8px rgba(255,255,255,.5), 0 5px 8px rgba(30,64,175,.16);
+}
+
+.drone-body::before {
+  position: absolute;
+  top: 1.55rem;
+  left: 50%;
+  z-index: -1;
+  width: 4.35rem;
+  height: 2.35rem;
+  content: "";
+  border-right: 3px solid #3b82c4;
+  border-left: 3px solid #3b82c4;
+  transform: translateX(-50%) perspective(3rem) rotateX(-12deg);
+}
+
+.drone-body::after {
+  position: absolute;
+  bottom: -.45rem;
+  left: 50%;
+  width: 2rem;
+  height: .35rem;
+  content: "";
+  border-radius: 0 0 .45rem .45rem;
+  background: #315d88;
+  transform: translateX(-50%);
+}
+
+.drone-arm {
+  top: .65rem;
+  width: 2.7rem;
+  height: .65rem;
+  border: 0;
+  border-bottom: 4px solid #60a5fa;
+  transform: none;
+}
+.drone-arm-left { left: .15rem; transform: rotate(-3deg); }
+.drone-arm-right { right: .15rem; transform: rotate(3deg); }
+.drone-arm::before {
+  top: -.35rem;
+  width: 2.5rem;
+  height: .2rem;
+  background: #172554;
+}
+.drone-arm-left::before { left: -.6rem; }
+.drone-arm-right::before { right: -.6rem; }
+.drone-arm::after { display: none; }
+
+.drone-camera {
+  bottom: 1.72rem;
+  width: .78rem;
+  height: .78rem;
+  border-color: #172554;
+  background: radial-gradient(circle at 35% 32%,#fff 0 8%,#38bdf8 10% 30%,#0f172a 34% 100%);
+}
+
+html.dark .drone-body,
+html[data-theme="dark"] .drone-body {
+  border-color: #7dd3fc;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 .34rem,rgba(56,189,248,.28) .34rem .46rem,transparent .46rem .72rem),
+    linear-gradient(155deg,#dbeafe,#60a5fa 72%,#2563eb);
+}
+html.dark .drone-body a,
+html[data-theme="dark"] .drone-body a { border-color: #315d88; background: rgba(239,246,255,.92); color: #173b61; }
+
+/* Brighter aircraft palettes keep the fleet separate from the night sky. */
+.fleet-css-blimp .fleet-css-aircraft {
+  border-color: #15803d;
+  background:
+    radial-gradient(ellipse at 52% 18%,rgba(240,253,244,.98),transparent 36%),
+    linear-gradient(180deg,#dcfce7,#86efac 55%,#4ade80 100%);
+  box-shadow: inset 0 -30px 45px rgba(20,83,45,.16),inset 0 15px 24px rgba(255,255,255,.58),0 26px 48px rgba(15,23,42,.14);
+}
+.fleet-css-blimp .aircraft-tail { border-color: #166534; background: linear-gradient(135deg,#bbf7d0,#22c55e 64%,#166534); }
+.fleet-css-blimp .blimp-gondola { border-color: #166534; background: linear-gradient(180deg,#22c55e,#14532d); }
+
+html.dark .fleet-css-plane .fleet-css-aircraft,
+html[data-theme="dark"] .fleet-css-plane .fleet-css-aircraft {
+  border-color: #93c5fd;
+  background: linear-gradient(155deg,#f8fafc,#bfdbfe 68%,#93c5fd);
+  box-shadow: inset 0 -22px 36px rgba(30,64,175,.14),0 28px 54px rgba(2,6,23,.38);
+}
+
+html.dark .fleet-css-blimp .fleet-css-aircraft,
+html[data-theme="dark"] .fleet-css-blimp .fleet-css-aircraft {
+  border-color: #4ade80;
+  background:
+    radial-gradient(ellipse at 52% 18%,rgba(255,255,255,.98),transparent 38%),
+    linear-gradient(180deg,#f8fafc,#e2e8f0 58%,#cbd5e1 100%);
+  box-shadow: inset 0 -30px 45px rgba(30,64,175,.1),0 28px 56px rgba(2,6,23,.42),0 0 24px rgba(34,197,94,.12);
+}
+
+.fleet-css-blimp .aircraft-wing,
+html.dark .fleet-css-blimp .aircraft-wing,
+html[data-theme="dark"] .fleet-css-blimp .aircraft-wing {
+  border-color: #166534;
+  background: linear-gradient(150deg,#86efac,#22c55e 68%,#166534);
+  box-shadow: inset 0 -6px 10px rgba(20,83,45,.22),0 0 16px rgba(34,197,94,.22);
+}
+
+/* White blimp shell with green flight surfaces in both themes. */
+.fleet-css-blimp .fleet-css-aircraft {
+  border-color: #4ade80;
+  background:
+    radial-gradient(ellipse at 52% 18%,rgba(255,255,255,.98),transparent 38%),
+    linear-gradient(180deg,#fff,#f1f5f9 58%,#dbeafe 100%);
+  box-shadow: inset 0 -30px 45px rgba(30,64,175,.08),0 28px 52px rgba(15,23,42,.16),0 0 18px rgba(34,197,94,.1);
+}
+
+/* Classic aircraft smoke route cards. */
+.experience-title-wrap { overflow: visible; }
+.experience-title-wrap::after {
+  right: 1rem;
+  width: 88%;
+  border-top: 5px solid rgba(255,255,255,.72);
+  filter: blur(2px);
+}
+
+.experience-plane {
+  z-index: 8;
+  filter: drop-shadow(0 5px 7px rgba(15,23,42,.2));
+}
+
+.experience-plane::before {
+  position: absolute;
+  top: 52%;
+  right: 70%;
+  width: 13rem;
+  height: 1.2rem;
+  content: "";
+  border-radius: 999px;
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.38),rgba(255,255,255,.92));
+  filter: blur(3px);
+  transform: translateY(-50%);
+}
+
+.experience-clouds {
+  position: relative;
+  gap: 3rem;
+}
+
+.experience-clouds::before {
+  position: absolute;
+  inset: 1rem 8% 1rem;
+  content: "";
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,rgba(255,255,255,.34),transparent 68%);
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+.experience-cloud-card,
+html.dark .experience-cloud-card,
+html[data-theme="dark"] .experience-cloud-card {
+  isolation: isolate;
+  width: min(82%,38rem);
+  border: 1px solid rgba(148,163,184,.34);
+  border-radius: 4.8rem 5.8rem 4.3rem 5.4rem;
+  background:
+    radial-gradient(circle at 8% 34%,rgba(255,255,255,.98) 0 13%,transparent 13.5%),
+    radial-gradient(circle at 21% 17%,rgba(255,255,255,.96) 0 18%,transparent 18.5%),
+    radial-gradient(circle at 40% 26%,rgba(255,255,255,.94) 0 24%,transparent 24.5%),
+    linear-gradient(90deg,rgba(255,255,255,.96),rgba(241,245,249,.86) 68%,rgba(226,232,240,.55));
+  box-shadow: 0 20px 34px rgba(71,85,105,.12);
+  filter: drop-shadow(0 14px 18px rgba(71,85,105,.1));
+}
+
+.experience-cloud-card::before,
+.experience-cloud-card::after {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  border-radius: 50%;
+  background: rgba(255,255,255,.82);
+  filter: blur(2px);
+}
+.experience-cloud-card::before { top: -1.15rem; left: 13%; width: 8rem; height: 4.5rem; }
+.experience-cloud-card::after { right: -1.6rem; bottom: .2rem; width: 8rem; height: 3.8rem; opacity: .7; }
+
+html.dark .experience-cloud-card,
+html[data-theme="dark"] .experience-cloud-card {
+  color: #0f2942;
+  box-shadow: 0 22px 42px rgba(2,6,23,.32),0 0 24px rgba(226,232,240,.08);
+}
+html.dark .experience-cloud-card h3,
+html[data-theme="dark"] .experience-cloud-card h3 { color: #0c4a6e; }
+html.dark .experience-description,
+html.dark .experience-location,
+html[data-theme="dark"] .experience-description,
+html[data-theme="dark"] .experience-location { color: #334155; }
+
+.card-plane { color: #2563eb; font-size: 1.55rem; }
+
+/* Keep the title clear; smoke belongs to the moving aircraft and cards only. */
+.experience-title-wrap::after,
+.experience-clouds::before { display: none; }
+
+/* Calmer night air: two faint, slower gusts instead of a busy wind field. */
+html.dark .wind-one,
+html.dark .wind-two,
+html[data-theme="dark"] .wind-one,
+html[data-theme="dark"] .wind-two {
+  opacity: .16;
+  animation-duration: 10.5s !important;
+  box-shadow: 0 5px 12px rgba(255,255,255,.14);
+}
+html.dark .wind-two,
+html[data-theme="dark"] .wind-two { animation-delay: -5.2s !important; animation-duration: 12.5s !important; }
+
+/* Low-altitude seagulls between the cargo drop and contact tower. */
+.low-altitude-birds {
+  position: relative;
+  width: min(92vw, 52rem);
+  height: 8rem;
+  margin: -2.5rem auto 2rem;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.seagull {
+  position: absolute;
+  width: 2.7rem;
+  height: 1.2rem;
+  animation: seagull-glide 7.5s ease-in-out infinite alternate;
+}
+.seagull::before,
+.seagull::after {
+  position: absolute;
+  top: .45rem;
+  width: 1.55rem;
+  height: .7rem;
+  content: "";
+  border-top: 3px solid #475569;
+  border-radius: 50% 50% 0 0;
+}
+.seagull::before { left: 0; transform: rotate(12deg); transform-origin: right center; }
+.seagull::after { right: 0; transform: rotate(-12deg); transform-origin: left center; }
+.seagull-one { top: 1rem; left: 8%; }
+.seagull-two { top: 3.8rem; left: 28%; transform: scale(.72); animation-delay: -2.1s; }
+.seagull-three { top: 1.8rem; left: 48%; transform: scale(.9); animation-delay: -4.2s; }
+.seagull-four { top: 4.6rem; left: 67%; transform: scale(.62); animation-delay: -1.2s; }
+.seagull-five { top: .8rem; right: 5%; transform: scale(.78); animation-delay: -5.4s; }
+
+html.dark .seagull::before,
+html.dark .seagull::after,
+html[data-theme="dark"] .seagull::before,
+html[data-theme="dark"] .seagull::after { border-top-color: #cbd5e1; opacity: .72; }
+
+@keyframes seagull-glide {
+  0% { translate: -8px 3px; rotate: -2deg; }
+  45% { translate: 5px -5px; rotate: 1deg; }
+  100% { translate: 13px 2px; rotate: 2.5deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seagull { animation: none !important; }
+}
+
+/* Serious, compact social controls restored in place of the drone treatment. */
+.intro-social-button {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 1px solid rgba(15,23,42,.55);
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  color: #334155;
+  font-size: 1.35rem;
+  box-shadow: 0 7px 16px rgba(15,23,42,.1);
+  transition: transform .18s ease,color .18s ease,background-color .18s ease,box-shadow .18s ease;
+}
+.intro-social-button:hover { color: #0369a1; background: #f8fafc; box-shadow: 0 10px 20px rgba(15,23,42,.15); transform: translateY(-2px); }
+.intro-social-button:focus-visible { outline: 2px solid #0284c7; outline-offset: 3px; }
+html.dark .intro-social-button,
+html[data-theme="dark"] .intro-social-button { border-color: rgba(255,255,255,.18); background: #0f172a; color: #e2e8f0; }
+
+/* Blimp accent surfaces: aviation red by day, navigation green by night. */
+.fleet-css-blimp .aircraft-wing,
+.fleet-css-blimp .aircraft-tail {
+  border-color: #991b1b;
+  background: linear-gradient(145deg,#fecaca,#ef4444 66%,#991b1b);
+  box-shadow: inset 0 -6px 10px rgba(127,29,29,.2),0 0 12px rgba(239,68,68,.13);
+}
+.fleet-css-blimp .blimp-gondola { border-color: #991b1b; background: linear-gradient(180deg,#ef4444,#7f1d1d); }
+
+html.dark .fleet-css-blimp .aircraft-wing,
+html.dark .fleet-css-blimp .aircraft-tail,
+html[data-theme="dark"] .fleet-css-blimp .aircraft-wing,
+html[data-theme="dark"] .fleet-css-blimp .aircraft-tail {
+  border-color: #166534;
+  background: linear-gradient(145deg,#86efac,#22c55e 66%,#166534);
+  box-shadow: inset 0 -6px 10px rgba(20,83,45,.22),0 0 20px rgba(34,197,94,.28);
+}
+html.dark .fleet-css-blimp .blimp-gondola,
+html[data-theme="dark"] .fleet-css-blimp .blimp-gondola { border-color: #166534; background: linear-gradient(180deg,#22c55e,#14532d); }
+
+/* Navigation lights cast light onto the nearby airframe instead of reading as flat dots. */
+.aircraft-light-yellow::after,
+.aircraft-light-red::after,
+.aircraft-light-green::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5rem;
+  height: 5rem;
+  content: "";
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%,-50%);
+}
+html.dark .aircraft-light-yellow::after,
+html[data-theme="dark"] .aircraft-light-yellow::after {
+  opacity: .72;
+  background: radial-gradient(circle,rgba(254,240,138,.72),rgba(250,204,21,.22) 28%,transparent 68%);
+  filter: blur(4px);
+}
+html.dark .aircraft-light-red::after,
+html[data-theme="dark"] .aircraft-light-red::after {
+  opacity: .58;
+  background: radial-gradient(circle,rgba(254,202,202,.64),rgba(239,68,68,.2) 30%,transparent 68%);
+  filter: blur(4px);
+}
+html.dark .aircraft-light-green::after,
+html[data-theme="dark"] .aircraft-light-green::after {
+  opacity: .58;
+  background: radial-gradient(circle,rgba(187,247,208,.64),rgba(34,197,94,.2) 30%,transparent 68%);
+  filter: blur(4px);
+}
+html.dark .fleet-css-blimp .blimp-gondola,
+html[data-theme="dark"] .fleet-css-blimp .blimp-gondola {
+  box-shadow: 0 12px 22px rgba(15,23,42,.28),0 0 28px rgba(250,204,21,.28);
+}
+
+/* Final mobile overrides must stay last so legacy responsive rules cannot hide them. */
+@media (max-width: 700px) {
+  .intro-social-row { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: .5rem; }
+
+  .altitude-scrollbar {
+    top: 5.4rem !important;
+    right: .45rem !important;
+    bottom: .7rem !important;
+    display: grid !important;
+    width: 3.35rem !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  .altitude-scrollbar-route-shell { width: .72rem; }
+  .altitude-scrollbar-checkpoints button { right: .85rem; min-width: 1.55rem; padding: .12rem; }
+  .altitude-scrollbar-checkpoints button span { width: 1rem; height: 1rem; }
+  .altitude-scrollbar-checkpoints button em { display: none; }
+
+  .fleet-css-unit,
+  .fleet-css-blimp { width: min(88vw,28rem) !important; margin-bottom: 3rem; }
+  .fleet-css-unit > a,
+  .fleet-css-blimp > a { animation: none !important; }
+  .fleet-css-plane .fleet-css-aircraft,
+  .fleet-css-blimp .fleet-css-aircraft,
+  html.dark .fleet-css-plane .fleet-css-aircraft,
+  html.dark .fleet-css-blimp .fleet-css-aircraft,
+  html[data-theme="dark"] .fleet-css-plane .fleet-css-aircraft,
+  html[data-theme="dark"] .fleet-css-blimp .fleet-css-aircraft {
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 2rem !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .fleet-css-aircraft::before,
+  .aircraft-cockpit,
+  .aircraft-tail,
+  .aircraft-wing,
+  .aircraft-light,
+  .blimp-seams,
+  .blimp-gondola,
+  .blimp-propeller { display: none !important; }
+  .aircraft-project-window,
+  .fleet-css-blimp .aircraft-project-window {
+    grid-template-columns: 1fr !important;
+    min-height: 0 !important;
+    padding: 1.2rem !important;
+    border: 1px solid rgba(100,116,139,.38) !important;
+    border-radius: 2rem !important;
+    background: rgba(248,250,252,.95) !important;
+    box-shadow: 0 18px 34px rgba(15,23,42,.13) !important;
+  }
+  html.dark .aircraft-project-window,
+  html[data-theme="dark"] .aircraft-project-window { background: rgba(15,23,42,.94) !important; }
+
+  #skills ul { overflow: visible; padding-top: 4rem; }
+  .cargo-skill { will-change: transform,opacity; }
+  .cargo-parachute { display: none !important; }
+  .about-learning-note { display: none; }
+  .about-balloon-section { width: min(84vw,20.5rem); }
+  .about-balloon { padding: 2.15rem .9rem 2.75rem; }
+  .about-balloon p { font-size: .79rem; line-height: 1.45; }
+  .about-balloon h2 { margin-bottom: 1rem; font-size: 1.45rem; }
+  .balloon-ropes { height: 2.8rem; }
+  .balloon-ropes i { height: 3.2rem; }
+  .balloon-basket { width: 4.5rem; height: 2.8rem; }
+}

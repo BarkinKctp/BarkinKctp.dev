@@ -14,7 +14,7 @@ export default function Footer() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <footer className="bg-gray-700 text-zinc-300 dark:bg-zinc-950 dark:text-zinc-400 mt-15 sm:mt-22 border-t border-black/60 dark:border-white/20">
+    <footer id="runway" className="footer-runway text-zinc-300 dark:text-zinc-400 mt-15 sm:mt-22">
       <div className="max-w-6xl mx-auto px-6 py-8 sm:px-10 sm:py-9">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_0.6fr_1.4fr] lg:gap-2 overflow-hidden">
           {/* Brand */}
@@ -36,7 +36,9 @@ export default function Footer() {
               {links.map((l) => (
                 <a
                   key={l.hash}
-                  href={`/${l.hash}`}
+                  href={l.hash.startsWith("http") ? l.hash : `/${l.hash}`}
+                  target={l.hash.startsWith("http") ? "_blank" : undefined}
+                  rel={l.hash.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="hover:text-white transition-colors duration-150"
                 >
                   {l.name}
@@ -55,6 +57,8 @@ export default function Footer() {
                 <a
                   key={p.href}
                   href={p.href}
+                  target={p.href.startsWith("http") ? "_blank" : undefined}
+                  rel={p.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="hover:text-white transition-colors duration-150"
                 >
                   {p.label}

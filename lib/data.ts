@@ -25,6 +25,6 @@
   },
   {
     name: "My Blog",
-    hash: "pages/blog",
+    hash: "https://medium.com/@barkinkocatepe12",
   },
 ] as const;

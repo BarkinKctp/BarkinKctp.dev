@@ -1,10 +1,10 @@
-import About from "@/components/about";
-import Experience from "@/components/experience";
-import Intro from "@/components/intro";
-import Projects from "@/components/projects";
-import SectionDivider from "@/components/section-divider";
-import Skills from "@/components/skills";
-import Contact from "@/components/contact";
+import About from "@/components/home/about";
+import Experience from "@/components/home/experience";
+import Intro from "@/components/home/intro";
+import Projects from "@/components/home/projects";
+import SectionDivider from "@/components/home/section-divider";
+import Skills from "@/components/home/skills";
+import Contact from "@/components/home/contact";
 import { getProjectsFromDb } from "@/lib/projects";
 import { getExperiencesFromDb } from "@/lib/experiences";
 import { getSkillsFromDb } from "@/lib/skills";
@@ -30,6 +30,13 @@ export default async function Home() {
       <Experience experiences={experiences} />
       <SectionDivider />
       <Skills skills={skills} />
+      <div className="low-altitude-birds" aria-hidden="true">
+        <i className="seagull seagull-one" />
+        <i className="seagull seagull-two" />
+        <i className="seagull seagull-three" />
+        <i className="seagull seagull-four" />
+        <i className="seagull seagull-five" />
+      </div>
       <SectionDivider />
       <Contact />
     </main>

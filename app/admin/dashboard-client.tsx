@@ -68,7 +68,7 @@ import { MdDragIndicator } from "react-icons/md";
 import { BsArrowLeft } from "react-icons/bs";
 import { motion } from "framer-motion";
 
-type Tab = "projects" | "experiences" | "skills" | "about" | "resume" | "games";
+type Tab = "projects" | "experiences" | "skills" | "about" | "resume";
 
 export default function AdminDashboardClient({
   projects,
@@ -135,7 +135,6 @@ export default function AdminDashboardClient({
       count: places.length + books.length + music.length,
     },
     { key: "resume", label: "Resume", count: resumeStats.uniqueDownloaders },
-    { key: "games", label: "Games", count: 0 },
   ];
 
   return (
@@ -279,12 +278,10 @@ export default function AdminDashboardClient({
         {activeTab === "resume" && (
           <ResumeTab resumeStats={resumeStats} router={router} />
         )}
-        {activeTab === "games" && <GamesTab />}
       </motion.div>
     </motion.div>
   );
 }
-
 /* ======================== SHARED TYPES & HELPERS ======================== */
 
 type ReorderHandler = (
@@ -300,7 +297,6 @@ function useDndSensors() {
     }),
   );
 }
-
 function SortableItem({
   id,
   children,
@@ -1150,7 +1146,6 @@ function AboutMeTab({
     </div>
   );
 }
-
 /* --- Places --- */
 
 function PlacesSection({
@@ -2000,253 +1995,3 @@ function ResumeTab({
   );
 }
 
-/* ======================== GAMES TAB ======================== */
-
-interface GuessTheWordEntry {
-  id: string;
-  name: string;
-  guesses: number;
-  hintsUsed: number;
-  date: string;
-  createdAt: string;
-}
-
-interface GuessTheWordAdminData {
-  todayWord: string;
-  wordIndex: number;
-  totalAnswers: number;
-  today: string;
-  stats: { todayCount: number; totalCount: number };
-  todayEntries: GuessTheWordEntry[];
-  allEntries: GuessTheWordEntry[];
-}
-
-function GamesTab() {
-  const [data, setData] = useState<GuessTheWordAdminData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [viewTab, setViewTab] = useState<"today" | "all">("today");
-  const [deleting, setDeleting] = useState<string | null>(null);
-  const [confirmClear, setConfirmClear] = useState(false);
-
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/guess-the-word/admin");
-      if (res.ok) {
-        setData(await res.json());
-      } else {
-        toast.error("Failed to load game data");
-      }
-    } catch {
-      toast.error("Failed to load game data");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const handleDelete = async (id: string) => {
-    setDeleting(id);
-    try {
-      const res = await fetch(`/api/guess-the-word/admin?id=${id}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        toast.success("Entry deleted");
-        fetchData();
-      } else {
-        toast.error("Failed to delete");
-      }
-    } catch {
-      toast.error("Failed to delete");
-    } finally {
-      setDeleting(null);
-    }
-  };
-
-  const handleClear = async (scope: "today" | "all") => {
-    const res = await fetch(`/api/guess-the-word/admin?clearAll=${scope}`, {
-      method: "DELETE",
-    });
-    if (res.ok) {
-      toast.success(
-        scope === "today" ? "Today's entries cleared" : "All entries cleared",
-      );
-      fetchData();
-    } else {
-      toast.error("Failed to clear");
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-6 sm:p-8 text-center text-gray-500 dark:text-gray-400">
-        Loading...
-      </div>
-    );
-  }
-
-  if (!data) {
-    return (
-      <div className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-6 sm:p-8 text-center text-red-500">
-        Failed to load data.{" "}
-        <button onClick={fetchData} className="underline">
-          Retry
-        </button>
-      </div>
-    );
-  }
-
-  const entries = viewTab === "today" ? data.todayEntries : data.allEntries;
-
-  return (
-    <div className="bg-white dark:bg-slate-900 border-2 border-black/60 dark:border-white/15 rounded-lg p-6 sm:p-8">
-      <h2 className="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-6">
-        Guess The Word
-      </h2>
-
-      {/* Today's Word Card */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-          <p className="text-xs text-green-600 dark:text-green-400 font-medium mb-1">
-            Today&apos;s Word
-          </p>
-          <p className="text-2xl font-bold tracking-widest text-green-700 dark:text-green-300">
-            {data.todayWord}
-          </p>
-          <p className="text-xs text-green-500 dark:text-green-500 mt-1">
-            Word #{data.wordIndex + 1} of {data.totalAnswers}
-          </p>
-        </div>
-        <div className="bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-800 rounded-lg p-4">
-          <p className="text-xs text-cyan-600 dark:text-cyan-400 font-medium mb-1">
-            Today&apos;s Players
-          </p>
-          <p className="text-2xl font-bold text-cyan-700 dark:text-cyan-300">
-            {data.stats.todayCount}
-          </p>
-        </div>
-        <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
-          <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mb-1">
-            All-Time Entries
-          </p>
-          <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">
-            {data.stats.totalCount}
-          </p>
-        </div>
-      </div>
-
-      {/* Leaderboard Section */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex bg-gray-200 dark:bg-slate-700 rounded-md p-0.5">
-          {(["today", "all"] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setViewTab(tab)}
-              className={`px-4 py-1.5 text-xs font-semibold rounded transition ${
-                viewTab === tab
-                  ? "bg-white dark:bg-slate-600 text-gray-900 dark:text-gray-100 shadow-sm"
-                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-              }`}
-            >
-              {tab === "today" ? "Today" : "All Time"}
-            </button>
-          ))}
-        </div>
-        <div className="flex items-center gap-2">
-          {confirmClear ? (
-            <div className="flex gap-1">
-              <button
-                onClick={() => {
-                  handleClear(viewTab);
-                  setConfirmClear(false);
-                }}
-                className="px-2 py-1.5 text-xs bg-red-600 text-white rounded-full hover:bg-red-500 transition"
-              >
-                Yes
-              </button>
-              <button
-                onClick={() => setConfirmClear(false)}
-                className="px-2 py-1.5 text-xs bg-gray-300 dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-full transition"
-              >
-                No
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setConfirmClear(true)}
-              className="px-3 py-1.5 bg-red-600 text-white rounded-full hover:bg-red-500 hover:scale-105 transition text-sm"
-            >
-              Clear {viewTab === "today" ? "Today" : "All"}
-            </button>
-          )}
-        </div>
-      </div>
-
-      {entries.length === 0 ? (
-        <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-8">
-          No entries{viewTab === "today" ? " today" : ""} yet.
-        </p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-700 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                <th className="py-2 pr-3">#</th>
-                <th className="py-2 pr-3">Name</th>
-                <th className="py-2 pr-3">Guesses</th>
-                <th className="py-2 pr-3">Hints</th>
-                <th className="py-2 pr-3">Date</th>
-                <th className="py-2 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {entries.map((entry, i) => (
-                <tr
-                  key={entry.id}
-                  className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-slate-800/50 transition"
-                >
-                  <td className="py-2.5 pr-3 text-gray-400 dark:text-gray-500 font-medium">
-                    {i + 1}
-                  </td>
-                  <td className="py-2.5 pr-3 font-medium text-gray-900 dark:text-gray-100">
-                    {entry.name}
-                  </td>
-                  <td className="py-2.5 pr-3 text-gray-600 dark:text-gray-400">
-                    {entry.guesses}/6
-                  </td>
-                  <td className="py-2.5 pr-3">
-                    {entry.hintsUsed > 0 ? (
-                      <span className="text-yellow-500">
-                        💡 {entry.hintsUsed}
-                      </span>
-                    ) : (
-                      <span className="text-gray-400 dark:text-gray-500">
-                        0
-                      </span>
-                    )}
-                  </td>
-                  <td className="py-2.5 pr-3 text-gray-500 dark:text-gray-400">
-                    {entry.date}
-                  </td>
-                  <td className="py-2.5 text-right">
-                    <button
-                      onClick={() => handleDelete(entry.id)}
-                      disabled={deleting === entry.id}
-                      className="text-red-500 hover:text-red-400 text-xs font-medium disabled:opacity-50"
-                    >
-                      {deleting === entry.id ? "..." : "Delete"}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  );
-}

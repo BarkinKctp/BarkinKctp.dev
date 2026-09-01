@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx scripts/seed-projects.ts"
+    "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -17,7 +17,6 @@
     "@react-email/render": "^2.0.4",
     "@upstash/redis": "^1.38.0",
     "@vercel/blob": "^2.3.3",
-    "an-array-of-english-words": "^2.0.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.35.1",
     "mongodb": "^7.2.0",
@@ -28,7 +27,6 @@
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.6.0",
     "react-intersection-observer": "^10.0.3",
-    "react-vertical-timeline-component": "^4.0.0",
     "resend": "^6.9.3"
   },
   "devDependencies": {
@@ -36,7 +34,6 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/react-vertical-timeline-component": "^3.3.6",
     "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",

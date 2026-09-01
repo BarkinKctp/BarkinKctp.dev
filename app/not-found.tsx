@@ -38,7 +38,7 @@ export default function NotFound() {
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.3 }}
         >
-          Sorry, the page you're looking for doesn't exist or has been moved.
+          Sorry, the page you&apos;re looking for doesn&apos;t exist or has been moved.
         </motion.p>
       </motion.div>
 
@@ -66,7 +66,7 @@ export default function NotFound() {
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
-            Let's get you back on track!
+            Let&apos;s get you back on track!
           </motion.p>
         </motion.div>
       </motion.div>
