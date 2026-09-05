@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getProjectsFromDb } from "@/lib/projects";
+import BreadcrumbJsonLd from "@/components/breadcrumb-jsonld";
 import ProjectsClient from "./projects-client";
 
 export const metadata: Metadata = {
@@ -18,5 +19,15 @@ export const metadata: Metadata = {
 export default async function ProjectsPage() {
   const projects = await getProjectsFromDb();
 
-  return <ProjectsClient projects={projects} />;
+  return (
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Projects", path: "/pages/projects" },
+        ]}
+      />
+      <ProjectsClient projects={projects} />
+    </>
+  );
 }

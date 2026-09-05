@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getPlacesFromDb, getBooksFromDb, getMusicFromDb } from "@/lib/about";
+import BreadcrumbJsonLd from "@/components/breadcrumb-jsonld";
 import AboutMeClient from "./about-me-client";
 
 export const metadata: Metadata = {
@@ -22,5 +23,15 @@ export default async function AboutMePage() {
     getMusicFromDb(),
   ]);
 
-  return <AboutMeClient places={places} books={books} music={music} />;
+  return (
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "About Me", path: "/pages/about-me" },
+        ]}
+      />
+      <AboutMeClient places={places} books={books} music={music} />
+    </>
+  );
 }

@@ -1,0 +1,29 @@
+# Barkin Kocatepe
+
+> Personal portfolio of Barkin Kocatepe (also written Barkın Kocatepe), a software
+> engineer specializing in cloud computing, distributed systems, and DevOps.
+> Currently working in DevOps at Siemens and a Software Engineering student at
+> Halic University. Previously interned at Microsoft on Azure Cloud, Azure AI, and
+> DevOps / CI-CD tooling.
+
+## Pages
+
+- [Home](https://barkinkocatepe.dev/): Introduction, selected projects, work experience, and skills.
+- [About Me](https://barkinkocatepe.dev/pages/about-me): Background, interests, places visited, books, and music.
+- [Projects](https://barkinkocatepe.dev/pages/projects): Full list of projects across cloud, infrastructure as code, Kubernetes, and automation.
+- [Privacy Policy](https://barkinkocatepe.dev/pages/privacy): How the site handles visitor data.
+
+## Topics
+
+- Cloud computing: Azure, AWS, GCP
+- Infrastructure as Code: Terraform, Ansible, ARM templates
+- CI/CD: GitHub Actions, Jenkins, GitLab
+- Containers and orchestration: Docker, Kubernetes, Helm, ArgoCD
+- DevOps and infrastructure automation
+
+## Links
+
+- GitHub: https://github.com/BarkinKctp
+- LinkedIn: https://www.linkedin.com/in/barkin-kocatepe-6a43922a2/
+- Blog: https://medium.com/@barkinkocatepe12
+- Contact: barkinkocatepe12@gmail.com

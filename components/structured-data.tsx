@@ -14,7 +14,9 @@ export default function StructuredData() {
         "@type": "Person",
         "@id": `${siteUrl}/#person`,
         name: "Barkin Kocatepe",
+        alternateName: "Barkın Kocatepe",
         url: siteUrl,
+        image: `${siteUrl}/bg-images/barkin-portrait.jpeg`,
         jobTitle: "Software Engineer",
         description:
           "Software engineer specializing in cloud computing, distributed systems, and DevOps.",
@@ -22,13 +24,21 @@ export default function StructuredData() {
           "Cloud Computing",
           "Distributed Systems",
           "DevOps",
-          "Infrastructure Automation",
+          "Infrastructure as Code",
+          "CI/CD",
+          "Kubernetes",
         ],
-        sameAs: [
-          LinkedIn,
-          Github,
-          "https://medium.com/@barkinkocatepe12",
-        ],
+        worksFor: {
+          "@type": "Organization",
+          name: "Siemens",
+          url: "https://www.siemens.com",
+        },
+        alumniOf: {
+          "@type": "CollegeOrUniversity",
+          name: "Halic University",
+          url: "https://halic.edu.tr",
+        },
+        sameAs: [LinkedIn, Github, "https://medium.com/@barkinkocatepe12"],
       },
       {
         "@type": "WebSite",
