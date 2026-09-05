@@ -5,6 +5,7 @@ import Projects from "@/components/home/projects";
 import SectionDivider from "@/components/home/section-divider";
 import Skills from "@/components/home/skills";
 import Contact from "@/components/home/contact";
+import StructuredData from "@/components/structured-data";
 import { getProjectsFromDb } from "@/lib/projects";
 import { getExperiencesFromDb } from "@/lib/experiences";
 import { getSkillsFromDb } from "@/lib/skills";
@@ -21,6 +22,7 @@ export default async function Home() {
       className="flex flex-col items-center
     px-[1rem]"
     >
+      <StructuredData />
       <Intro />
       <SectionDivider />
       <About />

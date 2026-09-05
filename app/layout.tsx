@@ -9,6 +9,13 @@ import { Toaster } from "react-hot-toast";
 import ThemeSwitch from "@/components/theme-switch";
 import ThemeContextProvider from "./context/theme-context";
 import VisitTracker from "@/components/visit-tracker";
+import { BotIdClient } from "botid/client";
+
+// Routes protected by Vercel BotID. The contact form's Server Action is invoked
+// from the home page, so POST to "/" is what needs shielding.
+const protectedRoutes = [{ path: "/", method: "POST" }];
+
+const siteUrl = "https://barkinkocatepe.dev";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,11 +27,53 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const description =
+  "Barkin Kocatepe is a software engineer specializing in cloud computing, \
+distributed systems, and DevOps, with 2.5 years of experience.";
+
 export const metadata: Metadata = {
-  title: "Barkin | Personal Portfolio",
-  description:
-    "Barkin is a software engineer specializing in cloud computing, \
-     distributed systems, and devops with 2.5 years of experience.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Barkin Kocatepe | Software Engineer",
+    template: "%s | Barkin Kocatepe",
+  },
+  description,
+  alternates: {
+    canonical: "/",
+  },
+  keywords: [
+    "Barkin Kocatepe",
+    "software engineer",
+    "cloud computing",
+    "distributed systems",
+    "DevOps",
+    "portfolio",
+  ],
+  authors: [{ name: "Barkin Kocatepe", url: siteUrl }],
+  creator: "Barkin Kocatepe",
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: "Barkin Kocatepe",
+    title: "Barkin Kocatepe | Software Engineer",
+    description,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Barkin Kocatepe | Software Engineer",
+    description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -34,6 +83,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="!scroll-smooth">
+      <head>
+        <BotIdClient protect={protectedRoutes} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased
         bg-gray-50 text-gray-900 dark:bg-slate-950 dark:text-slate-100

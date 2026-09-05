@@ -2,6 +2,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
+  alternates: { canonical: "/pages/privacy" },
+  robots: { index: false, follow: true },
 };
 
 export default function PrivacyPage() {
